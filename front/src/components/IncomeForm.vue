@@ -9,7 +9,7 @@
             class="ma-12"
           />
           <v-overflow-btn
-            :items="expenditure_classes"
+            :items="income_classes"
             placeholder="分類"
             class="ma-12"
           />
