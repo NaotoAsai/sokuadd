@@ -3,9 +3,6 @@
     max-width="600"
     class="mx-auto"
   >
-    <v-card-title>
-      11月11日月曜日
-    </v-card-title>
     <v-toolbar>
       <v-tabs grow>
         <v-tab @click="currentForm = 'ExpenditureForm'">

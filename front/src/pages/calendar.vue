@@ -2,25 +2,30 @@
   <v-row class="fill-height">
     <v-col>
       <v-sheet height="64">
-        <v-toolbar flat color="white">
+        <v-toolbar flat>
           <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
             Today
           </v-btn>
+          <!-- 前月へ移動 -->
           <v-btn fab text small color="grey darken-2" @click="prev">
             <v-icon small>
               mdi-chevron-left
             </v-icon>
           </v-btn>
+          <!-- 翌月へ移動 -->
           <v-btn fab text small color="grey darken-2" @click="next">
             <v-icon small>
               mdi-chevron-right
             </v-icon>
           </v-btn>
+          <!-- 年号、月、表示 -->
           <v-toolbar-title v-if="$refs.calendar">
             {{ $refs.calendar.title }}
           </v-toolbar-title>
           <v-spacer />
+          <!-- 表示形式選択メニュー -->
           <v-menu bottom right>
+            <!-- ドロップダウンメニューボタン -->
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 outlined
@@ -34,6 +39,7 @@
                 </v-icon>
               </v-btn>
             </template>
+            <!-- ドロップダウン中身 -->
             <v-list>
               <v-list-item @click="type = 'day'">
                 <v-list-item-title>Day</v-list-item-title>
@@ -52,6 +58,7 @@
         </v-toolbar>
       </v-sheet>
       <v-sheet height="600">
+        <!-- カレンダー本体 -->
         <v-calendar
           ref="calendar"
           v-model="focus"
@@ -64,6 +71,7 @@
           @click:date="viewDay"
           @change="updateRange"
         />
+        <!-- イベントカード -->
         <v-menu
           v-model="selectedOpen"
           :close-on-content-click="false"
