@@ -65,6 +65,14 @@
             <v-list-item-title>分類別の収支を見る</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item @click="$router.push({ name: 'classedit' })">
+          <v-list-item-action>
+            <v-icon>mdi-playlist-plus</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>分類を追加</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </div>

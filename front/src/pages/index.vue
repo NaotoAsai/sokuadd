@@ -1,19 +1,24 @@
 <template>
-  <div>
-    <h2 style="text-align: center;">
+  <v-card
+    max-width="600"
+    class="mx-auto"
+  >
+    <v-card-title>
       11月11日月曜日
-    </h2>
-    <v-tabs grow>
-      <v-tab @click="currentForm = 'ExpenditureForm'">
-        支出
-      </v-tab>
-      <v-tab @click="currentForm = 'IncomeForm'">
-        収入
-      </v-tab>
-    </v-tabs>
+    </v-card-title>
+    <v-toolbar>
+      <v-tabs grow>
+        <v-tab @click="currentForm = 'ExpenditureForm'">
+          支出
+        </v-tab>
+        <v-tab @click="currentForm = 'IncomeForm'">
+          収入
+        </v-tab>
+      </v-tabs>
+    </v-toolbar>
 
     <component :is="currentForm" />
-  </div>
+  </v-card>
 </template>
 
 <script>
