@@ -1,5 +1,5 @@
 <template>
-  <v-list two-line subheader>
+  <div>
     <v-text-field
       label="Solo"
       placeholder="分類を追加"
@@ -11,31 +11,33 @@
         追加
       </v-btn>
     </div>
+    <!-- リストにスクロールバー表示のスタイルを適応 -->
+    <v-list subheader style="overflow-y: scroll; height: 550px">
+      <v-list-item
+        v-for="item in items"
+        :key="item.id"
+      >
+        <v-list-item-content>
+          <v-list-item-title v-text="item.title" />
+        </v-list-item-content>
 
-    <v-list-item
-      v-for="item in items"
-      :key="item.id"
-    >
-      <v-list-item-content>
-        <v-list-item-title v-text="item.title" />
-      </v-list-item-content>
-
-      <v-list-item-action>
-        <v-btn icon>
-          <v-icon color="grey lighten-1">
-            mdi-lead-pencil
-          </v-icon>
-        </v-btn>
-      </v-list-item-action>
-      <v-list-item-action>
-        <v-btn icon>
-          <v-icon color="grey lighten-1">
-            mdi-delete
-          </v-icon>
-        </v-btn>
-      </v-list-item-action>
-    </v-list-item>
-  </v-list>
+        <v-list-item-action>
+          <v-btn icon>
+            <v-icon color="grey lighten-1">
+              mdi-lead-pencil
+            </v-icon>
+          </v-btn>
+        </v-list-item-action>
+        <v-list-item-action>
+          <v-btn icon>
+            <v-icon color="grey lighten-1">
+              mdi-delete
+            </v-icon>
+          </v-btn>
+        </v-list-item-action>
+      </v-list-item>
+    </v-list>
+  </div>
 </template>
 
 <script>

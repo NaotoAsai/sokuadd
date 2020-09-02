@@ -16,6 +16,11 @@
         placeholder="分類"
         class="ma-12"
       />
+      <v-text-field
+        label="コメント"
+        class="ma-12"
+        solo-inverted
+      />
       <div class=" pb-8 pr-12 pl-12">
         <v-btn block x-large color="success" dark>
           追加

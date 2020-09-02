@@ -9,12 +9,12 @@
       <v-app-bar-nav-icon v-if="$auth.loggedIn" @click="drawer = !drawer" />
       <v-toolbar-title>即add</v-toolbar-title>
       <v-spacer />
-
       <!-- ↓↓ドロップダウンメニュー↓↓ -->
       <v-toolbar-items v-if="$auth.loggedIn">
         <v-menu offset-y>
           <template v-slot:activator="{on}">
-            <v-btn text v-on="on">
+            <!-- v-btnがデフォルトでアルファベットがすべて大文字になるので、回避のためのstyle適応 -->
+            <v-btn text style="text-transform: none" v-on="on">
               {{ $auth.user.name }}
               <v-icon>mdi-menu-down</v-icon>
             </v-btn>

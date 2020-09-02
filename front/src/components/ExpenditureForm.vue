@@ -6,7 +6,6 @@
     </h2>
     <v-form>
       <v-text-field
-        name="username"
         label="金額"
         class="ma-12"
         solo-inverted
@@ -15,6 +14,11 @@
         :items="expenditure_classes"
         placeholder="分類"
         class="ma-12"
+      />
+      <v-text-field
+        label="コメント"
+        class="ma-12"
+        solo-inverted
       />
       <div class=" pb-8 pr-12 pl-12">
         <v-btn block x-large color="success" dark>

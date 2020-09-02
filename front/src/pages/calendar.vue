@@ -3,9 +3,6 @@
     <v-col>
       <v-sheet height="64">
         <v-toolbar flat>
-          <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
-            Today
-          </v-btn>
           <!-- 前月へ移動 -->
           <v-btn fab text small color="grey darken-2" @click="prev">
             <v-icon small>
@@ -23,9 +20,8 @@
             {{ $refs.calendar.title }}
           </v-toolbar-title>
           <v-spacer />
-          <!-- 表示形式選択メニュー -->
+          <!-- 表示形式選択メニュー
           <v-menu bottom right>
-            <!-- ドロップダウンメニューボタン -->
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 outlined
@@ -39,7 +35,6 @@
                 </v-icon>
               </v-btn>
             </template>
-            <!-- ドロップダウン中身 -->
             <v-list>
               <v-list-item @click="type = 'day'">
                 <v-list-item-title>Day</v-list-item-title>
@@ -54,7 +49,7 @@
                 <v-list-item-title>4 days</v-list-item-title>
               </v-list-item>
             </v-list>
-          </v-menu>
+          </v-menu> -->
         </v-toolbar>
       </v-sheet>
       <v-sheet height="600">
@@ -65,10 +60,8 @@
           color="primary"
           :events="events"
           :event-color="getEventColor"
-          :type="type"
+          type="month"
           @click:event="showEvent"
-          @click:more="viewDay"
-          @click:date="viewDay"
           @change="updateRange"
         />
         <!-- イベントカード -->
@@ -78,30 +71,98 @@
           :activator="selectedElement"
           offset-x
         >
-          <v-card
-            color="grey lighten-4"
-            min-width="350px"
-            flat
-          >
-            <v-toolbar
-              :color="selectedEvent.color"
-              dark
-            >
-              <v-btn icon>
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
-              <v-toolbar-title v-html="selectedEvent.name" />
-              <v-spacer />
-              <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
-            </v-toolbar>
-            <v-card-text>
-              <span v-html="selectedEvent.details" />
-            </v-card-text>
+          <v-card :color="selectedEvent.color">
+            <v-card-title>支出情報：計 600円</v-card-title>
+            <v-card-subtitle>2020-05-04</v-card-subtitle>
+            <!-- その日の収支情報の配列をfor文で回す -->
+            <v-list three-line subheader>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>食費：-600円</v-list-item-title>
+                  <v-list-item-subtitle>銀の皿のまかないで食べた寿司だい、文字数多めにしてみる</v-list-item-subtitle>
+                </v-list-item-content>
+
+                <!-- スマホサイズ以外の編集削除アイコン -->
+                <v-list-item-action v-if="!$vuetify.breakpoint.xs">
+                  <v-btn icon>
+                    <v-icon color="grey lighten-1">
+                      mdi-lead-pencil
+                    </v-icon>
+                  </v-btn>
+                </v-list-item-action>
+                <v-list-item-action v-if="!$vuetify.breakpoint.xs">
+                  <v-btn icon>
+                    <v-icon color="grey lighten-1">
+                      mdi-delete
+                    </v-icon>
+                  </v-btn>
+                </v-list-item-action>
+
+                <!-- スマホサイズ時の編集削除は、縦三連ドットアイコンからメニュー表示 -->
+                <v-menu v-if="$vuetify.breakpoint.xs" offset-x left>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      dark
+                      icon
+                      v-on="on"
+                    >
+                      <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </template>
+
+                  <v-list>
+                    <v-list-item>
+                      <v-list-item-title>編集</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-title>削除</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>食費：-600円</v-list-item-title>
+                  <v-list-item-subtitle>銀の皿のまかない</v-list-item-subtitle>
+                </v-list-item-content>
+
+                <v-list-item-action v-if="!$vuetify.breakpoint.xs">
+                  <v-btn icon>
+                    <v-icon color="grey lighten-1">
+                      mdi-lead-pencil
+                    </v-icon>
+                  </v-btn>
+                </v-list-item-action>
+                <v-list-item-action v-if="!$vuetify.breakpoint.xs">
+                  <v-btn icon>
+                    <v-icon color="grey lighten-1">
+                      mdi-delete
+                    </v-icon>
+                  </v-btn>
+                </v-list-item-action>
+
+                <v-menu v-if="$vuetify.breakpoint.xs" offset-x left>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      dark
+                      icon
+                      v-on="on"
+                    >
+                      <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </template>
+
+                  <v-list>
+                    <v-list-item>
+                      <v-list-item-title>編集</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-title>削除</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </v-list-item>
+            </v-list>
             <v-card-actions>
               <v-btn
                 text
@@ -121,34 +182,26 @@
 <script>
 export default {
   data: () => ({
+    // 月移動時に月末日がここに入る
     focus: '',
-    type: 'month',
-    typeToLabel: {
-      month: 'Month',
-      week: 'Week',
-      day: 'Day',
-      '4day': '4 Days'
-    },
+    // 収支クリック時、対象の収支データを格納する
     selectedEvent: {},
     selectedElement: null,
+    // 収支クリック時の詳細カードの状態
     selectedOpen: false,
+    // ここに収支データがはいる
     events: [],
-    colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-    names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party']
+    // イベントで使う色
+    colors: ['blue lighten-1', 'red lighten-1'],
+    // イベント名、今回はその日の合計額をその日のイベント名として動的に生成したい
+    names: ['-500', '+400', '-600', '+300']
   }),
   mounted () {
     this.$refs.calendar.checkChange()
   },
   methods: {
-    viewDay ({ date }) {
-      this.focus = date
-      this.type = 'day'
-    },
     getEventColor (event) {
       return event.color
-    },
-    setToday () {
-      this.focus = ''
     },
     prev () {
       this.$refs.calendar.prev()
@@ -156,6 +209,8 @@ export default {
     next () {
       this.$refs.calendar.next()
     },
+    // 収支詳細カード表示
+    // 引数はまうすマウスイベント、イベントデータ
     showEvent ({ nativeEvent, event }) {
       const open = () => {
         this.selectedEvent = event
@@ -163,36 +218,44 @@ export default {
         setTimeout(() => this.selectedOpen = true, 10)// eslint-disable-line no-return-assign
       }
 
+      // もし他の詳細カードが開いていれば
       if (this.selectedOpen) {
+        // カードが同時に開くのを防止するため、閉じてから開く
         this.selectedOpen = false
         setTimeout(open, 10)
       } else {
         open()
       }
 
+      // 伝搬防止
       nativeEvent.stopPropagation()
     },
+    // ここで収支データを格納、引数に取得したい期間を渡す、今回は一ヶ月分
     updateRange ({ start, end }) {
       const events = []
 
+      // この辺はサンプル用
       const min = new Date(`${start.date}T00:00:00`)
       const max = new Date(`${end.date}T23:59:59`)
       const days = (max.getTime() - min.getTime()) / 86400000
+      // 収支情報の個数、今回は最大月の日数×2
       const eventCount = this.rnd(days, days + 20)
 
       for (let i = 0; i < eventCount; i++) {
-        const allDay = this.rnd(0, 3) === 0
+        // const allDay = this.rnd(0, 3) === 0
         const firstTimestamp = this.rnd(min.getTime(), max.getTime())
         const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-        const second = new Date(first.getTime() + secondTimestamp)
-
+        // const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
+        // const second = new Date(first.getTime() + secondTimestamp)
         events.push({
           name: this.names[this.rnd(0, this.names.length - 1)],
+          // 時間の情報は持たせなきゃいけない仕様、timedがfalseの場合startだけでOK(Wed Sep 16 2020 03:00:00 GMT+0900 (日本標準時))
           start: first,
-          end: second,
+          // end: second,
+          // 今回色は支出（赤）収入（青）の2色のみもつ
           color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay
+          // 時刻を表示するときにtrue、今回は時刻情報は持たないのでfalse
+          timed: false
         })
       }
 
