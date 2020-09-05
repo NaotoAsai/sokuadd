@@ -1,5 +1,5 @@
 export const state = () => ({
-
+  activeBtn: 0
 })
 
 export const getters = {
@@ -7,7 +7,22 @@ export const getters = {
 }
 
 export const mutations = {
-
+  // ボトムナビのアクティブ状態をサイドメニューと連携したいのでこのメソッドを通す
+  changePage (state, page) {
+    if (page === 'index') {
+      state.activeBtn = 0
+    }
+    if (page === 'calendar') {
+      state.activeBtn = 1
+    }
+    if (page === 'classdisp') {
+      state.activeBtn = 2
+    }
+    if (page === 'classedit') {
+      state.activeBtn = 3
+    }
+    this.$router.push({ name: page })
+  }
 }
 
 export const actions = {

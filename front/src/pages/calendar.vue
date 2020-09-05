@@ -1,182 +1,239 @@
 <template>
-  <v-row class="fill-height">
-    <v-col>
-      <v-sheet height="64">
-        <v-toolbar flat>
-          <!-- 前月へ移動 -->
-          <v-btn fab text small color="grey darken-2" @click="prev">
-            <v-icon small>
-              mdi-chevron-left
-            </v-icon>
-          </v-btn>
-          <!-- 翌月へ移動 -->
-          <v-btn fab text small color="grey darken-2" @click="next">
-            <v-icon small>
-              mdi-chevron-right
-            </v-icon>
-          </v-btn>
-          <!-- 年号、月、表示 -->
-          <v-toolbar-title v-if="$refs.calendar">
-            {{ $refs.calendar.title }}
-          </v-toolbar-title>
+  <div>
+    <v-row class="fill-height">
+      <v-col>
+        <v-sheet height="64">
+          <v-toolbar flat>
+            <!-- 前月へ移動 -->
+            <v-btn fab text small color="grey darken-2" @click="prev">
+              <v-icon small>
+                mdi-chevron-left
+              </v-icon>
+            </v-btn>
+            <!-- 翌月へ移動 -->
+            <v-btn fab text small color="grey darken-2" @click="next">
+              <v-icon small>
+                mdi-chevron-right
+              </v-icon>
+            </v-btn>
+            <!-- 年号、月、表示 -->
+            <v-toolbar-title v-if="$refs.calendar">
+              {{ $refs.calendar.title }}
+            </v-toolbar-title>
+            <v-spacer />
+          </v-toolbar>
+        </v-sheet>
+        <v-sheet height="600">
+          <!-- カレンダー本体 -->
+          <v-calendar
+            ref="calendar"
+            v-model="focus"
+            color="primary"
+            :events="events"
+            :event-color="getEventColor"
+            type="month"
+            @click:event="showEvent"
+            @change="updateRange"
+          />
+          <!-- イベントカード -->
+          <v-menu
+            v-model="selectedOpen"
+            :close-on-content-click="false"
+            :activator="selectedElement"
+            offset-x
+          >
+            <v-card :color="selectedEvent.color">
+              <v-card-title>支出情報：計 600円</v-card-title>
+              <v-card-subtitle>2020-05-04</v-card-subtitle>
+              <!-- その日の収支情報の配列をfor文で回す -->
+              <v-list three-line subheader>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>食費：-600円</v-list-item-title>
+                    <v-list-item-subtitle>銀の皿のまかないで食べた寿司だい、文字数多めにしてみる</v-list-item-subtitle>
+                  </v-list-item-content>
+
+                  <!-- スマホサイズ以外の編集削除アイコン -->
+                  <v-list-item-action v-if="!$vuetify.breakpoint.xs">
+                    <v-btn
+                      icon
+                      @click.stop="dialog2 = true"
+                    >
+                      <v-icon color="grey lighten-1">
+                        mdi-lead-pencil
+                      </v-icon>
+                    </v-btn>
+                  </v-list-item-action>
+                  <v-list-item-action v-if="!$vuetify.breakpoint.xs">
+                    <v-btn
+                      icon
+                      @click.stop="dialog1 = true"
+                    >
+                      <v-icon color="grey lighten-1">
+                        mdi-delete
+                      </v-icon>
+                    </v-btn>
+                  </v-list-item-action>
+
+                  <!-- スマホサイズ時の編集削除は、縦三連ドットアイコンからメニュー表示 -->
+                  <v-menu v-if="$vuetify.breakpoint.xs" offset-x left>
+                    <template v-slot:activator="{ on }">
+                      <v-btn
+                        dark
+                        icon
+                        v-on="on"
+                      >
+                        <v-icon>mdi-dots-vertical</v-icon>
+                      </v-btn>
+                    </template>
+
+                    <v-list>
+                      <v-list-item>
+                        <v-list-item-title @click.stop="dialog2 = true">
+                          編集
+                        </v-list-item-title>
+                      </v-list-item>
+                      <v-list-item @click.stop="dialog1 = true">
+                        <v-list-item-title>削除</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>食費：-600円</v-list-item-title>
+                    <v-list-item-subtitle>銀の皿のまかない</v-list-item-subtitle>
+                  </v-list-item-content>
+
+                  <v-list-item-action v-if="!$vuetify.breakpoint.xs">
+                    <v-btn icon>
+                      <v-icon color="grey lighten-1">
+                        mdi-lead-pencil
+                      </v-icon>
+                    </v-btn>
+                  </v-list-item-action>
+                  <v-list-item-action v-if="!$vuetify.breakpoint.xs">
+                    <v-btn icon>
+                      <v-icon color="grey lighten-1">
+                        mdi-delete
+                      </v-icon>
+                    </v-btn>
+                  </v-list-item-action>
+
+                  <v-menu v-if="$vuetify.breakpoint.xs" offset-x left>
+                    <template v-slot:activator="{ on }">
+                      <v-btn
+                        dark
+                        icon
+                        v-on="on"
+                      >
+                        <v-icon>mdi-dots-vertical</v-icon>
+                      </v-btn>
+                    </template>
+
+                    <v-list>
+                      <v-list-item>
+                        <v-list-item-title>編集</v-list-item-title>
+                      </v-list-item>
+                      <v-list-item>
+                        <v-list-item-title>削除</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </v-list-item>
+              </v-list>
+              <v-card-actions>
+                <v-btn
+                  text
+                  color="secondary"
+                  @click="selectedOpen = false"
+                >
+                  Cancel
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-menu>
+        </v-sheet>
+      </v-col>
+    </v-row>
+
+    <!-- 削除確認ダイアログ -->
+    <v-dialog
+      v-model="dialog1"
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          本当に削除しますか？
+        </v-card-title>
+
+        <v-card-actions>
           <v-spacer />
-          <!-- 表示形式選択メニュー
-          <v-menu bottom right>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                outlined
-                color="grey darken-2"
-                v-bind="attrs"
-                v-on="on"
-              >
-                <span>{{ typeToLabel[type] }}</span>
-                <v-icon right>
-                  mdi-menu-down
-                </v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item @click="type = 'day'">
-                <v-list-item-title>Day</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'week'">
-                <v-list-item-title>Week</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'month'">
-                <v-list-item-title>Month</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = '4day'">
-                <v-list-item-title>4 days</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu> -->
-        </v-toolbar>
-      </v-sheet>
-      <v-sheet height="600">
-        <!-- カレンダー本体 -->
-        <v-calendar
-          ref="calendar"
-          v-model="focus"
-          color="primary"
-          :events="events"
-          :event-color="getEventColor"
-          type="month"
-          @click:event="showEvent"
-          @change="updateRange"
-        />
-        <!-- イベントカード -->
-        <v-menu
-          v-model="selectedOpen"
-          :close-on-content-click="false"
-          :activator="selectedElement"
-          offset-x
-        >
-          <v-card :color="selectedEvent.color">
-            <v-card-title>支出情報：計 600円</v-card-title>
-            <v-card-subtitle>2020-05-04</v-card-subtitle>
-            <!-- その日の収支情報の配列をfor文で回す -->
-            <v-list three-line subheader>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>食費：-600円</v-list-item-title>
-                  <v-list-item-subtitle>銀の皿のまかないで食べた寿司だい、文字数多めにしてみる</v-list-item-subtitle>
-                </v-list-item-content>
 
-                <!-- スマホサイズ以外の編集削除アイコン -->
-                <v-list-item-action v-if="!$vuetify.breakpoint.xs">
-                  <v-btn icon>
-                    <v-icon color="grey lighten-1">
-                      mdi-lead-pencil
-                    </v-icon>
-                  </v-btn>
-                </v-list-item-action>
-                <v-list-item-action v-if="!$vuetify.breakpoint.xs">
-                  <v-btn icon>
-                    <v-icon color="grey lighten-1">
-                      mdi-delete
-                    </v-icon>
-                  </v-btn>
-                </v-list-item-action>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="dialog1 = false"
+          >
+            いいえ
+          </v-btn>
 
-                <!-- スマホサイズ時の編集削除は、縦三連ドットアイコンからメニュー表示 -->
-                <v-menu v-if="$vuetify.breakpoint.xs" offset-x left>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      dark
-                      icon
-                      v-on="on"
-                    >
-                      <v-icon>mdi-dots-vertical</v-icon>
-                    </v-btn>
-                  </template>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="dialog1 = false"
+          >
+            はい
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
-                  <v-list>
-                    <v-list-item>
-                      <v-list-item-title>編集</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item>
-                      <v-list-item-title>削除</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>食費：-600円</v-list-item-title>
-                  <v-list-item-subtitle>銀の皿のまかない</v-list-item-subtitle>
-                </v-list-item-content>
-
-                <v-list-item-action v-if="!$vuetify.breakpoint.xs">
-                  <v-btn icon>
-                    <v-icon color="grey lighten-1">
-                      mdi-lead-pencil
-                    </v-icon>
-                  </v-btn>
-                </v-list-item-action>
-                <v-list-item-action v-if="!$vuetify.breakpoint.xs">
-                  <v-btn icon>
-                    <v-icon color="grey lighten-1">
-                      mdi-delete
-                    </v-icon>
-                  </v-btn>
-                </v-list-item-action>
-
-                <v-menu v-if="$vuetify.breakpoint.xs" offset-x left>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      dark
-                      icon
-                      v-on="on"
-                    >
-                      <v-icon>mdi-dots-vertical</v-icon>
-                    </v-btn>
-                  </template>
-
-                  <v-list>
-                    <v-list-item>
-                      <v-list-item-title>編集</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item>
-                      <v-list-item-title>削除</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </v-list-item>
-            </v-list>
-            <v-card-actions>
-              <v-btn
-                text
-                color="secondary"
-                @click="selectedOpen = false"
-              >
-                Cancel
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-menu>
-      </v-sheet>
-    </v-col>
-  </v-row>
+    <!-- 収支情報修正ダイアログフォーム -->
+    <v-row justify="center">
+      <v-dialog v-model="dialog2" persistent max-width="600px">
+        <v-card>
+          <v-card-title>
+            <span class="headline">収支情報修正</span>
+          </v-card-title>
+          <v-card-text>
+            <v-form>
+              <v-text-field
+                name="username"
+                label="金額"
+                class="ma-12"
+                solo-inverted
+              />
+              <v-overflow-btn
+                :items="['aaa','bbb','ccc']"
+                placeholder="分類"
+                class="ma-12"
+              />
+              <v-text-field
+                label="コメント"
+                class="ma-12"
+                solo-inverted
+              />
+              <div class=" pb-8 pr-12 pl-12">
+                <v-btn block x-large color="success" dark>
+                  追加
+                </v-btn>
+              </div>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn color="blue darken-1" text @click="dialog2 = false">
+              Close
+            </v-btn>
+            <v-btn color="blue darken-1" text @click="dialog2 = false">
+              Save
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -194,7 +251,9 @@ export default {
     // イベントで使う色
     colors: ['blue lighten-1', 'red lighten-1'],
     // イベント名、今回はその日の合計額をその日のイベント名として動的に生成したい
-    names: ['-500', '+400', '-600', '+300']
+    names: ['-500', '+400', '-600', '+300'],
+    dialog1: false,
+    dialog2: false
   }),
   mounted () {
     this.$refs.calendar.checkChange()

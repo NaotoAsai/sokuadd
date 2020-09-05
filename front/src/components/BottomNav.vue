@@ -1,9 +1,11 @@
 <template>
+  <!-- ログイン状態でのみ表示 -->
   <v-bottom-navigation
     v-if="$auth.loggedIn"
+    v-model="activeBtn"
     grow
     color="teal"
-    height="90px"
+    height="60px"
     absolute
     :input-value="false"
   >
@@ -18,17 +20,28 @@
     </v-btn>
 
     <v-btn @click="$router.push({ name: 'classdisp' })">
-      <span>分類別の収支を見る</span>
+      <span>分類別収支</span>
       <v-icon>mdi-format-list-numbered</v-icon>
+    </v-btn>
+
+    <v-btn @click="$router.push({ name: 'classedit' })">
+      <span>分類を追加</span>
+      <v-icon>mdi-playlist-plus</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-      activeBtn: 1
+  computed: {
+    // v-modelでstoreのstateを参照したいのでこの形、参照のみなのでset()は空
+    activeBtn: {
+      get () {
+        return this.$store.state.activeBtn
+      },
+      set () {
+
+      }
     }
   }
 }
