@@ -101,10 +101,10 @@ export default {
         provider: 'laravel/jwt',
         url: 'http://localhost',
         endpoints: {
-          login: { url: '/api/auth/login', method: 'post', propertyName: 'access_token' },
-          refresh: { url: '/api/auth/refresh', method: 'post' },
-          logout: { url: '/api/auth/logout', method: 'post' },
-          user: { url: '/api/auth/user', method: 'get', propertyName: false }
+          login: { url: '/api/v1/login', method: 'post', propertyName: 'access_token' },
+          refresh: { url: '/api/v1/refresh', method: 'post' },
+          logout: { url: '/api/v1/logout', method: 'post' },
+          user: { url: '/api/v1/user', method: 'get', propertyName: false }
         },
         token: {
           property: 'access_token',

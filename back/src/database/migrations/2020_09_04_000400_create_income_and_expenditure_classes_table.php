@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExpendituresTable extends Migration
+class CreateIncomeAndExpenditureClassesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,13 @@ class CreateExpendituresTable extends Migration
      */
     public function up()
     {
-        Schema::create('expenditures', function (Blueprint $table) {
+        Schema::create('income_and_expenditure_classes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->foreignId('expenditure_class_id')
-                ->nullable()
-                ->constrained()
-                ->onDelete('set null');
-            $table->date('target_date');
-            $table->integer('amount');
-            $table->string('comment', 64)->nullable();
+            $table->tinyInteger('type');
+            $table->string('name', 16);
             $table->timestamps();
         });
     }
@@ -36,6 +31,6 @@ class CreateExpendituresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expenditures');
+        Schema::dropIfExists('income_and_expenditure_classes');
     }
 }

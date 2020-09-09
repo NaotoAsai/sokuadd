@@ -37,7 +37,7 @@ export const actions = {
   //   }
   // },
   register ({ dispatch }, authData) {
-    const url = '/api/auth/register'
+    const url = '/api/v1/register'
     const params = authData
     this.$axios.$post(url, params)
       .then((response) => {

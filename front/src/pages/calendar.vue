@@ -42,15 +42,15 @@
             :activator="selectedElement"
             offset-x
           >
-            <v-card :color="selectedEvent.color">
+            <v-card :color="colors[selectedEvent.type]">
               <v-card-title>支出情報：計 600円</v-card-title>
               <v-card-subtitle>2020-05-04</v-card-subtitle>
               <!-- その日の収支情報の配列をfor文で回す -->
-              <v-list three-line subheader>
+              <v-list v-for="item in selectedEvent.items" :key="item.id" three-line subheader>
                 <v-list-item>
                   <v-list-item-content>
-                    <v-list-item-title>食費：-600円</v-list-item-title>
-                    <v-list-item-subtitle>銀の皿のまかないで食べた寿司だい、文字数多めにしてみる</v-list-item-subtitle>
+                    <v-list-item-title>{{ item.class }}：{{ item.amount }}円</v-list-item-title>
+                    <v-list-item-subtitle>{{ item.comment }}</v-list-item-subtitle>
                   </v-list-item-content>
 
                   <!-- スマホサイズ以外の編集削除アイコン -->
@@ -94,48 +94,6 @@
                         </v-list-item-title>
                       </v-list-item>
                       <v-list-item @click.stop="dialog1 = true">
-                        <v-list-item-title>削除</v-list-item-title>
-                      </v-list-item>
-                    </v-list>
-                  </v-menu>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-content>
-                    <v-list-item-title>食費：-600円</v-list-item-title>
-                    <v-list-item-subtitle>銀の皿のまかない</v-list-item-subtitle>
-                  </v-list-item-content>
-
-                  <v-list-item-action v-if="!$vuetify.breakpoint.xs">
-                    <v-btn icon>
-                      <v-icon color="grey lighten-1">
-                        mdi-lead-pencil
-                      </v-icon>
-                    </v-btn>
-                  </v-list-item-action>
-                  <v-list-item-action v-if="!$vuetify.breakpoint.xs">
-                    <v-btn icon>
-                      <v-icon color="grey lighten-1">
-                        mdi-delete
-                      </v-icon>
-                    </v-btn>
-                  </v-list-item-action>
-
-                  <v-menu v-if="$vuetify.breakpoint.xs" offset-x left>
-                    <template v-slot:activator="{ on }">
-                      <v-btn
-                        dark
-                        icon
-                        v-on="on"
-                      >
-                        <v-icon>mdi-dots-vertical</v-icon>
-                      </v-btn>
-                    </template>
-
-                    <v-list>
-                      <v-list-item>
-                        <v-list-item-title>編集</v-list-item-title>
-                      </v-list-item>
-                      <v-list-item>
                         <v-list-item-title>削除</v-list-item-title>
                       </v-list-item>
                     </v-list>
@@ -260,7 +218,7 @@ export default {
   },
   methods: {
     getEventColor (event) {
-      return event.color
+      return this.colors[event.type]
     },
     prev () {
       this.$refs.calendar.prev()
@@ -271,6 +229,7 @@ export default {
     // 収支詳細カード表示
     // 引数はまうすマウスイベント、イベントデータ
     showEvent ({ nativeEvent, event }) {
+      console.log(event)
       const open = () => {
         this.selectedEvent = event
         this.selectedElement = nativeEvent.target
@@ -291,32 +250,41 @@ export default {
     },
     // ここで収支データを格納、引数に取得したい期間を渡す、今回は一ヶ月分
     updateRange ({ start, end }) {
+      console.log(start, end)
+      // ここでAPIから指定月の収支データを取得しストアで保持する
+      // console.log(start.year, start.month)年と月の2paramが入力
       const events = []
 
       // この辺はサンプル用
       const min = new Date(`${start.date}T00:00:00`)
       const max = new Date(`${end.date}T23:59:59`)
-      const days = (max.getTime() - min.getTime()) / 86400000
+      // const days = (max.getTime() - min.getTime()) / 86400000
       // 収支情報の個数、今回は最大月の日数×2
-      const eventCount = this.rnd(days, days + 20)
+      const eventCount = 60
 
       for (let i = 0; i < eventCount; i++) {
-        // const allDay = this.rnd(0, 3) === 0
         const firstTimestamp = this.rnd(min.getTime(), max.getTime())
         const first = new Date(firstTimestamp - (firstTimestamp % 900000))
         // const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
         // const second = new Date(first.getTime() + secondTimestamp)
         events.push({
+          // イベント名はその日の収入、支出合計額にプラマイ符号をつけたもの
           name: this.names[this.rnd(0, this.names.length - 1)],
-          // 時間の情報は持たせなきゃいけない仕様、timedがfalseの場合startだけでOK(Wed Sep 16 2020 03:00:00 GMT+0900 (日本標準時))
+          // 時間の情報は持たせなきゃいけない仕様、timedがfalseの場合startだけでOK
+          // 日付がはいる(2020-09-09)
           start: first,
           // end: second,
           // 今回色は支出（赤）収入（青）の2色のみもつ
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-          // 時刻を表示するときにtrue、今回は時刻情報は持たないのでfalse
-          timed: false
+          type: this.rnd(0, this.colors.length - 1),
+          // ここにその日の収入or支出の配列がはいる
+          items: [
+            { id: 1, class: '食費', amount: '600', comment: 'ほにゃらら' },
+            { id: 2, class: '交通費', amount: '300', comment: 'ほにゃららんらんらんらんらん' }
+          ]
         })
       }
+
+      console.log(events)
 
       this.events = events
     },
