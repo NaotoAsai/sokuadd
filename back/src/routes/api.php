@@ -45,8 +45,8 @@ Route::group([
     // Route::put('user', 'AuthController@updateName');
 
     // Route::get('classes', 'IncomeAndExpenditureClassController@getClasses');
-    // Route::post('class', 'IncomeAndExpenditureClassController@createClass');
-    // Route::put('class', 'IncomeAndExpenditureClassController@updateClass');
+    Route::post('class', 'IncomeAndExpenditureClassController@createClass');
+    Route::put('class', 'IncomeAndExpenditureClassController@updateClass');
     // Route::delete('class', 'IncomeAndExpenditureClassController@deleteClass');
 
     // Route::post('incomeandexpenditure', 'IncomeAndExpenditureController@createIncomeAndExpenditure');
