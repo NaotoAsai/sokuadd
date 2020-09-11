@@ -16,6 +16,23 @@ class IncomeAndExpenditureClass extends Model
         return $this->hasMany('App\Models\IncomeAndExpenditure');
     }
 
+    public static function getClasses()
+    {
+        $incomeClasses = IncomeAndExpenditureClass::select('id', 'name')
+            ->where('user_id', Auth::id())
+            ->where('type', 0)
+            ->get();
+        $expenditureClasses = IncomeAndExpenditureClass::select('id', 'name')
+            ->where('user_id', Auth::id())
+            ->where('type', 1)
+            ->get();
+        
+        return response()->json([
+            'incomeClasses' => $incomeClasses,
+            'expenditureClasses' => $expenditureClasses
+        ]);
+    }
+
     public static function createClass(string $name, int $type)
     {
         IncomeAndExpenditureClass::create([
@@ -25,11 +42,15 @@ class IncomeAndExpenditureClass extends Model
         ]);
     }
 
-    public static function updateClass(int $id, string $name, int $type)
+    public static function updateClass(int $id, string $name)
     {
-        IncomeAndExpenditureClass::where('user_id', Auth::id())
-            ->where('type', $type)
-            ->where('id', $id)
+        IncomeAndExpenditureClass::where('id', $id)
             ->update(['name' => $name]);
+    }
+
+    public static function deleteClass(int $id)
+    {
+        IncomeAndExpenditureClass::where('id', $id)
+            ->delete();
     }
 }

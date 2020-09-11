@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\IncomeAndExpenditureClassController;
 
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Http\Requests\ApiRequest;
 
 class CreateClassRequest extends ApiRequest
