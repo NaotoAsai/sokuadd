@@ -24,7 +24,7 @@ class CreateClassRequest extends ApiRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:16',
+            'name' => 'required|max:32',
             'type' => 'required|regex:/^[01]$/'
         ];
     }

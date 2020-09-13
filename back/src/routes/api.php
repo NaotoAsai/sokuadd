@@ -44,10 +44,10 @@ Route::group([
     Route::get('user', 'AuthController@me');
     // Route::put('user', 'AuthController@updateName');
 
-    Route::get('classes', 'IncomeAndExpenditureClassController@getClasses');
-    Route::post('class', 'IncomeAndExpenditureClassController@createClass');
-    Route::put('class', 'IncomeAndExpenditureClassController@editClassName');
-    Route::delete('class', 'IncomeAndExpenditureClassController@deleteClass');
+    Route::get('incomeandexpenditure_classes', 'IncomeAndExpenditureClassController@getClasses');
+    Route::post('incomeandexpenditure_classes', 'IncomeAndExpenditureClassController@createClass');
+    Route::put('incomeandexpenditure_classes', 'IncomeAndExpenditureClassController@editClassName');
+    Route::delete('incomeandexpenditure_classes', 'IncomeAndExpenditureClassController@deleteClass');
 
     // Route::post('incomeandexpenditure', 'IncomeAndExpenditureController@createIncomeAndExpenditure');
     // Route::get('incomeandexpenditures', 'IncomeAndExpenditureController@getIncomeAndExpenditures');

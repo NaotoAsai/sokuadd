@@ -35,7 +35,7 @@ class IncomeAndExpenditureClass extends Model
 
     public static function createClass(string $name, int $type)
     {
-        IncomeAndExpenditureClass::create([
+        return IncomeAndExpenditureClass::create([
             'user_id' => Auth::id(),
             'name' => $name,
             'type' => $type

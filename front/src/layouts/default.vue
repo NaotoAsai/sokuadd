@@ -1,5 +1,13 @@
 <template>
   <v-app dark>
+    <div v-show="$store.state.loading" id="loading">
+      <v-progress-circular
+        :size="70"
+        :width="7"
+        color="green"
+        indeterminate
+      />
+    </div>
     <Navbar />
     <v-main>
       <v-container>
@@ -23,3 +31,16 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  #loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    z-index:9999;
+    position: fixed;
+    background-color: rgba(#000, 0.5);
+  }
+</style>

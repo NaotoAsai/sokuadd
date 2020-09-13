@@ -19,7 +19,7 @@ class CreateIncomeAndExpenditureClassesTable extends Migration
                 ->constrained()
                 ->onDelete('cascade');
             $table->tinyInteger('type');
-            $table->string('name', 16);
+            $table->string('name', 32);
             $table->timestamps();
         });
     }

@@ -29,7 +29,9 @@ class IncomeAndExpenditureClassController extends Controller
      */
     public function createClass(CreateClassRequest $request)
     {
-        IncomeAndExpenditureClass::createClass($request->name, $request->type);
+        $response = IncomeAndExpenditureClass::createClass($request->name, $request->type);
+        // idだけ返す
+        return $response->id;
     }
 
 

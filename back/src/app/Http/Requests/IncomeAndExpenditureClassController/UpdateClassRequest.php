@@ -31,7 +31,7 @@ class UpdateClassRequest extends ApiRequest
                 'integer',
                 new IncomeAndExpenditureClassIdRule
             ],
-            'name' => 'bail|required|max:16'
+            'name' => 'bail|required|max:32'
         ];
     }
 

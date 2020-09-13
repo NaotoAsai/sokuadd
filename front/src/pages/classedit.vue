@@ -34,28 +34,13 @@ export default {
     ExpenditureClass,
     IncomeClass
   },
-  data: () => ({
-    currentClass: 'ExpenditureClass',
-    items: [
-      { id: '0', title: '食費' },
-      { id: '1', title: '固定費' },
-      { id: '2', title: '娯楽' },
-      { id: '3', title: '食費' },
-      { id: '4', title: '固定費' },
-      { id: '5', title: '娯楽' },
-      { id: '8', title: '食費' },
-      { id: '9', title: '固定費' },
-      { id: '10', title: '娯楽' },
-      { id: '11', title: '食費' },
-      { id: '12', title: '固定費' },
-      { id: '13', title: '娯楽' },
-      { id: '14', title: '食費' },
-      { id: '15', title: '固定費' },
-      { id: '16', title: '娯楽' },
-      { id: '17', title: '食費' },
-      { id: '18', title: '固定費' },
-      { id: '19', title: '娯楽' }
-    ]
-  })
+  data () {
+    return {
+      currentClass: 'ExpenditureClass'
+    }
+  },
+  created () {
+    this.$store.dispatch('getIncomeAndExpenditureClasses')
+  }
 }
 </script>
