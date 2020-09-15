@@ -104,7 +104,10 @@ return [
     */
 
     'attributes' => [
-        'type' => '収入or支出の選択'
+        'type' => '収入or支出の選択',
+        'targetDate' => '日付',
+        'amount' => '金額',
+        'comment' => 'コメント'
     ],
 
 ];

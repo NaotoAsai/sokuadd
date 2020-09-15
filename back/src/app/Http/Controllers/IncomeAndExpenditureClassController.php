@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\IncomeAndExpenditureClass;
 use App\Http\Requests\IncomeAndExpenditureClassController\CreateClassRequest;
-use App\Http\Requests\IncomeAndExpenditureClassController\UpdateClassRequest;
+use App\Http\Requests\IncomeAndExpenditureClassController\EditClassNameRequest;
 use App\Http\Requests\IncomeAndExpenditureClassController\DeleteClassRequest;
 
 class IncomeAndExpenditureClassController extends Controller
@@ -38,10 +38,10 @@ class IncomeAndExpenditureClassController extends Controller
     /**
      * 既存の分類名の編集
      *
-     * @param UpdateClassRequest $request
+     * @param EditClassNameRequest $request
      * @return void
      */
-    public function editClassName(UpdateClassRequest $request)
+    public function editClassName(EditClassNameRequest $request)
     {
         IncomeAndExpenditureClass::updateClass($request->id, $request->name);
     }

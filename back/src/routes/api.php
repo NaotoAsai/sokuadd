@@ -49,10 +49,10 @@ Route::group([
     Route::put('incomeandexpenditure_classes', 'IncomeAndExpenditureClassController@editClassName');
     Route::delete('incomeandexpenditure_classes', 'IncomeAndExpenditureClassController@deleteClass');
 
-    // Route::post('incomeandexpenditure', 'IncomeAndExpenditureController@createIncomeAndExpenditure');
+    Route::post('incomeandexpenditures', 'IncomeAndExpenditureController@createIncomeAndExpenditure');
     // Route::get('incomeandexpenditures', 'IncomeAndExpenditureController@getIncomeAndExpenditures');
-    // Route::put('incomeandexpenditure', 'IncomeAndExpenditureController@updateIncomeAndExpenditure');
-    // Route::delete('incomeandexpenditure', 'IncomeAndExpenditureController@deleteIncomeAndExpenditure');
+    Route::put('incomeandexpenditures', 'IncomeAndExpenditureController@editIncomeAndExpenditure');
+    Route::delete('incomeandexpenditures', 'IncomeAndExpenditureController@deleteIncomeAndExpenditure');
     // Route::get('incomeandexpenditurebyclass', 'IncomeAndExpenditureController@getIncomeAndExpenditureByClass');
 
 });

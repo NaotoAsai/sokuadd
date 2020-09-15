@@ -15,6 +15,10 @@ class IncomeAndExpenditureClass extends Model
     {
         return $this->hasMany('App\Models\IncomeAndExpenditure');
     }
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 
     public static function getClasses()
     {
@@ -35,6 +39,7 @@ class IncomeAndExpenditureClass extends Model
 
     public static function createClass(string $name, int $type)
     {
+        // idを返すためリターンする
         return IncomeAndExpenditureClass::create([
             'user_id' => Auth::id(),
             'name' => $name,

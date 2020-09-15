@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\IncomeAndExpenditureClassController;
+namespace App\Http\Requests\IncomeAndExpenditureController;
 
 use App\Http\Requests\ApiRequest;
-use App\Rules\IncomeAndExpenditureClassIdRule;
+use App\Rules\IncomeAndExpenditureRules\ExistsIdRule;
 
-class UpdateClassRequest extends ApiRequest
+class DeleteIncomeAndExpenditureRequest extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,21 +29,8 @@ class UpdateClassRequest extends ApiRequest
                 'bail',
                 'required',
                 'integer',
-                new IncomeAndExpenditureClassIdRule
-            ],
-            'name' => 'bail|required|max:32'
-        ];
-    }
-
-    /**
-     * 項目名
-     *
-     * @return array
-     */
-    public function attributes()
-    {
-        return [
-            'name' => '分類名',
+                new ExistsIdRule
+            ]
         ];
     }
 }

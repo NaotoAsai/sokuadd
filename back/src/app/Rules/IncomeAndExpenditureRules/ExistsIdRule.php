@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Rules;
+namespace App\Rules\IncomeAndExpenditureRules;
 
 use Illuminate\Contracts\Validation\Rule;
-use App\Models\IncomeAndExpenditureClass;
+use App\Models\IncomeAndExpenditure;
 use Illuminate\Support\Facades\Auth;
 
-class IncomeAndExpenditureClassIdRule implements Rule
+class ExistsIdRule implements Rule
 {
     /**
      * Create a new rule instance.
@@ -19,7 +19,7 @@ class IncomeAndExpenditureClassIdRule implements Rule
     }
 
     /**
-     * Determine if the validation rule passes.
+     * 更新対象のidが当該ユーザーに紐づくレコードに存在するか
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -27,7 +27,7 @@ class IncomeAndExpenditureClassIdRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        return IncomeAndExpenditureClass::where('user_id', Auth::id())
+        return IncomeAndExpenditure::where('user_id', Auth::id())
             ->where('id', $value)
             ->exists();
     }
@@ -39,6 +39,6 @@ class IncomeAndExpenditureClassIdRule implements Rule
      */
     public function message()
     {
-        return '更新対象が不正です';
+        return '収支情報が存在しません';
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Requests\IncomeAndExpenditureClassController;
 use App\Http\Requests\ApiRequest;
 use App\Rules\IncomeAndExpenditureRules\ExistsClassIdRule;
 
-class DeleteClassRequest extends ApiRequest
+class EditClassNameRequest extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,7 +30,20 @@ class DeleteClassRequest extends ApiRequest
                 'required',
                 'integer',
                 new ExistsClassIdRule
-            ]
+            ],
+            'name' => 'bail|required|max:32'
+        ];
+    }
+
+    /**
+     * 項目名
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'name' => '分類名',
         ];
     }
 }
