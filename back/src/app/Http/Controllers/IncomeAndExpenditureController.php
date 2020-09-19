@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\IncomeAndExpenditure;
 use App\Http\Requests\IncomeAndExpenditureController\CreateIncomeAndExpenditureRequest;
 use App\Http\Requests\IncomeAndExpenditureController\EditIncomeAndExpenditureRequest;
 use App\Http\Requests\IncomeAndExpenditureController\DeleteIncomeAndExpenditureRequest;
+use App\Http\Requests\IncomeAndExpenditureController\GetIncomeAndExpendituresRequest;
 
 class IncomeAndExpenditureController extends Controller
 {
-    // ダミーデータ作成後これ
-    public function getIncomeAndExpenditures()
+    /**
+     * 認証ユーザーの指定月の収支情報を取得
+     *
+     * @param GetIncomeAndExpendituresRequest $request
+     * @return object
+     */
+    public function getIncomeAndExpenditures(GetIncomeAndExpendituresRequest $request)
     {
-
+        return IncomeAndExpenditure::getIncomeAndExpenditures($request->year, $request->month);
     }
 
     /**
