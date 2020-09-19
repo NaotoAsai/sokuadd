@@ -32,7 +32,7 @@ class GetIncomeAndExpendituresRequest extends ApiRequest
             'month' => [
                 'bail',
                 'required',
-                'regex:/^(0[1-9]|1[0-2])$/'
+                'regex:/^([1-9]|1[0-2])$/'
             ]
         ];
     }

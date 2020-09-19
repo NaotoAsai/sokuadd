@@ -141,7 +141,7 @@ class IncomeAndExpenditure extends Model
                 if (!empty($dayIncomeItems))
                 {
                     // 前回日付の収入データをまとめて最終配列にプッシュ
-                    $dispDayIncomeData['name'] = "-$dayIncomeTotalAmount";
+                    $dispDayIncomeData['name'] = "+$dayIncomeTotalAmount";
                     $dispDayIncomeData['start'] = $prevDay;
                     $dispDayIncomeData['items'] = $dayIncomeItems;
                     $formedIncomeAndExpenditures[] = $dispDayIncomeData;
@@ -149,7 +149,7 @@ class IncomeAndExpenditure extends Model
                 if (!empty($dayExpenditureItems))
                 {
                     // 前回データの支出データをまとめて最終配列にプッシュ
-                    $dispDayExpenditureData['name'] = "$dayExpenditureTotalAmount";
+                    $dispDayExpenditureData['name'] = "-$dayExpenditureTotalAmount";
                     $dispDayExpenditureData['start'] = $prevDay;
                     $dispDayExpenditureData['items'] = $dayExpenditureItems;
                     $formedIncomeAndExpenditures[] = $dispDayExpenditureData;

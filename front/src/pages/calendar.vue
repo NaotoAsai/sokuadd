@@ -43,8 +43,8 @@
             offset-x
           >
             <v-card :color="colors[selectedEvent.type]">
-              <v-card-title>支出情報：計 600円</v-card-title>
-              <v-card-subtitle>2020-05-04</v-card-subtitle>
+              <v-card-title>{{ cardDispTitle[selectedEvent.type] }}：{{ selectedEvent.name }}円</v-card-title>
+              <v-card-subtitle>{{ selectedEvent.start }}</v-card-subtitle>
               <!-- その日の収支情報の配列をfor文で回す -->
               <v-list v-for="item in selectedEvent.items" :key="item.id" three-line subheader>
                 <v-list-item>
@@ -206,6 +206,7 @@ export default {
     selectedOpen: false,
     // ここに収支データがはいる
     events: [],
+    cardDispTitle: ['収入情報', '支出情報'],
     // イベントで使う色
     colors: ['blue lighten-1', 'red lighten-1'],
     // イベント名、今回はその日の合計額をその日のイベント名として動的に生成したい
@@ -229,7 +230,6 @@ export default {
     // 収支詳細カード表示
     // 引数はまうすマウスイベント、イベントデータ
     showEvent ({ nativeEvent, event }) {
-      console.log(event)
       const open = () => {
         this.selectedEvent = event
         this.selectedElement = nativeEvent.target
@@ -249,42 +249,41 @@ export default {
       nativeEvent.stopPropagation()
     },
     // ここで収支データを格納、引数に取得したい期間を渡す、今回は一ヶ月分
-    updateRange ({ start, end }) {
-      console.log(start, end)
+    async updateRange ({ start, end }) {
       // ここでAPIから指定月の収支データを取得しストアで保持する
-      // console.log(start.year, start.month)年と月の2paramが入力
-      const events = []
+      const url = '/api/v1/incomeandexpenditures'
+      const targetMonth = { year: start.year, month: start.month }
+      const events = await this.$axios.$get(url, { params: targetMonth })
+      // const events = []
 
-      // この辺はサンプル用
-      const min = new Date(`${start.date}T00:00:00`)
-      const max = new Date(`${end.date}T23:59:59`)
-      // const days = (max.getTime() - min.getTime()) / 86400000
-      // 収支情報の個数、今回は最大月の日数×2
-      const eventCount = 60
+      // // この辺はサンプル用
+      // const min = new Date(`${start.date}T00:00:00`)
+      // const max = new Date(`${end.date}T23:59:59`)
+      // // const days = (max.getTime() - min.getTime()) / 86400000
+      // // 収支情報の個数、今回は最大月の日数×2
+      // const eventCount = 60
 
-      for (let i = 0; i < eventCount; i++) {
-        const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-        const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-        // const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-        // const second = new Date(first.getTime() + secondTimestamp)
-        events.push({
-          // イベント名はその日の収入、支出合計額にプラマイ符号をつけたもの
-          name: this.names[this.rnd(0, this.names.length - 1)],
-          // 時間の情報は持たせなきゃいけない仕様、timedがfalseの場合startだけでOK
-          // 日付がはいる(2020-09-09)
-          start: first,
-          // end: second,
-          // 今回色は支出（赤）収入（青）の2色のみもつ
-          type: this.rnd(0, this.colors.length - 1),
-          // ここにその日の収入or支出の配列がはいる
-          items: [
-            { id: 1, class: '食費', amount: '600', comment: 'ほにゃらら' },
-            { id: 2, class: '交通費', amount: '300', comment: 'ほにゃららんらんらんらんらん' }
-          ]
-        })
-      }
-
-      console.log(events)
+      // for (let i = 0; i < eventCount; i++) {
+      //   const firstTimestamp = this.rnd(min.getTime(), max.getTime())
+      //   const first = new Date(firstTimestamp - (firstTimestamp % 900000))
+      //   // const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
+      //   // const second = new Date(first.getTime() + secondTimestamp)
+      //   events.push({
+      //     // イベント名はその日の収入、支出合計額にプラマイ符号をつけたもの
+      //     name: this.names[this.rnd(0, this.names.length - 1)],
+      //     // 時間の情報は持たせなきゃいけない仕様、timedがfalseの場合startだけでOK
+      //     // 日付がはいる(2020-09-09)
+      //     start: first,
+      //     // end: second,
+      //     // 今回色は支出（赤）収入（青）の2色のみもつ
+      //     type: this.rnd(0, this.colors.length - 1),
+      //     // ここにその日の収入or支出の配列がはいる
+      //     items: [
+      //       { id: 1, class: '食費', amount: '600', comment: 'ほにゃらら' },
+      //       { id: 2, class: '交通費', amount: '300', comment: 'ほにゃららんらんらんらんらん' }
+      //     ]
+      //   })
+      // }
 
       this.events = events
     },
