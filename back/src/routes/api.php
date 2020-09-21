@@ -53,6 +53,6 @@ Route::group([
     Route::get('incomeandexpenditures', 'IncomeAndExpenditureController@getIncomeAndExpenditures');
     Route::put('incomeandexpenditures', 'IncomeAndExpenditureController@editIncomeAndExpenditure');
     Route::delete('incomeandexpenditures', 'IncomeAndExpenditureController@deleteIncomeAndExpenditure');
-    // Route::get('incomeandexpenditurebyclass', 'IncomeAndExpenditureController@getIncomeAndExpenditureByClass');
+    Route::get('incomeandexpendituresbyclass', 'IncomeAndExpenditureController@getIncomeAndExpendituresByClass');
 
 });

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\IncomeAndExpenditure;
 use App\Http\Requests\IncomeAndExpenditureController\CreateIncomeAndExpenditureRequest;
 use App\Http\Requests\IncomeAndExpenditureController\EditIncomeAndExpenditureRequest;
 use App\Http\Requests\IncomeAndExpenditureController\DeleteIncomeAndExpenditureRequest;
 use App\Http\Requests\IncomeAndExpenditureController\GetIncomeAndExpendituresRequest;
+use App\Http\Requests\IncomeAndExpenditureController\GetIncomeAndExpendituresByClassRequest;
 
 class IncomeAndExpenditureController extends Controller
 {
@@ -20,6 +20,11 @@ class IncomeAndExpenditureController extends Controller
     public function getIncomeAndExpenditures(GetIncomeAndExpendituresRequest $request)
     {
         return IncomeAndExpenditure::getIncomeAndExpenditures($request->year, $request->month);
+    }
+
+    public function getIncomeAndExpendituresByClass(GetIncomeAndExpendituresByClassRequest $request)
+    {
+        return IncomeAndExpenditure::getIncomeAndExpendituresByClass($request->year, $request->month);
     }
 
     /**

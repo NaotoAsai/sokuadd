@@ -34,13 +34,13 @@ export default {
     ExpenditureClass,
     IncomeClass
   },
+  async fetch (context) {
+    await context.store.dispatch('getIncomeAndExpenditureClasses')
+  },
   data () {
     return {
       currentClass: 'ExpenditureClass'
     }
-  },
-  created () {
-    this.$store.dispatch('getIncomeAndExpenditureClasses')
   }
 }
 </script>
