@@ -220,6 +220,24 @@ class IncomeAndExpenditure extends Model
             }
         }
 
+        // 配列の最後の日付のデータを最終配列にプッシュ
+        if (!empty($dayIncomeItems))
+        {
+            // 前回日付の収入データをまとめて最終配列にプッシュ
+            $dispDayIncomeData['name'] = "+$dayIncomeTotalAmount";
+            $dispDayIncomeData['start'] = $prevDay;
+            $dispDayIncomeData['items'] = $dayIncomeItems;
+            $formedIncomeAndExpenditures[] = $dispDayIncomeData;
+        }
+        if (!empty($dayExpenditureItems))
+        {
+            // 前回データの支出データをまとめて最終配列にプッシュ
+            $dispDayExpenditureData['name'] = "-$dayExpenditureTotalAmount";
+            $dispDayExpenditureData['start'] = $prevDay;
+            $dispDayExpenditureData['items'] = $dayExpenditureItems;
+            $formedIncomeAndExpenditures[] = $dispDayExpenditureData;
+        }
+
         return $formedIncomeAndExpenditures;
     }
 
@@ -319,6 +337,42 @@ class IncomeAndExpenditure extends Model
                 $prevClass = $currentClass;
                 $prevType = $currentType;
             }
+        }
+
+        // 配列の最後のクラスのデータを最終配列にプッシュ
+        // typeによって処理分岐
+        switch ($prevType)
+        {
+            case 0:
+                // クラスごとのトータル金額と名前をセット
+                if ($prevClass !== null)
+                {
+                    $totalAmountByClass['name'] = IncomeAndExpenditureClass::select('name')->where('id', $prevClass)->first()->name;
+                } else
+                {
+                    $totalAmountByClass['name'] = '未分類';
+                }
+                $totalAmountByClass['amount'] = $currentClassTotalAmount;
+                // 最終配列にプッシュ
+                $formedIncomeAndExpendituresByClass['incomes']['classes'][] = $totalAmountByClass;
+                // 収入合計金額に加算する
+                $incomeTotalAmount += $currentClassTotalAmount;
+                break;
+            case 1:
+                //クラスごとのトータル金額と名前をセット
+                if ($prevClass !== null)
+                {
+                    $totalAmountByClass['name'] = IncomeAndExpenditureClass::select('name')->where('id', $prevClass)->first()->name;
+                } else
+                {
+                    $totalAmountByClass['name'] = '未分類';
+                }
+                $totalAmountByClass['amount'] = $currentClassTotalAmount;
+                // 最終配列にプッシュ
+                $formedIncomeAndExpendituresByClass['expenditures']['classes'][] = $totalAmountByClass;
+                // 支出合計金額に加算する
+                $expenditureTotalAmount += $currentClassTotalAmount;
+                break;
         }
 
         // 収入合計金額をセット

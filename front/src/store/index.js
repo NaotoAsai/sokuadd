@@ -100,5 +100,12 @@ export const actions = {
     commit('setLoading', true)
     await this.$axios.$delete(url, { data: deleteData })
     commit('setLoading', false)
+  },
+  // 新規収支データの作成
+  async createIncomeAndExpenditure ({ commit }, newData) {
+    const url = '/api/v1/incomeandexpenditures'
+    commit('setLoading', true)
+    await this.$axios.$post(url, newData)
+    commit('setLoading', false)
   }
 }
