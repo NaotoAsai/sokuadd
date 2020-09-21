@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -48,5 +48,15 @@ class User extends Authenticatable implements JWTSubject
     {
         // JWT トークンに埋め込む追加の情報を返す
         return [];
+    }
+
+    public function incomeAndExpenditures()
+    {
+        return $this->hasMany('App\Models\IncomeAndExpenditure');
+    }
+
+    public function incomeAndExpenditureClasses()
+    {
+        return $this->hasMany('App\Models\IncomeAndExpenditureClass');
     }
 }

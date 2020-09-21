@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\IncomeAndExpenditureClassController;
+use App\Http\Controllers\IncomeAndExpenditureController;
+use App\Models\IncomeAndExpenditure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\Rules\In;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,27 +18,41 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' =>['api'], 'prefix' => 'v1'], function(){
-    // Route::post('register', 'AuthController@register');
-    // Route::post('login', 'AuthController@login');
-    Route::get('/', function() {
-        return 'Hello Ajax!!';
-    });
-
-    // Route::group(['middleware' => 'auth:api'], function() {
-    //     Route::post('logout',  'AuthController@logout');
-    //     Route::get('refresh', 'AuthController@refresh');
-    //     Route::get('user', 'AuthController@me');
-    // });
+// 全てのユーザー
+Route::group([
+    'middleware' =>['api'],
+    'prefix' => 'v1'
+], function(){
+    Route::post('refresh', 'AuthController@refresh');
 });
 
+// 未ログインユーザー
+Route::group([
+    'middleware' =>['api', 'guest'],
+    'prefix' => 'v1'
+], function(){
+    Route::post('register', 'AuthController@register');
+    Route::post('login', 'AuthController@login');
+});
+
+// ログイン済みユーザー
 Route::group([
     'middleware' => ['api', 'auth:api'],
-    'prefix' => 'auth'
- ], function () {
-     Route::post('register', 'AuthController@register')->withoutMiddleware(['auth:api']);
-     Route::post('login', 'AuthController@login')->withoutMiddleware(['auth:api']);
-     Route::post('logout', 'AuthController@logout');
-     Route::post('refresh', 'AuthController@refresh')->withoutMiddleware(['auth:api']);
-     Route::get('user', 'AuthController@me');
- });
+    'prefix' => 'v1'
+], function () {
+    Route::post('logout', 'AuthController@logout');
+    Route::get('user', 'AuthController@me');
+    // Route::put('user', 'AuthController@updateName');
+
+    Route::get('incomeandexpenditure_classes', 'IncomeAndExpenditureClassController@getClasses');
+    Route::post('incomeandexpenditure_classes', 'IncomeAndExpenditureClassController@createClass');
+    Route::put('incomeandexpenditure_classes', 'IncomeAndExpenditureClassController@editClassName');
+    Route::delete('incomeandexpenditure_classes', 'IncomeAndExpenditureClassController@deleteClass');
+
+    Route::post('incomeandexpenditures', 'IncomeAndExpenditureController@createIncomeAndExpenditure');
+    Route::get('incomeandexpenditures', 'IncomeAndExpenditureController@getIncomeAndExpenditures');
+    Route::put('incomeandexpenditures', 'IncomeAndExpenditureController@editIncomeAndExpenditure');
+    Route::delete('incomeandexpenditures', 'IncomeAndExpenditureController@deleteIncomeAndExpenditure');
+    Route::get('incomeandexpendituresbyclass', 'IncomeAndExpenditureController@getIncomeAndExpendituresByClass');
+
+});

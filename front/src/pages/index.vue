@@ -26,6 +26,10 @@ export default {
     ExpenditureForm,
     IncomeForm
   },
+  // クラス選択用のデータ取得
+  async fetch (context) {
+    await context.store.dispatch('getIncomeAndExpenditureClasses')
+  },
   data () {
     return {
       currentForm: 'ExpenditureForm'
