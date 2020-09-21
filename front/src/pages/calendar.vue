@@ -36,20 +36,29 @@
             @change="updateRange"
           />
           <!-- イベントカード -->
-          <v-menu
+          <v-dialog
+            v-model="selectedOpen"
+            :close-on-content-click="false"
+          >
+            <!-- <v-menu
             v-model="selectedOpen"
             :close-on-content-click="false"
             :activator="selectedElement"
             offset-x
-          >
+          > -->
             <v-card :color="colors[selectedEvent.type]">
               <v-card-title>{{ cardDispTitle[selectedEvent.type] }}：{{ selectedEvent.name }}円</v-card-title>
               <v-card-subtitle>{{ selectedEvent.start }}</v-card-subtitle>
               <!-- その日の収支情報の配列をfor文で回す -->
-              <v-list v-for="item in selectedEvent.items" :key="item.id" three-line subheader>
+              <v-list
+                v-for="item in selectedEvent.items"
+                :key="item.id"
+                three-line
+                subheader
+              >
                 <v-list-item>
                   <v-list-item-content>
-                    <v-list-item-title>{{ item.class }}：{{ item.amount }}円</v-list-item-title>
+                    <v-list-item-title>{{ item.className }}：{{ item.amount }}円</v-list-item-title>
                     <v-list-item-subtitle>{{ item.comment }}</v-list-item-subtitle>
                   </v-list-item-content>
 
@@ -57,7 +66,7 @@
                   <v-list-item-action v-if="!$vuetify.breakpoint.xs">
                     <v-btn
                       icon
-                      @click.stop="dialog2 = true"
+                      @click.stop="setEditData(item, selectedEvent.start)"
                     >
                       <v-icon color="grey lighten-1">
                         mdi-lead-pencil
@@ -67,7 +76,7 @@
                   <v-list-item-action v-if="!$vuetify.breakpoint.xs">
                     <v-btn
                       icon
-                      @click.stop="dialog1 = true"
+                      @click.stop="setDeleteData(item.id, selectedEvent.start)"
                     >
                       <v-icon color="grey lighten-1">
                         mdi-delete
@@ -89,11 +98,11 @@
 
                     <v-list>
                       <v-list-item>
-                        <v-list-item-title @click.stop="dialog2 = true">
+                        <v-list-item-title @click.stop="setEditData(item, selectedEvent.start)">
                           編集
                         </v-list-item-title>
                       </v-list-item>
-                      <v-list-item @click.stop="dialog1 = true">
+                      <v-list-item @click.stop="setDeleteData(item.id, selectedEvent.start)">
                         <v-list-item-title>削除</v-list-item-title>
                       </v-list-item>
                     </v-list>
@@ -110,14 +119,14 @@
                 </v-btn>
               </v-card-actions>
             </v-card>
-          </v-menu>
+          </v-dialog>
         </v-sheet>
       </v-col>
     </v-row>
 
     <!-- 削除確認ダイアログ -->
     <v-dialog
-      v-model="dialog1"
+      v-model="deleteDialog"
       max-width="290"
     >
       <v-card>
@@ -131,7 +140,7 @@
           <v-btn
             color="green darken-1"
             text
-            @click="dialog1 = false"
+            @click="deleteDialog = false"
           >
             いいえ
           </v-btn>
@@ -139,7 +148,7 @@
           <v-btn
             color="green darken-1"
             text
-            @click="dialog1 = false"
+            @click="remove"
           >
             はい
           </v-btn>
@@ -149,7 +158,7 @@
 
     <!-- 収支情報修正ダイアログフォーム -->
     <v-row justify="center">
-      <v-dialog v-model="dialog2" persistent max-width="600px">
+      <v-dialog v-model="editDialog" persistent max-width="600px">
         <v-card>
           <v-card-title>
             <span class="headline">収支情報修正</span>
@@ -157,23 +166,33 @@
           <v-card-text>
             <v-form>
               <v-text-field
-                name="username"
+                v-model="editData.amount"
                 label="金額"
                 class="ma-12"
                 solo-inverted
               />
               <v-overflow-btn
-                :items="['aaa','bbb','ccc']"
+                v-model="editData.classId"
+                :items="$store.state.incomeAndExpenditureClasses.expenditureClasses"
+                item-text="name"
+                item-value="id"
                 placeholder="分類"
                 class="ma-12"
               />
               <v-text-field
+                v-model="editData.comment"
                 label="コメント"
                 class="ma-12"
                 solo-inverted
               />
               <div class=" pb-8 pr-12 pl-12">
-                <v-btn block x-large color="success" dark>
+                <v-btn
+                  block
+                  x-large
+                  color="success"
+                  dark
+                  @click="edit"
+                >
                   追加
                 </v-btn>
               </div>
@@ -181,10 +200,10 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn color="blue darken-1" text @click="dialog2 = false">
+            <v-btn color="blue darken-1" text @click="editDialog = false">
               Close
             </v-btn>
-            <v-btn color="blue darken-1" text @click="dialog2 = false">
+            <v-btn color="blue darken-1" text @click="editDialog = false">
               Save
             </v-btn>
           </v-card-actions>
@@ -196,6 +215,9 @@
 
 <script>
 export default {
+  async fetch (context) {
+    await context.store.dispatch('getIncomeAndExpenditureClasses')
+  },
   data: () => ({
     // 月移動時に月末日がここに入る
     focus: '',
@@ -209,10 +231,22 @@ export default {
     cardDispTitle: ['収入情報', '支出情報'],
     // イベントで使う色
     colors: ['blue lighten-1', 'red lighten-1'],
-    // イベント名、今回はその日の合計額をその日のイベント名として動的に生成したい
-    names: ['-500', '+400', '-600', '+300'],
-    dialog1: false,
-    dialog2: false
+    deleteDialog: false,
+    editDialog: false,
+    deleteData: {
+      id: '',
+      year: '',
+      month: ''
+    },
+    editData: {
+      id: '',
+      targetDate: '',
+      amount: '',
+      classId: '',
+      comment: '',
+      year: '',
+      month: ''
+    }
   }),
   mounted () {
     this.$refs.calendar.checkChange()
@@ -254,41 +288,52 @@ export default {
       const url = '/api/v1/incomeandexpenditures'
       const targetMonth = { year: start.year, month: start.month }
       const events = await this.$axios.$get(url, { params: targetMonth })
-      // const events = []
-
-      // // この辺はサンプル用
-      // const min = new Date(`${start.date}T00:00:00`)
-      // const max = new Date(`${end.date}T23:59:59`)
-      // // const days = (max.getTime() - min.getTime()) / 86400000
-      // // 収支情報の個数、今回は最大月の日数×2
-      // const eventCount = 60
-
-      // for (let i = 0; i < eventCount; i++) {
-      //   const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-      //   const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-      //   // const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-      //   // const second = new Date(first.getTime() + secondTimestamp)
-      //   events.push({
-      //     // イベント名はその日の収入、支出合計額にプラマイ符号をつけたもの
-      //     name: this.names[this.rnd(0, this.names.length - 1)],
-      //     // 時間の情報は持たせなきゃいけない仕様、timedがfalseの場合startだけでOK
-      //     // 日付がはいる(2020-09-09)
-      //     start: first,
-      //     // end: second,
-      //     // 今回色は支出（赤）収入（青）の2色のみもつ
-      //     type: this.rnd(0, this.colors.length - 1),
-      //     // ここにその日の収入or支出の配列がはいる
-      //     items: [
-      //       { id: 1, class: '食費', amount: '600', comment: 'ほにゃらら' },
-      //       { id: 2, class: '交通費', amount: '300', comment: 'ほにゃららんらんらんらんらん' }
-      //     ]
-      //   })
-      // }
 
       this.events = events
     },
-    rnd (a, b) {
-      return Math.floor((b - a + 1) * Math.random()) + a
+    // 削除対象データセット
+    setDeleteData (targetId, targetDate) {
+      const year = targetDate.substr(0, 4)
+      let month = ''
+      if (targetDate.substr(5, 1) === '0') {
+        month = targetDate.substr(6, 1)
+      } else {
+        month = targetDate.substr(5, 2)
+      }
+      this.deleteData.id = targetId
+      this.deleteData.year = year
+      this.deleteData.month = month
+      this.deleteDialog = true
+    },
+    setEditData (targetItem, targetDate) {
+      const year = targetDate.substr(0, 4)
+      let month = ''
+      if (targetDate.substr(5, 1) === '0') {
+        month = targetDate.substr(6, 1)
+      } else {
+        month = targetDate.substr(5, 2)
+      }
+      this.editData.id = targetItem.id
+      this.editData.targetDate = targetDate
+      this.editData.amount = targetItem.amount
+      this.editData.classId = targetItem.classId
+      this.editData.comment = targetItem.comment
+      this.editData.year = year
+      this.editData.month = month
+      this.editDialog = true
+    },
+    // 削除して、新しいデータをセット
+    async remove () {
+      this.deleteDialog = false
+      const events = await this.$store.dispatch('deleteIncomeAndExpenditure', this.deleteData)
+      this.events = events
+      this.selectedOpen = false
+    },
+    async edit () {
+      this.editDialog = false
+      const events = await this.$store.dispatch('editIncomeAndExpenditure', this.editData)
+      this.events = events
+      this.selectedOpen = false
     }
   }
 }

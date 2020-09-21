@@ -59,6 +59,9 @@ class IncomeAndExpenditureController extends Controller
             $request->amount,
             $request->comment
         );
+
+        // 再描画用に新しいデータを返す
+        return IncomeAndExpenditure::getIncomeAndExpenditures($request->year, $request->month);
     }
     
     /**
@@ -70,5 +73,8 @@ class IncomeAndExpenditureController extends Controller
     public function deleteIncomeAndExpenditure(DeleteIncomeAndExpenditureRequest $request)
     {
         IncomeAndExpenditure::deleteIncomeAndExpenditure($request->id);
+
+        // 再描画用に新しいデータを返す
+        return IncomeAndExpenditure::getIncomeAndExpenditures($request->year, $request->month);
     }
 }

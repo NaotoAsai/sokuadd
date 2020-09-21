@@ -42,7 +42,17 @@ class EditIncomeAndExpenditureRequest extends ApiRequest
             ],
             'targetDate' => 'bail|required|date_format:Y-m-d',
             'amount' => 'bail|required|integer',
-            'comment' => 'bail|nullable|max:64'
+            'comment' => 'bail|nullable|max:64',
+            'year' => [
+                'bail',
+                'required',
+                'regex:/^(19[0-9]{2}|2[0-9]{3})$/'
+            ],
+            'month' => [
+                'bail',
+                'required',
+                'regex:/^([1-9]|1[0-2])$/'
+            ]
         ];
     }
 }

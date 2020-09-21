@@ -13,8 +13,8 @@ $factory->define(IncomeAndExpenditure::class, function (Faker $faker) {
         'type' => function (array $incomeAndExpenditure) {
             return App\Models\IncomeAndExpenditureClass::find($incomeAndExpenditure['income_and_expenditure_class_id'])->type;
         },
-        'target_date' => $faker->dateTimeBetween('-30days', 'now')->format('Y-m-d'),
-        'amount' => $faker->numberBetween(100, 1000),
+        'target_date' => $faker->dateTimeBetween('-3month', 'now')->format('Y-m-d'),
+        'amount' => $faker->numberBetween(100, 2000),
         'comment'=> $faker->word
     ];
 });

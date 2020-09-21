@@ -30,6 +30,16 @@ class DeleteIncomeAndExpenditureRequest extends ApiRequest
                 'required',
                 'integer',
                 new ExistsIdRule
+            ],
+            'year' => [
+                'bail',
+                'required',
+                'regex:/^(19[0-9]{2}|2[0-9]{3})$/'
+            ],
+            'month' => [
+                'bail',
+                'required',
+                'regex:/^([1-9]|1[0-2])$/'
             ]
         ];
     }

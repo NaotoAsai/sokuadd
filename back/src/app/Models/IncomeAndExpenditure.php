@@ -82,14 +82,16 @@ class IncomeAndExpenditure extends Model
         // 当該日の支出データ、$dayIncomeImtesにプッシュ
         $dayIncomeData = [
             'id' => '',// dbのprimary key
-            'class' => '',// 分類名
+            'className' => '', // 分類名
+            'classId' => '', //分類ID、更新時に必要
             'amount' => '',
             'comment' => ''
         ];
         // 当該日の支出データ、$dayExpenditureImtesにプッシュ
         $dayExpenditureData = [
             'id' => '',// dbのprimary key
-            'class' => '',// 分類名
+            'className' => '', // 分類名
+            'classId' => '', //分類ID、更新時に必要
             'amount' => '',
             'comment' => ''
         ];
@@ -114,11 +116,12 @@ class IncomeAndExpenditure extends Model
                         $dayIncomeData['id'] = $incomeAndExpenditure->id;
                         if ($incomeAndExpenditure->income_and_expenditure_class_id !== null)
                         {
-                            $dayIncomeData['class'] = IncomeAndExpenditureClass::select('name')->where('id', $incomeAndExpenditure->income_and_expenditure_class_id)->first()->name;
+                            $dayIncomeData['className'] = IncomeAndExpenditureClass::select('name')->where('id', $incomeAndExpenditure->income_and_expenditure_class_id)->first()->name;
                         } else
                         {
-                            $dayIncomeData['class'] = '未分類';
+                            $dayIncomeData['className'] = '未分類';
                         }
+                        $dayIncomeData['classId'] = $incomeAndExpenditure->income_and_expenditure_class_id;
                         $dayIncomeData['amount'] = $incomeAndExpenditure->amount;
                         $dayIncomeData['comment'] = $incomeAndExpenditure->comment;
                         // 日毎の収入データ配列に格納していく
@@ -133,11 +136,12 @@ class IncomeAndExpenditure extends Model
                         $dayExpenditureData['id'] = $incomeAndExpenditure->id;
                         if ($incomeAndExpenditure->income_and_expenditure_class_id !== null)
                         {
-                            $dayExpenditureData['class'] = IncomeAndExpenditureClass::select('name')->where('id', $incomeAndExpenditure->income_and_expenditure_class_id)->first()->name;
+                            $dayExpenditureData['className'] = IncomeAndExpenditureClass::select('name')->where('id', $incomeAndExpenditure->income_and_expenditure_class_id)->first()->name;
                         } else
                         {
-                            $dayExpenditureData['class'] = '未分類';
+                            $dayExpenditureData['className'] = '未分類';
                         }
+                        $dayExpenditureData['classId'] = $incomeAndExpenditure->income_and_expenditure_class_id;
                         $dayExpenditureData['amount'] = $incomeAndExpenditure->amount;
                         $dayExpenditureData['comment'] = $incomeAndExpenditure->comment;
                         // 日毎の収入データ配列に格納していく
@@ -183,11 +187,12 @@ class IncomeAndExpenditure extends Model
                         $dayIncomeData['id'] = $incomeAndExpenditure->id;
                         if ($incomeAndExpenditure->income_and_expenditure_class_id !== null)
                         {
-                            $dayIncomeData['class'] = IncomeAndExpenditureClass::select('name')->where('id', $incomeAndExpenditure->income_and_expenditure_class_id)->first()->name;
+                            $dayIncomeData['className'] = IncomeAndExpenditureClass::select('name')->where('id', $incomeAndExpenditure->income_and_expenditure_class_id)->first()->name;
                         } else
                         {
-                            $dayIncomeData['class'] = '未分類';
+                            $dayIncomeData['className'] = '未分類';
                         }
+                        $dayIncomeData['classId'] = $incomeAndExpenditure->income_and_expenditure_class_id;
                         $dayIncomeData['amount'] = $incomeAndExpenditure->amount;
                         $dayIncomeData['comment'] = $incomeAndExpenditure->comment;
                         // 日毎の収入データ配列に格納していく
@@ -202,11 +207,12 @@ class IncomeAndExpenditure extends Model
                         $dayExpenditureData['id'] = $incomeAndExpenditure->id;
                         if ($incomeAndExpenditure->income_and_expenditure_class_id !== null)
                         {
-                            $dayExpenditureData['class'] = IncomeAndExpenditureClass::select('name')->where('id', $incomeAndExpenditure->income_and_expenditure_class_id)->first()->name;
+                            $dayExpenditureData['className'] = IncomeAndExpenditureClass::select('name')->where('id', $incomeAndExpenditure->income_and_expenditure_class_id)->first()->name;
                         } else
                         {
-                            $dayExpenditureData['class'] = '未分類';
+                            $dayExpenditureData['className'] = '未分類';
                         }
+                        $dayExpenditureData['classId'] = $incomeAndExpenditure->income_and_expenditure_class_id;
                         $dayExpenditureData['amount'] = $incomeAndExpenditure->amount;
                         $dayExpenditureData['comment'] = $incomeAndExpenditure->comment;
                         // 日毎の収入データ配列に格納していく
@@ -248,6 +254,7 @@ class IncomeAndExpenditure extends Model
             ->whereYear('target_date', $year)
             ->whereMonth('target_date', $month)
             ->orderBy('income_and_expenditure_class_id', 'asc')
+            ->orderBy('type', 'asc')// 未分類対策
             ->get();
 
         $formedIncomeAndExpendituresByClass = static::formationIncomeAndExpendituresByClass($incomeAndExpenditures);
@@ -284,15 +291,16 @@ class IncomeAndExpenditure extends Model
         {
             $currentClass = $incomeAndExpenditure->income_and_expenditure_class_id;
             $currentType = $incomeAndExpenditure->type;
-            // クラスが前回と同じなら
-            if ($currentClass === $prevClass || $prevClass === '')
+            // クラスが前回と同じかつタイプが前回と同じなら
+            // クラスは収支通して一意だが、nullの時に収支判別が出来ないため、タイプ比較も入れている
+            if ($currentClass === $prevClass && $currentType === $prevType || $prevClass === '')
             {
                 // 同じクラスの金額を加算していく
                 $currentClassTotalAmount += $incomeAndExpenditure->amount;
                 // 今回のクラスとタイプを記録
                 $prevClass = $currentClass;
                 $prevType = $currentType;         
-            } else // クラスが前回と違かった時
+            } else // クラスかタイプが前回と違かった時
             {
                 // typeによって処理分岐
                 switch ($prevType)

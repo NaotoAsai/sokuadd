@@ -107,5 +107,23 @@ export const actions = {
     commit('setLoading', true)
     await this.$axios.$post(url, newData)
     commit('setLoading', false)
+  },
+  // 収支データの削除
+  async deleteIncomeAndExpenditure ({ commit }, deleteData) {
+    const url = '/api/v1/incomeandexpenditures'
+    commit('setLoading', true)
+    const events = await this.$axios.$delete(url, { data: deleteData })
+    commit('setLoading', false)
+    // カレンダーの収支データ再描画のため収支情報を返す
+    return events
+  },
+  // 収支データの編集
+  async editIncomeAndExpenditure ({ commit }, editData) {
+    const url = '/api/v1/incomeandexpenditures'
+    commit('setLoading', true)
+    const events = await this.$axios.$put(url, editData)
+    commit('setLoading', false)
+    // カレンダーの収支データ再描画のため収支情報を返す
+    return events
   }
 }
