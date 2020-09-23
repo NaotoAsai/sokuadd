@@ -59,4 +59,45 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany('App\Models\IncomeAndExpenditureClass');
     }
+
+    /**
+     * メールアドレスを更新する
+     *
+     * @param string $email
+     * @return void
+     */
+    protected static function updateEmail(string $userId, string $email)
+    {
+        User::where('id', $userId)
+            ->update(['email' => $email]);
+    }
+
+    /**
+     * パスワードを再発行する
+     *
+     * @param string $email
+     * @param string $password
+     * @return User
+     */
+    protected static function updatePasswordByReset(string $email, string $password)
+    {
+        $user = User::where('email', $email)
+            ->first();
+        $user->password = bcrypt($password);
+        $user->save();
+        // アクセストークン発行用にユーザー情報を返す
+        return $user;
+    }
+
+    /**
+     * パスワードを更新する
+     *
+     * @param string $password
+     * @return void
+     */
+    public function updatePasswordByEdit(string $password)
+    {
+        $this->password = bcrypt($password);
+        $this->save();
+    }
 }

@@ -37,7 +37,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'sqllog'],
             'ignore_exceptions' => false,
         ],
 
@@ -99,6 +99,16 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        // 追記、開発環境用SQLログ
+        'sqllog' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/sql.log'),
+            'level' => 'debug',
+        ],
     ],
+
+    // SQLログ出力有無のboolean
+    'enable_sql_log' => env('ENABLE_SQL_LOG', false),
 
 ];

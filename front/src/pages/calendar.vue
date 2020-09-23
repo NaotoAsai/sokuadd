@@ -171,9 +171,20 @@
                 class="ma-12"
                 solo-inverted
               />
+              <!-- 選択中のイベントの分類セレクトタグを表示する -->
               <v-overflow-btn
+                v-if="selectedEvent.type === '1'"
                 v-model="editData.classId"
                 :items="$store.state.incomeAndExpenditureClasses.expenditureClasses"
+                item-text="name"
+                item-value="id"
+                placeholder="分類"
+                class="ma-12"
+              />
+              <v-overflow-btn
+                v-if="selectedEvent.type === '0'"
+                v-model="editData.classId"
+                :items="$store.state.incomeAndExpenditureClasses.incomeClasses"
                 item-text="name"
                 item-value="id"
                 placeholder="分類"
