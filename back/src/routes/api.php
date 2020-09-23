@@ -48,8 +48,8 @@ Route::group([
     Route::get('user', 'AuthController@me');
     Route::post('refresh', 'AuthController@refresh');
 
-    // Route::put('user', 'UserController@editName');
-    // Route::put('password', 'UserController@editPassword');
+    Route::put('user', 'UserController@editName');
+    Route::put('password', 'UserController@editPassword');
 
     // メールアドレス変更
     Route::post('email', 'EmailController@preEditEmail');

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -110,9 +111,22 @@ class User extends Authenticatable implements JWTSubject
      * @param string $password
      * @return void
      */
-    public function updatePasswordByEdit(string $password)
+    protected static function updatePasswordByEdit(string $password)
     {
-        $this->password = bcrypt($password);
-        $this->save();
+        User::where('id', Auth::id())
+            ->update(['password' => bcrypt($password)]);
     }
+
+    /**
+     * ユーザー名を更新する
+     *
+     * @param string $name
+     * @return void
+     */
+    protected static function updateName(string $name)
+    {
+        User::where('id', Auth::id())
+            ->update(['name' => $name]);
+    }
+
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\AuthController;
+namespace App\Http\Requests\UserController;
 
 use App\Http\Requests\ApiRequest;
 
-class RegisterRequest extends ApiRequest
+class EditNameRequest extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,7 @@ class RegisterRequest extends ApiRequest
     public function rules()
     {
         return [
-            'name' => 'bail|required|string|max:32',
-            'email' => 'bail|required|email|max:255|unique:users',
-            'password' => 'bail|required|string|min:8|max:255|confirmed',
-            'password_confirmation' => 'bail|required|string|min:8|max:255',
+            'name' => 'bail|required|string|max:32'
         ];
     }
 }
