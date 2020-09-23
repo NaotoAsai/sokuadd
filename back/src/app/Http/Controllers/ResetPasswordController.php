@@ -55,7 +55,7 @@ class ResetPasswordController extends AuthController
      * パスワード再発行
      *
      * @param ResetPasswordRequest $request
-     * @return void
+     * @return Json
      */
     public function resetPassword(ResetPasswordRequest $request)
     {
@@ -66,7 +66,9 @@ class ResetPasswordController extends AuthController
             $tokenRecode = $this->checkToken($request->genericToken);
 
             // パスワード更新
-            $user = User::updatePasswordByReset($tokenRecode->email, $request->password);
+            User::updatePasswordByReset($tokenRecode->email, $request->password);
+            // 戻り値のメールアドレス
+            $email = $tokenRecode->email;
             // トークン削除
             $tokenRecode->delete();
 
@@ -80,8 +82,8 @@ class ResetPasswordController extends AuthController
             abort(500);
         }
 
-        // Nuxt Auth Moduleの仕様でここではトークンを返却する
-        // return $this->instanceLogin($user);
+        // リセット後自動ログインさせるため、AuthModuleの仕様でメールアドレスを返す
+        return response()->json(['email' => $email]);
     }
 
     /**

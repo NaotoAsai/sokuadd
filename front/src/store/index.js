@@ -53,6 +53,7 @@ export const mutations = {
 }
 
 export const actions = {
+  // 新規ユーザー登録
   register ({ dispatch }, authData) {
     const url = '/api/v1/register'
     const params = authData

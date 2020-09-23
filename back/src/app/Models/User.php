@@ -61,6 +61,23 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * 新規ユーザー登録
+     *
+     * @param string $name
+     * @param string $email
+     * @param string $password
+     * @return void
+     */
+    protected static function register(string $name, string $email, string $password)
+    {
+        User::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => bcrypt($password)
+        ]);
+    }
+
+    /**
      * メールアドレスを更新する
      *
      * @param string $email
@@ -77,7 +94,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @param string $email
      * @param string $password
-     * @return User
+     * @return void
      */
     protected static function updatePasswordByReset(string $email, string $password)
     {
@@ -85,8 +102,6 @@ class User extends Authenticatable implements JWTSubject
             ->first();
         $user->password = bcrypt($password);
         $user->save();
-        // アクセストークン発行用にユーザー情報を返す
-        return $user;
     }
 
     /**

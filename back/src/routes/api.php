@@ -23,7 +23,6 @@ Route::group([
     'middleware' =>['api'],
     'prefix' => 'v1'
 ], function(){
-    Route::post('refresh', 'AuthController@refresh');
 
     // パスワード再発行
     Route::post('resetpassword', 'ResetPasswordController@preResetPassword');
@@ -47,6 +46,7 @@ Route::group([
 ], function () {
     Route::post('logout', 'AuthController@logout');
     Route::get('user', 'AuthController@me');
+    Route::post('refresh', 'AuthController@refresh');
 
     // Route::put('user', 'UserController@editName');
     // Route::put('password', 'UserController@editPassword');
