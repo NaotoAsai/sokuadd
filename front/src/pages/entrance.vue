@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="mx-auto" max-width="344">
+    <v-card class="mx-auto" max-width="368">
       <v-tabs grow>
         <v-tab @click="currentForm = 'RegisterForm'">
           会員登録

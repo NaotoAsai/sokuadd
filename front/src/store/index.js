@@ -54,20 +54,16 @@ export const mutations = {
 
 export const actions = {
   // 新規ユーザー登録
-  register ({ dispatch }, authData) {
+  async register ({ dispatch }, authData) {
     const url = '/api/v1/register'
     const params = authData
-    this.$axios.$post(url, params)
-      .then((response) => {
+    await this.$axios.$post(url, params)
+      .then(() => {
         dispatch('login', authData)
       })
   },
   async login ({ dispatch }, authData) {
-    try {
-      await this.$auth.loginWith('laravelJWT', { data: authData })
-    } catch (err) {
-
-    }
+    await this.$auth.loginWith('laravelJWT', { data: authData })
   },
   async logout ({ commit, dispatch }) {
     await this.$auth.logout('laravelJWT')

@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <div v-show="$store.state.loading" id="loading">
       <v-progress-circular
         :size="70"

@@ -11,22 +11,24 @@
         <v-card>
           <v-list two-line subheader>
             <v-subheader>収入</v-subheader>
-            <v-list-item
-              v-for="item in oneMonthData.incomes.classes"
-              :key="item.name"
-            >
-              <v-list-item-content>
-                <v-list-item-title>{{ item.name }}</v-list-item-title>
-                <v-list-item-subtitle>{{ item.amount }}円</v-list-item-subtitle>
-                <v-divider />
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>合計</v-list-item-title>
-                <v-list-item-subtitle>{{ oneMonthData.incomes.totalAmount }}円</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+            <div v-if="oneMonthData !== ''">
+              <v-list-item
+                v-for="item in oneMonthData.incomes.classes"
+                :key="item.name"
+              >
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.name }}</v-list-item-title>
+                  <v-list-item-subtitle>{{ item.amount }}円</v-list-item-subtitle>
+                  <v-divider />
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>合計</v-list-item-title>
+                  <v-list-item-subtitle>{{ oneMonthData.incomes.totalAmount }}円</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </div>
           </v-list>
         </v-card>
       </v-col>
@@ -34,22 +36,24 @@
         <v-card>
           <v-list two-line subheader>
             <v-subheader>支出</v-subheader>
-            <v-list-item
-              v-for="item in oneMonthData.expenditures.classes"
-              :key="item.name"
-            >
-              <v-list-item-content>
-                <v-list-item-title>{{ item.name }}</v-list-item-title>
-                <v-list-item-subtitle>{{ item.amount }}円</v-list-item-subtitle>
-                <v-divider />
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>合計</v-list-item-title>
-                <v-list-item-subtitle>{{ oneMonthData.expenditures.totalAmount }}円</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+            <div v-if="oneMonthData !== ''">
+              <v-list-item
+                v-for="item in oneMonthData.expenditures.classes"
+                :key="item.name"
+              >
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.name }}</v-list-item-title>
+                  <v-list-item-subtitle>{{ item.amount }}円</v-list-item-subtitle>
+                  <v-divider />
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>合計</v-list-item-title>
+                  <v-list-item-subtitle>{{ oneMonthData.expenditures.totalAmount }}円</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </div>
           </v-list>
         </v-card>
       </v-col>
@@ -105,7 +109,7 @@ export default {
       const nowMonth = this.dispMonth
       const targetMonth = { year: nowYear, month: nowMonth }
       const url = '/api/v1/incomeandexpendituresbyclass'
-      this.$axios.$get(url, { params: targetMonth }).then((res) => { this.oneMonthData = res })
+      this.$axios.$get(url, { params: targetMonth }).then((res) => { this.oneMonthData = res }).catch((err) => { this.$nuxt.error({ statusCode: err.status }) })
     }
   },
   methods: {
