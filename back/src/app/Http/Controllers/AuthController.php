@@ -30,11 +30,11 @@ class AuthController extends Controller
         // トークン生成
         $token = $this->createAccessToken($request->email, $request->password);
 
-        // ユーザーが存在しなかったら422
+        // ユーザーが存在しなかったら401 Unauthorized
         if (!$token) {
             $res = response()->json([
-                'message' => '入力内容を確認してください。'
-            ], 422);
+                'message' => '※ログインできませんでした、入力内容を確認してください。'
+            ], 401);
             throw new HttpResponseException($res);
         }
 

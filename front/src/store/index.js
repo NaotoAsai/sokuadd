@@ -62,9 +62,17 @@ export const actions = {
         dispatch('login', authData)
       })
   },
+  // ログイン
   async login ({ dispatch }, authData) {
-    await this.$auth.loginWith('laravelJWT', { data: authData })
+    return await this.$auth.loginWith('laravelJWT', { data: authData })
+      // 401エラーのみエラーページではなく、画面にメッセージ表示する
+      .catch((err) => {
+        if (err.response.status === 401) {
+          return err.response
+        }
+      })
   },
+  // ログアウト
   async logout ({ commit, dispatch }) {
     await this.$auth.logout('laravelJWT')
   },

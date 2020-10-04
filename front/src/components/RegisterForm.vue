@@ -55,7 +55,7 @@
         </ValidationProvider>
         <ValidationProvider
           v-slot="{ errors, valid }"
-          rules="required|confirmed|min:8|max:255"
+          rules="required|min:8|max:255"
           name="パスワード(確認)"
         >
           <v-text-field
@@ -82,13 +82,7 @@
 </template>
 
 <script>
-import { ValidationProvider } from 'vee-validate'
-
 export default {
-  components: {
-    // ValidationObserver,
-    ValidationProvider
-  },
   data () {
     return {
       authData: {
@@ -97,11 +91,6 @@ export default {
         password: '',
         password_confirmation: ''
       }
-      // valid: true
-      // vuetifyのルール
-      // required: v => !!v || '入力必須です',
-      // min_length: v => v.length >= 8 || '8文字以上です',
-      // max_length: v => v.length <= 32 || '32文字以内です'
     }
   },
   methods: {
