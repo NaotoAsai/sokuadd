@@ -87,23 +87,49 @@ export const actions = {
   // 収支分類名の作成
   async createIncomeAndExpenditureClass ({ commit }, newData) {
     const url = '/api/v1/incomeandexpenditure_classes'
+
     commit('setLoading', true)
-    const newId = await this.$axios.$post(url, newData)
+
+    await this.$axios.$post(url, newData)
+      .then((newId) => {
+        // 配列に追加
+        commit('addIncomeAndExpenditureClassData', {
+          type: newData.type === 0 ? 'incomeClasses' : 'expenditureClasses',
+          id: newId,
+          name: newData.name
+        })
+      })
+
     commit('setLoading', false)
-    return newId
   },
   // 収支分類名の編集
   async editIncomeAndExpenditureClass ({ commit }, editData) {
     const url = '/api/v1/incomeandexpenditure_classes'
     commit('setLoading', true)
+
     await this.$axios.$put(url, editData)
+      .then(() => {
+        // 配列の当該データを更新
+        commit('updateIncomeAndExpenditureClassData', {
+          type: editData.type === 0 ? 'incomeClasses' : 'expenditureClasses',
+          index: editData.index,
+          name: editData.name
+        })
+      })
+
     commit('setLoading', false)
   },
   // 収支分類名の削除
   async deleteIncomeAndExpenditureClass ({ commit }, deleteData) {
     const url = '/api/v1/incomeandexpenditure_classes'
     commit('setLoading', true)
+
     await this.$axios.$delete(url, { data: deleteData })
+      .then(() => {
+        // 配列から当該データ削除
+        commit('deleteIncomeAndExpenditureClassData', { type: deleteData.type === 0 ? 'incomeClasses' : 'expenditureClasses', index: deleteData.index })
+      })
+
     commit('setLoading', false)
   },
   // 新規収支データの作成

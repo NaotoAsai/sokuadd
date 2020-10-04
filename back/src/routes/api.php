@@ -37,6 +37,7 @@ Route::group([
 ], function(){
     Route::post('register', 'AuthController@register');
     Route::post('login', 'AuthController@login');
+    Route::post('refresh', 'AuthController@refresh');
 });
 
 // ログイン済みユーザー
@@ -46,7 +47,6 @@ Route::group([
 ], function () {
     Route::post('logout', 'AuthController@logout');
     Route::get('user', 'AuthController@me');
-    Route::post('refresh', 'AuthController@refresh');
 
     Route::put('user', 'UserController@editName');
     Route::put('password', 'UserController@editPassword');

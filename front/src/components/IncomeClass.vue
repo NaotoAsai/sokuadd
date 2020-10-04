@@ -1,35 +1,34 @@
 <template>
   <div>
-    <v-text-field
-      v-model="newData.name"
-      label="Solo"
-      placeholder="分類を追加"
-      solo-inverted
-      class="mr-2 ml-2"
-    />
-    <div class=" mb-8 pr-12 pl-12">
-      <v-btn
-        v-if="!newData.name"
-        block
-        x-large
-        color="success"
-        dark
-        disabled
-        @click="create"
+    <ValidationObserver ref="obs" v-slot="{ invalid }">
+      <ValidationProvider
+        v-slot="{ errors, valid }"
+        rules="required|max:32"
+        name="分類名"
       >
-        追加
-      </v-btn>
-      <v-btn
-        v-if="newData.name"
-        block
-        x-large
-        color="success"
-        dark
-        @click="create"
-      >
-        追加
-      </v-btn>
-    </div>
+        <v-text-field
+          v-model="newData.name"
+          :counter="32"
+          :error-messages="errors"
+          :success="valid"
+          label="Solo"
+          placeholder="分類を追加"
+          solo-inverted
+          class="mr-2 ml-2"
+        />
+      </ValidationProvider>
+      <div class=" mb-8 pr-12 pl-12">
+        <v-btn
+          block
+          x-large
+          color="success"
+          :disabled="invalid"
+          @click="create"
+        >
+          追加
+        </v-btn>
+      </div>
+    </ValidationObserver>
     <!-- 分類がない時 -->
     <v-card-text
       v-if="$store.state.incomeAndExpenditureClasses.incomeClasses.length === 0"
@@ -73,19 +72,36 @@
             <span class="headline">分類名修正</span>
           </v-card-title>
           <v-card-text>
-            <v-form>
-              <v-text-field
-                v-model="editData.name"
-                label="コメント"
-                class="ma-12"
-                solo-inverted
-              />
-              <div class=" pb-8 pr-12 pl-12">
-                <v-btn block x-large color="success" dark @click="edit">
-                  修正
-                </v-btn>
-              </div>
-            </v-form>
+            <ValidationObserver ref="obs" v-slot="{ invalid }">
+              <ValidationProvider
+                v-slot="{ errors, valid }"
+                rules="required|max:32"
+                name="分類名"
+              >
+                <v-form>
+                  <v-text-field
+                    v-model="editData.name"
+                    :counter="32"
+                    :error-messages="errors"
+                    :success="valid"
+                    label="コメント"
+                    class="ma-12"
+                    solo-inverted
+                  />
+                  <div class=" pb-8 pr-12 pl-12">
+                    <v-btn
+                      block
+                      x-large
+                      color="success"
+                      :disabled="invalid"
+                      @click="edit"
+                    >
+                      修正
+                    </v-btn>
+                  </div>
+                </v-form>
+              </ValidationProvider>
+            </ValidationObserver>
           </v-card-text>
           <v-card-actions>
             <v-btn color="blue darken-1" text @click="editDialog = false">
@@ -142,26 +158,17 @@ export default {
       editData: {
         id: '',
         name: '',
-        index: ''
+        index: '',
+        type: 0
       },
       deleteData: {
         id: '',
-        index: ''
+        index: '',
+        type: 0
       }
     }
   },
   methods: {
-    async create () {
-      const newId = await this.$store.dispatch('createIncomeAndExpenditureClass', this.newData)
-      // 配列に追加
-      this.$store.commit('addIncomeAndExpenditureClassData', {
-        type: 'incomeClasses',
-        id: newId,
-        name: this.newData.name
-      })
-      // テキストエリアを空にする
-      this.newData.name = ''
-    },
     setEditData (targetId, targetName, index) {
       this.editData.id = targetId
       this.editData.name = targetName
@@ -173,17 +180,21 @@ export default {
       this.deleteData.index = index
       this.deleteDialog = true
     },
+    // 分類名の新規作成
+    async create () {
+      await this.$store.dispatch('createIncomeAndExpenditureClass', this.newData)
+      // テキストエリアを空にする
+      this.newData.name = ''
+      // バリデーションエラーメッセージ表示防止
+      this.$refs.obs.reset()
+    },
     async edit () {
       this.editDialog = false
       await this.$store.dispatch('editIncomeAndExpenditureClass', this.editData)
-      // 配列の当該データを更新
-      this.$store.commit('updateIncomeAndExpenditureClassData', { type: 'incomeClasses', index: this.editData.index, name: this.editData.name })
     },
     async remove () {
       this.deleteDialog = false
       await this.$store.dispatch('deleteIncomeAndExpenditureClass', this.deleteData)
-      // 配列から当該データ削除
-      this.$store.commit('deleteIncomeAndExpenditureClassData', { type: 'incomeClasses', index: this.deleteData.index })
     }
   }
 }

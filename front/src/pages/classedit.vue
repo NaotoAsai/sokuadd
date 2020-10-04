@@ -16,7 +16,7 @@
       </v-tabs>
     </v-toolbar>
     <v-card-actions>
-      <v-btn>
+      <v-btn to="/" nuxt>
         <v-icon>mdi-arrow-left-bold</v-icon>
         TOPへ
       </v-btn>

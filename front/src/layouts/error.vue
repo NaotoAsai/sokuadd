@@ -35,6 +35,9 @@ export default {
     return {
 
     }
+  },
+  mounted () {
+    this.$store.commit('setLoading', false)
   }
   // head () {
   //   const title =
