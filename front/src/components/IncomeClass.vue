@@ -73,12 +73,12 @@
           </v-card-title>
           <v-card-text>
             <ValidationObserver ref="obs" v-slot="{ invalid }">
-              <ValidationProvider
-                v-slot="{ errors, valid }"
-                rules="required|max:32"
-                name="分類名"
-              >
-                <v-form>
+              <v-form>
+                <ValidationProvider
+                  v-slot="{ errors, valid }"
+                  rules="required|max:32"
+                  name="分類名"
+                >
                   <v-text-field
                     v-model="editData.name"
                     :counter="32"
@@ -88,19 +88,19 @@
                     class="ma-12"
                     solo-inverted
                   />
-                  <div class=" pb-8 pr-12 pl-12">
-                    <v-btn
-                      block
-                      x-large
-                      color="success"
-                      :disabled="invalid"
-                      @click="edit"
-                    >
-                      修正
-                    </v-btn>
-                  </div>
-                </v-form>
-              </ValidationProvider>
+                </ValidationProvider>
+                <div class=" pb-8 pr-12 pl-12">
+                  <v-btn
+                    block
+                    x-large
+                    color="success"
+                    :disabled="invalid"
+                    @click="edit"
+                  >
+                    修正
+                  </v-btn>
+                </div>
+              </v-form>
             </ValidationObserver>
           </v-card-text>
           <v-card-actions>

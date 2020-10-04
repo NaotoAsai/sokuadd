@@ -4,39 +4,57 @@
       {{ newData.targetDate }}
       <DatePicker v-model="newData.targetDate" />
     </h2>
-    <v-form>
-      <v-text-field
-        v-model="newData.amount"
-        label="金額"
-        class="ma-12"
-        solo-inverted
-      />
-      <v-overflow-btn
-        v-model="newData.classId"
-        :items="$store.state.incomeAndExpenditureClasses.expenditureClasses"
-        item-text="name"
-        item-value="id"
-        placeholder="分類"
-        class="ma-12"
-      />
-      <v-text-field
-        v-model="newData.comment"
-        label="コメント"
-        class="ma-12"
-        solo-inverted
-      />
-      <div class=" pb-8 pr-12 pl-12">
-        <v-btn
-          block
-          x-large
-          color="success"
-          dark
-          @click="create"
+    <ValidationObserver ref="obs" v-slot="{ invalid }">
+      <v-form>
+        <ValidationProvider
+          v-slot="{ errors }"
+          rules="required|integer|max_value:9999999999999999999999999999999999999999999999999999999999999999"
+          name="金額"
         >
-          追加
-        </v-btn>
-      </div>
-    </v-form>
+          <v-text-field
+            v-model="newData.amount"
+            :error-messages="errors"
+            label="金額"
+            class="ma-12"
+            solo-inverted
+          />
+        </ValidationProvider>
+        <v-overflow-btn
+          v-model="newData.classId"
+          :items="$store.state.incomeAndExpenditureClasses.expenditureClasses"
+          item-text="name"
+          item-value="id"
+          hide-selected
+          placeholder="分類"
+          class="ma-12"
+        />
+        <ValidationProvider
+          v-slot="{ errors }"
+          rules="max:64"
+          name="コメント"
+        >
+          <v-text-field
+            v-model="newData.comment"
+            :counter="64"
+            :error-messages="errors"
+            label="コメント"
+            class="ma-12"
+            solo-inverted
+          />
+        </ValidationProvider>
+        <div class=" pb-8 pr-12 pl-12">
+          <v-btn
+            block
+            x-large
+            color="success"
+            :disabled="invalid"
+            @click="create"
+          >
+            追加
+          </v-btn>
+        </div>
+      </v-form>
+    </ValidationObserver>
   </div>
 </template>
 
@@ -70,6 +88,8 @@ export default {
       // テキストエリアを空にする
       this.newData.amount = ''
       this.newData.comment = ''
+      // バリデーションエラーメッセージ表示防止
+      this.$refs.obs.reset()
     }
   }
 }

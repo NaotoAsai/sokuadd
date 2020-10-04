@@ -136,7 +136,9 @@ export const actions = {
   async createIncomeAndExpenditure ({ commit }, newData) {
     const url = '/api/v1/incomeandexpenditures'
     commit('setLoading', true)
+
     await this.$axios.$post(url, newData)
+
     commit('setLoading', false)
   },
   // 収支データの削除
