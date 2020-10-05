@@ -39,6 +39,7 @@
           <v-dialog
             v-model="selectedOpen"
             :close-on-content-click="false"
+            max-width="516"
           >
             <!-- <v-menu
             v-model="selectedOpen"
@@ -88,7 +89,6 @@
                   <v-menu v-if="$vuetify.breakpoint.xs" offset-x left>
                     <template v-slot:activator="{ on }">
                       <v-btn
-                        dark
                         icon
                         v-on="on"
                       >
@@ -163,59 +163,73 @@
           <v-card-title>
             <span class="headline">収支情報修正</span>
           </v-card-title>
-          <v-card-text>
+          <ValidationObserver ref="obs" v-slot="{ invalid }">
             <v-form>
-              <v-text-field
-                v-model="editData.amount"
-                label="金額"
-                class="ma-12"
-                solo-inverted
-              />
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="required|integer|max_value:9999999999999999999999999999999999999999999999999999999999999999"
+                name="金額"
+              >
+                <v-text-field
+                  v-model="editData.amount"
+                  :error-messages="errors"
+                  label="金額"
+                  class="ma-12"
+                  solo-inverted
+                />
+              </ValidationProvider>
               <!-- 選択中のイベントの分類セレクトタグを表示する -->
               <v-overflow-btn
-                v-if="selectedEvent.type === '1'"
+                v-if="selectedEvent.type === 1"
                 v-model="editData.classId"
                 :items="$store.state.incomeAndExpenditureClasses.expenditureClasses"
                 item-text="name"
                 item-value="id"
+                hide-selected
                 placeholder="分類"
                 class="ma-12"
               />
               <v-overflow-btn
-                v-if="selectedEvent.type === '0'"
+                v-if="selectedEvent.type === 0"
                 v-model="editData.classId"
                 :items="$store.state.incomeAndExpenditureClasses.incomeClasses"
                 item-text="name"
                 item-value="id"
+                hide-selected
                 placeholder="分類"
                 class="ma-12"
               />
-              <v-text-field
-                v-model="editData.comment"
-                label="コメント"
-                class="ma-12"
-                solo-inverted
-              />
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="max:64"
+                name="コメント"
+              >
+                <v-text-field
+                  v-model="editData.comment"
+                  :counter="64"
+                  :error-messages="errors"
+                  label="コメント"
+                  class="ma-12"
+                  solo-inverted
+                />
+              </ValidationProvider>
               <div class=" pb-8 pr-12 pl-12">
                 <v-btn
                   block
                   x-large
                   color="success"
-                  dark
+                  :disabled="invalid"
                   @click="edit"
                 >
                   追加
                 </v-btn>
               </div>
             </v-form>
-          </v-card-text>
+          </ValidationObserver>
           <v-card-actions>
             <v-spacer />
             <v-btn color="blue darken-1" text @click="editDialog = false">
               Close
-            </v-btn>
-            <v-btn color="blue darken-1" text @click="editDialog = false">
-              Save
             </v-btn>
           </v-card-actions>
         </v-card>
