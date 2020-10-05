@@ -26,8 +26,7 @@ class RegisterRequest extends ApiRequest
         return [
             'name' => 'bail|required|string|max:32',
             'email' => 'bail|required|email|max:255|unique:users',
-            'password' => 'bail|required|string|min:8|max:255|confirmed',
-            'password_confirmation' => 'bail|required|string|min:8|max:255',
+            'password' => 'bail|required|string|min:8|max:255'
         ];
     }
 }

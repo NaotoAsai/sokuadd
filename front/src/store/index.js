@@ -76,6 +76,33 @@ export const actions = {
   async logout ({ commit, dispatch }) {
     await this.$auth.logout('laravelJWT')
   },
+  // パスワード再発行（準備）
+  async preResetPassword ({ commit }, email) {
+    const url = '/api/v1/resetpassword'
+    commit('setLoading', true)
+
+    await this.$axios.$post(url, email)
+
+    commit('setLoading', false)
+  },
+  // パスワード再発行（メールのリンクからの遷移時）
+  async passResetPassword ({ commit }, genericToken) {
+    const url = '/api/v1/resetpassword'
+    commit('setLoading', true)
+
+    await this.$axios.$get(url, { params: genericToken })
+
+    commit('setLoading', false)
+  },
+  // パスワード再発行
+  async resetPassword ({ commit }, newPasswordData) {
+    const url = '/api/v1/resetpassword'
+    commit('setLoading', true)
+
+    await this.$axios.$put(url, newPasswordData)
+
+    commit('setLoading', false)
+  },
   // 収支分類名一覧の取得
   async getIncomeAndExpenditureClasses ({ commit }) {
     const url = '/api/v1/incomeandexpenditure_classes'

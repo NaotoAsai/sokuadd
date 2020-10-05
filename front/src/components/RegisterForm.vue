@@ -41,6 +41,7 @@
         <ValidationProvider
           v-slot="{ errors, valid }"
           rules="required|min:8|max:255"
+          vid="password"
           name="パスワード"
         >
           <v-text-field
@@ -55,11 +56,11 @@
         </ValidationProvider>
         <ValidationProvider
           v-slot="{ errors, valid }"
-          rules="required|min:8|max:255"
+          rules="required|confirmed:password"
           name="パスワード(確認)"
         >
           <v-text-field
-            v-model="authData.password_confirmation"
+            v-model="passwordConfirm"
             :error-messages="errors"
             :success="valid"
             name="password_confirmation"
@@ -88,9 +89,9 @@ export default {
       authData: {
         name: '',
         email: '',
-        password: '',
-        password_confirmation: ''
-      }
+        password: ''
+      },
+      passwordConfirm: ''
     }
   },
   methods: {

@@ -50,7 +50,7 @@
           ログイン
         </v-btn>
       </v-form>
-      <nuxt-link to="/resetpassword">
+      <nuxt-link to="/preresetpassword">
         パスワードを忘れた方
       </nuxt-link>
     </ValidationObserver>
