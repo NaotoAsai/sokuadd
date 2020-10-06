@@ -28,6 +28,13 @@
               </v-list-item-content>
             </v-list-item>
             <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title @click.stop="openEditPasswordForm">
+                  パスワード変更
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
               <v-list-item-content @click="logout">
                 <v-list-item-title>ログアウト</v-list-item-title>
               </v-list-item-content>
@@ -61,6 +68,101 @@
             </v-btn>
             <v-btn color="blue darken-1" text @click="dialog2 = false">
               Save
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+
+    <!-- パスワード変更ダイアログフォーム -->
+    <v-row justify="center">
+      <v-dialog v-model="dialog3" persistent max-width="600px">
+        <v-card v-if="isDone === false">
+          <v-card-title>
+            パスワード変更
+          </v-card-title>
+          <v-card-subtitle>
+            新しいパスワードを設定してください
+          </v-card-subtitle>
+          <v-card-text v-if="unAuthorized !== ''" class="red--text">
+            {{ unAuthorized }}
+          </v-card-text>
+          <ValidationObserver ref="obs" v-slot="{}">
+            <v-form
+              ref="form"
+              v-model="valid"
+              class="pa-9"
+            >
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="required|min:8|max:255"
+                name="現在のパスワード"
+              >
+                <v-text-field
+                  v-model="newPasswordData.password"
+                  :error-messages="errors"
+                  name="nowpassword"
+                  label="現在のパスワード"
+                  type="password"
+                  outlined
+                />
+              </ValidationProvider>
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="required|min:8|max:255"
+                vid="password"
+                name="新しいパスワード"
+              >
+                <v-text-field
+                  v-model="newPasswordData.newPassword"
+                  :error-messages="errors"
+                  name="password"
+                  label="新しいパスワード"
+                  type="password"
+                  outlined
+                />
+              </ValidationProvider>
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="required|confirmed:password"
+                name="新しいパスワード(確認)"
+              >
+                <v-text-field
+                  v-model="passwordConfirm"
+                  :error-messages="errors"
+                  name="password_confirmation"
+                  label="新しいパスワード(確認)"
+                  type="password"
+                  outlined
+                />
+              </ValidationProvider>
+              <v-btn
+                large
+                block
+                @click="editPassword"
+              >
+                送信
+              </v-btn>
+            </v-form>
+          </ValidationObserver>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn color="blue darken-1" text @click="dialog3 = false">
+              Close
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+        <v-card v-if="isDone === true">
+          <v-card-title>
+            パスワード変更
+          </v-card-title>
+          <v-card-text>
+            パスワードを変更しました
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn color="blue darken-1" text @click="dialog3 = false">
+              Close
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -116,11 +218,48 @@ export default {
   data () {
     return {
       drawer: null,
-      dialog2: false
+      dialog2: false,
+      dialog3: false,
+      newPasswordData: {
+        password: '',
+        newPassword: ''
+      },
+      passwordConfirm: '',
+      isDone: false,
+      unAuthorized: ''
     }
   },
   methods: {
-    ...mapActions(['logout'])
+    openEditPasswordForm () {
+      this.isDone = false
+      this.dialog3 = true
+    },
+    ...mapActions(['logout']),
+    async editPassword () {
+      await this.$store.dispatch('editPassword', this.newPasswordData)
+        .then((res) => {
+          // 認証失敗時、エラーメッセージ格納
+          if (res.status === 401) {
+            this.unAuthorized = res.data.message
+          } else if (res.status === 200) {
+            this.isDone = true
+            this.newPasswordData.password = ''
+            this.newPasswordData.newPassword = ''
+            this.passwordConfirm = ''
+            this.unAuthorized = ''
+          } else {
+            this.$nuxt.error({ statusCode: res.status })
+            this.dialog3 = false
+            this.newPasswordData.password = ''
+            this.newPasswordData.newPassword = ''
+            this.passwordConfirm = ''
+            this.unAuthorized = ''
+            // バリデーションエラーメッセージ表示防止
+            this.$refs.obs.reset()
+          }
+        })
+      this.$store.commit('setLoading', false)
+    }
   }
 }
 </script>

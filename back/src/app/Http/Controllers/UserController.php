@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserController\EditNameRequest;
 use App\Http\Requests\UserController\EditPasswordRequest;
 use App\Models\User;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -27,6 +30,13 @@ class UserController extends Controller
      */
     public function editPassword(EditPasswordRequest $request)
     {
+        if (!Hash::check($request->password, Auth::user()->password)) {
+            $res = response()->json([
+                'status' => 401,
+                'message' => '※現在のパスワードが間違っています。',
+            ], 401);
+            throw new HttpResponseException($res);
+        }
         User::updatePasswordByEdit($request->newPassword);
     }
 }

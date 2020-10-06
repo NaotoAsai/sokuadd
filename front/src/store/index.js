@@ -67,6 +67,7 @@ export const actions = {
     return await this.$auth.loginWith('laravelJWT', { data: authData })
       // 401エラーのみエラーページではなく、画面にメッセージ表示する
       .catch((err) => {
+        console.log(err.response)
         if (err.response.status === 401) {
           return err.response
         }
@@ -102,6 +103,24 @@ export const actions = {
     await this.$axios.$put(url, newPasswordData)
 
     commit('setLoading', false)
+  },
+  // パスワード変更
+  async editPassword ({ commit }, newPasswordData) {
+    const url = '/api/v1/password'
+    commit('setLoading', true)
+
+    return await this.$axios.$put(url, newPasswordData)
+      // 401エラーのみエラーページではなく、画面にメッセージ表示する
+      .then(() => {
+        return { status: 200 }
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          return err.response
+        } else {
+          return err.response
+        }
+      })
   },
   // 収支分類名一覧の取得
   async getIncomeAndExpenditureClasses ({ commit }) {

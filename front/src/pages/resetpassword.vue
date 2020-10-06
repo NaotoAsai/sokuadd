@@ -5,7 +5,7 @@
         パスワード再発行
       </v-card-title>
       <v-card-subtitle>
-        新しいメールアドレスを設定してください
+        新しいパスワードを設定してください
       </v-card-subtitle>
       <ValidationObserver ref="obs" v-slot="{ invalid }">
         <v-form

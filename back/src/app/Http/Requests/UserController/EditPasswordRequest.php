@@ -3,7 +3,6 @@
 namespace App\Http\Requests\UserController;
 
 use App\Http\Requests\ApiRequest;
-use App\Rules\UserRules\MatchPasswordRule;
 
 class EditPasswordRequest extends ApiRequest
 {
@@ -30,10 +29,9 @@ class EditPasswordRequest extends ApiRequest
                 'required',
                 'string',
                 'min:8',
-                'max:255',
-                new MatchPasswordRule
+                'max:255'
             ],
-            'newPassword' => 'bail|required|string|min:8|max:255|confirmed'
+            'newPassword' => 'bail|required|string|min:8|max:255'
         ];
     }
 }
