@@ -33,7 +33,8 @@ class PreEditEmailRequest extends ApiRequest
                 'max:150',
                 Rule::unique('users', 'email')
                 // Rule::unique('users', 'email')->whereNull('deleted_at')
-            ]
+            ],
+            'password' => 'required|string|min:8|max:255'
         ];
     }
 }

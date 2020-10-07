@@ -77,6 +77,7 @@ export const actions = {
   async logout ({ commit, dispatch }) {
     await this.$auth.logout('laravelJWT')
   },
+
   // パスワード再発行（準備）
   async preResetPassword ({ commit }, email) {
     const url = '/api/v1/resetpassword'
@@ -104,6 +105,7 @@ export const actions = {
 
     commit('setLoading', false)
   },
+
   // パスワード変更
   async editPassword ({ commit }, newPasswordData) {
     const url = '/api/v1/password'
@@ -121,6 +123,33 @@ export const actions = {
           return err.response
         }
       })
+  },
+  // メールアドレス変更（準備）
+  async preEditEmail ({ commit }, newEmailData) {
+    const url = '/api/v1/email'
+    commit('setLoading', true)
+
+    return await this.$axios.$post(url, newEmailData)
+      // 401エラーのみエラーページではなく、画面にメッセージ表示する
+      .then(() => {
+        return { status: 200 }
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          return err.response
+        } else {
+          return err.response
+        }
+      })
+  },
+  // メールアドレス変更
+  async editEmail ({ commit }, genericToken) {
+    const url = '/api/v1/email'
+    commit('setLoading', true)
+
+    await this.$axios.$get(url, { params: genericToken })
+
+    commit('setLoading', false)
   },
   // 収支分類名一覧の取得
   async getIncomeAndExpenditureClasses ({ commit }) {

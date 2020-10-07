@@ -10,7 +10,9 @@ use App\Http\Requests\EmailController\EditEmailRequest;
 use App\Models\Token;
 use App\Models\User;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class EmailController extends Controller
 {
@@ -23,6 +25,15 @@ class EmailController extends Controller
      */
     public function preEditEmail(PreEditEmailRequest $request)
     {
+        // 現在のパスワードチェック
+        if (!Hash::check($request->password, Auth::user()->password)) {
+            $res = response()->json([
+                'status' => 401,
+                'message' => '※現在のパスワードが間違っています。',
+            ], 401);
+            throw new HttpResponseException($res);
+        }
+        
         try {
             DB::beginTransaction();
             $token = Token::registerTokenEditEmail($request->email, $request->user()->id);
@@ -78,12 +89,12 @@ class EmailController extends Controller
             return Token::checkTokenEditEmail($token);
         } catch (TokenNotFoundException $e) {
             $res = response()->json([
-                'message' => 'トークンが不正です。再度最初からやり直してください。'
-            ], 400);
+                'message' => '※トークンが不正です。再度最初からやり直してください。'
+            ], 422);
             throw new HttpResponseException($res);
         } catch (TokenExpiredException $e) {
             $res = response()->json([
-                'message' => 'トークンの有効期限が切れています。再度最初からやり直してください。'
+                'message' => '※トークンの有効期限が切れています。再度最初からやり直してください。'
             ], 422);
             throw new HttpResponseException($res);
         }

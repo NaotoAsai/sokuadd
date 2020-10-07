@@ -34,6 +34,6 @@ class PreEditEmailMail extends Mailable
         ->from(config('mail.from.address')) // 送信元
         ->subject('メールアドレス変更準備完了のお知らせ') // メールタイトル
         ->view('emails.edit_email') // メール本文のテンプレート
-        ->with(['url' => config('app.url') . '/email?genericToken=' . $this->token]);  // withでセットしたデータをviewへ渡す
+        ->with(['url' => config('app.url') . '/doneeditemail?genericToken=' . $this->token]);  // withでセットしたデータをviewへ渡す
     }
 }

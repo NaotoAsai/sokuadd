@@ -24,10 +24,8 @@ Route::group([
     'prefix' => 'v1'
 ], function(){
 
-    // パスワード再発行
-    Route::post('resetpassword', 'ResetPasswordController@preResetPassword');
-    Route::get('resetpassword', 'ResetPasswordController@passResetPassword');
-    Route::put('resetpassword', 'ResetPasswordController@resetPassword');
+    // メールアドレス変更（メールのリンクからアクセス）
+    Route::get('email', 'EmailController@editEmail');
 });
 
 // 未ログインユーザー
@@ -38,6 +36,11 @@ Route::group([
     Route::post('register', 'AuthController@register');
     Route::post('login', 'AuthController@login');
     Route::post('refresh', 'AuthController@refresh');
+
+    // パスワード再発行
+    Route::post('resetpassword', 'ResetPasswordController@preResetPassword');
+    Route::get('resetpassword', 'ResetPasswordController@passResetPassword');
+    Route::put('resetpassword', 'ResetPasswordController@resetPassword');
 });
 
 // ログイン済みユーザー
@@ -51,9 +54,8 @@ Route::group([
     Route::put('user', 'UserController@editName');
     Route::put('password', 'UserController@editPassword');
 
-    // メールアドレス変更
+    // メールアドレス変更準備
     Route::post('email', 'EmailController@preEditEmail');
-    Route::get('email', 'EmailController@editEmail');
 
     Route::get('incomeandexpenditure_classes', 'IncomeAndExpenditureClassController@getClasses');
     Route::post('incomeandexpenditure_classes', 'IncomeAndExpenditureClassController@createClass');

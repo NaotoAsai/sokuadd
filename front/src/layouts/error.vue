@@ -18,6 +18,9 @@
       <div v-else>
         エラーが発生しました
       </div>
+      <div v-if="error.message === 'customMessage'">
+        {{ error.customMessage }}
+      </div>
     </v-alert>
   </v-app>
 </template>
