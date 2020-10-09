@@ -37,8 +37,8 @@
         </ValidationProvider>
         <ValidationProvider
           v-slot="{ errors }"
-          rules="required|min:8|max:255"
           vid="password"
+          rules="required|min:8|max:255"
           name="パスワード"
         >
           <v-text-field

@@ -1,14 +1,13 @@
 <template>
   <ValidationProvider
     v-slot="{ errors }"
-    vid="password"
-    rules="required|min:8|max:255"
-    name="パスワード"
+    rules="required|confirmed:password"
+    name="パスワード(確認)"
   >
     <v-text-field
       :error-messages="errors"
-      name="password"
-      label="パスワード"
+      name="password_confirmation"
+      label="パスワード(確認)"
       type="password"
       outlined
       :value="value"
