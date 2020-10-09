@@ -6,11 +6,10 @@
     <ValidationObserver ref="obs" v-slot="{ invalid }">
       <v-form
         ref="form"
-        v-model="valid"
         class="pa-9"
       >
         <ValidationProvider
-          v-slot="{ errors, valid }"
+          v-slot="{ errors }"
           rules="required|max:32"
           name="ユーザー名"
         >
@@ -18,28 +17,26 @@
             v-model="authData.name"
             :counter="32"
             :error-messages="errors"
-            :success="valid"
             name="username"
             label="ユーザー名"
             outlined
           />
         </ValidationProvider>
         <ValidationProvider
-          v-slot="{ errors, valid }"
+          v-slot="{ errors }"
           rules="required|email|max:255"
           name="メールアドレス"
         >
           <v-text-field
             v-model="authData.email"
             :error-messages="errors"
-            :success="valid"
             name="email"
             label="メールアドレス"
             outlined
           />
         </ValidationProvider>
         <ValidationProvider
-          v-slot="{ errors, valid }"
+          v-slot="{ errors }"
           rules="required|min:8|max:255"
           vid="password"
           name="パスワード"
@@ -47,7 +44,6 @@
           <v-text-field
             v-model="authData.password"
             :error-messages="errors"
-            :success="valid"
             name="password"
             label="パスワード"
             type="password"
@@ -55,14 +51,13 @@
           />
         </ValidationProvider>
         <ValidationProvider
-          v-slot="{ errors, valid }"
+          v-slot="{ errors }"
           rules="required|confirmed:password"
           name="パスワード(確認)"
         >
           <v-text-field
             v-model="passwordConfirm"
             :error-messages="errors"
-            :success="valid"
             name="password_confirmation"
             label="パスワード(確認)"
             type="password"

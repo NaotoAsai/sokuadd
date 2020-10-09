@@ -15,7 +15,8 @@
 </template>
 
 <script>
-import LoginForm from '~/components/LoginForm.vue'
+// import LoginForm from '~/components/LoginForm.vue'
+import LoginForm from '~/components/organisms/LoginForm.vue'
 import RegisterForm from '~/components/RegisterForm.vue'
 export default {
   auth: 'guest',

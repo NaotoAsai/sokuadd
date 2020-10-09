@@ -20,16 +20,23 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item>
+            <v-list-item @click="$router.push('/setting')">
               <v-list-item-content>
-                <v-list-item-title @click.stop="dialog2 = true">
-                  名前変更
+                <v-list-item-title>
+                  設定
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <!-- <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title @click.stop="openEditNameForm">
+                  ユーザー名変更
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title @click.stop="dialog4 = true">
+                <v-list-item-title @click.stop="openEditEmailForm">
                   メールアドレス変更
                 </v-list-item-title>
               </v-list-item-content>
@@ -40,7 +47,7 @@
                   パスワード変更
                 </v-list-item-title>
               </v-list-item-content>
-            </v-list-item>
+            </v-list-item> -->
             <v-list-item>
               <v-list-item-content @click="logout">
                 <v-list-item-title>ログアウト</v-list-item-title>
@@ -51,39 +58,55 @@
       </v-toolbar-items>
     </v-app-bar>
 
-    <!-- 名前変更ダイアログフォーム -->
-    <v-row justify="center">
-      <v-dialog v-model="dialog2" persistent max-width="600px">
+    <!-- ユーザー名変更ダイアログフォーム -->
+    <!-- <v-row justify="center">
+      <v-dialog v-model="editNameForm" persistent max-width="600px">
         <v-card>
           <v-card-title>
             <span class="headline">ユーザー名変更</span>
           </v-card-title>
-
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12">
-                  <v-text-field label="新しいユーザー名" required />
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
+          <ValidationObserver ref="obs" v-slot="{ invalid }">
+            <v-form
+              ref="form"
+              class="pa-9"
+            >
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="required|max:32"
+                name="ユーザー名"
+              >
+                <v-text-field
+                  v-model="editNameData.name"
+                  :counter="32"
+                  :error-messages="errors"
+                  name="username"
+                  label="ユーザー名"
+                  outlined
+                />
+              </ValidationProvider>
+              <v-btn
+                large
+                block
+                :disabled="invalid"
+                @click="editName"
+              >
+                変更
+              </v-btn>
+            </v-form>
+          </ValidationObserver>
           <v-card-actions>
             <v-spacer />
-            <v-btn color="blue darken-1" text @click="dialog2 = false">
+            <v-btn color="blue darken-1" text @click="editNameForm = false">
               Close
-            </v-btn>
-            <v-btn color="blue darken-1" text @click="dialog2 = false">
-              Save
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-row>
+    </v-row> -->
 
     <!-- パスワード変更ダイアログフォーム -->
-    <v-row justify="center">
-      <v-dialog v-model="dialog3" persistent max-width="600px">
+    <!-- <v-row justify="center">
+      <v-dialog v-model="editPasswordFrom" persistent max-width="600px">
         <v-card v-if="isDone === false">
           <v-card-title>
             パスワード変更
@@ -97,7 +120,6 @@
           <ValidationObserver ref="obs" v-slot="{ invalid }">
             <v-form
               ref="form"
-              v-model="valid"
               class="pa-9"
             >
               <ValidationProvider
@@ -106,7 +128,7 @@
                 name="現在のパスワード"
               >
                 <v-text-field
-                  v-model="newPasswordData.password"
+                  v-model="editPasswordData.password"
                   :error-messages="errors"
                   name="nowpassword"
                   label="現在のパスワード"
@@ -121,7 +143,7 @@
                 name="新しいパスワード"
               >
                 <v-text-field
-                  v-model="newPasswordData.newPassword"
+                  v-model="editPasswordData.newPassword"
                   :error-messages="errors"
                   name="password"
                   label="新しいパスワード"
@@ -155,7 +177,7 @@
           </ValidationObserver>
           <v-card-actions>
             <v-spacer />
-            <v-btn color="blue darken-1" text @click="dialog3 = false">
+            <v-btn color="blue darken-1" text @click="editPasswordFrom = false">
               Close
             </v-btn>
           </v-card-actions>
@@ -169,17 +191,17 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn color="blue darken-1" text @click="dialog3 = false">
+            <v-btn color="blue darken-1" text @click="editPasswordFrom = false">
               Close
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-row>
+    </v-row> -->
 
     <!-- メールアドレス変更ダイアログフォーム -->
-    <v-row justify="center">
-      <v-dialog v-model="dialog4" persistent max-width="600px">
+    <!-- <v-row justify="center">
+      <v-dialog v-model="editEmailForm" persistent max-width="600px">
         <v-card v-if="isDone === false">
           <v-card-title>
             メールアドレス変更
@@ -193,7 +215,6 @@
           <ValidationObserver ref="obs" v-slot="{ invalid }">
             <v-form
               ref="form"
-              v-model="valid"
               class="pa-9"
             >
               <ValidationProvider
@@ -236,7 +257,7 @@
           </ValidationObserver>
           <v-card-actions>
             <v-spacer />
-            <v-btn color="blue darken-1" text @click="dialog4 = false">
+            <v-btn color="blue darken-1" text @click="editEmailForm = false">
               Close
             </v-btn>
           </v-card-actions>
@@ -250,13 +271,13 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn color="blue darken-1" text @click="dialog4 = false">
+            <v-btn color="blue darken-1" text @click="editEmailForm = false">
               Close
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-row>
+    </v-row> -->
 
     <!-- ↓↓サイドメニュー↓↓ -->
     <v-navigation-drawer
@@ -306,85 +327,111 @@ import { mapActions } from 'vuex'
 export default {
   data () {
     return {
-      drawer: null,
-      dialog2: false,
-      dialog3: false,
-      dialog4: false,
-      newPasswordData: {
-        password: '',
-        newPassword: ''
-      },
-      editEmailData: {
-        password: '',
-        email: this.$auth.user.email
-      },
-      passwordConfirm: '',
-      isDone: false,
-      unAuthorized: ''
+      drawer: null
+    //   editNameForm: false,
+    //   editPasswordFrom: false,
+    //   editEmailForm: false,
+    //   editNameData: {
+    //     name: this.$auth.user.name
+    //   },
+    //   editPasswordData: {
+    //     password: '',
+    //     newPassword: ''
+    //   },
+    //   editEmailData: {
+    //     password: '',
+    //     email: this.$auth.user.email
+    //   },
+    //   passwordConfirm: '',
+    //   // 各フォーム、完了状況
+    //   isDone: false,
+    //   // 現在のパスワード不一致時にエラーメッセージ
+    //   unAuthorized: ''
     }
   },
   methods: {
-    openEditPasswordForm () {
-      this.isDone = false
-      this.dialog3 = true
-    },
-    openEditEmailForm () {
-      this.isDone = false
-      this.dialog4 = true
-    },
-    ...mapActions(['logout']),
-    // パスワード変更
-    async editPassword () {
-      await this.$store.dispatch('editPassword', this.newPasswordData)
-        .then((res) => {
-          // 認証失敗時、エラーメッセージ格納
-          if (res.status === 401) {
-            this.unAuthorized = res.data.message
-          } else if (res.status === 200) {
-            this.isDone = true
-            this.newPasswordData.password = ''
-            this.newPasswordData.newPassword = ''
-            this.passwordConfirm = ''
-            this.unAuthorized = ''
-          } else {
-            this.$nuxt.error({ statusCode: res.status })
-            this.dialog3 = false
-            this.newPasswordData.password = ''
-            this.newPasswordData.newPassword = ''
-            this.passwordConfirm = ''
-            this.unAuthorized = ''
-            // バリデーションエラーメッセージ表示防止
-            this.$refs.obs.reset()
-          }
-        })
-      this.$store.commit('setLoading', false)
-    },
-    // メールアドレス変更準備
-    async preEditEmail () {
-      await this.$store.dispatch('preEditEmail', this.editEmailData)
-        .then((res) => {
-          // 認証失敗時、エラーメッセージ格納
-          if (res.status === 401) {
-            this.unAuthorized = res.data.message
-          } else if (res.status === 200) {
-            this.isDone = true
-            this.editEmailData.password = ''
-            this.editEmailData.email = ''
-            this.passwordConfirm = ''
-            this.unAuthorized = ''
-          } else {
-            this.$nuxt.error({ statusCode: res.status })
-            this.dialog4 = false
-            this.editEmailData.password = ''
-            // this.editEmailData.email = ''
-            this.passwordConfirm = ''
-            this.unAuthorized = ''
-            // バリデーションエラーメッセージ表示防止
-            this.$refs.obs.reset()
-          }
-        })
-      this.$store.commit('setLoading', false)
-    }
+    // openEditNameForm () {
+    //   this.editNameData.name = this.$auth.user.name
+    //   this.editNameForm = true
+    // },
+    // openEditPasswordForm () {
+    //   this.isDone = false
+    //   this.editPasswordFrom = true
+    // },
+    // openEditEmailForm () {
+    //   this.isDone = false
+    //   this.editEmailForm = true
+    // },
+    ...mapActions(['logout'])
+    // // ユーザー名変更
+    // async editName () {
+    //   await this.$store.dispatch('editName', this.editNameData)
+    //     .then((res) => {
+    //       if (res.status === 200) {
+    //         // ストアのステートの値を更新
+    //         this.$store.commit('updateUserName', this.editNameData.name)
+    //       } else {
+    //         this.$nuxt.error({ statusCode: res.status })
+    //         // バリデーションエラーメッセージ表示防止
+    //         this.$refs.obs.reset()
+    //       }
+    //     })
+
+    //   this.editNameForm = false
+    //   this.$store.commit('setLoading', false)
+    // },
+    // // パスワード変更
+    // async editPassword () {
+    //   await this.$store.dispatch('editPassword', this.editPasswordData)
+    //     .then((res) => {
+    //       // 認証失敗時、エラーメッセージ格納
+    //       if (res.status === 401) {
+    //         this.unAuthorized = res.data.message
+    //       } else if (res.status === 200) {
+    //         this.isDone = true
+    //         this.editPasswordData.password = ''
+    //         this.editPasswordData.newPassword = ''
+    //         this.passwordConfirm = ''
+    //         this.unAuthorized = ''
+    //       } else {
+    //         this.$nuxt.error({ statusCode: res.status })
+    //         this.editPasswordFrom = false
+    //         this.editPasswordData.password = ''
+    //         this.editPasswordData.newPassword = ''
+    //         this.passwordConfirm = ''
+    //         this.unAuthorized = ''
+    //         // バリデーションエラーメッセージ表示防止
+    //         this.$refs.obs.reset()
+    //       }
+    //     })
+    //   this.$store.commit('setLoading', false)
+    // },
+    // // メールアドレス変更準備
+    // async preEditEmail () {
+    //   await this.$store.dispatch('preEditEmail', this.editEmailData)
+    //     .then((res) => {
+    //       // 認証失敗時、エラーメッセージ格納
+    //       if (res.status === 401) {
+    //         this.unAuthorized = res.data.message
+    //       } else if (res.status === 200) {
+    //         this.isDone = true
+    //         this.editEmailData.password = ''
+    //         this.editEmailData.email = ''
+    //         this.passwordConfirm = ''
+    //         this.unAuthorized = ''
+    //       } else {
+    //         this.$nuxt.error({ statusCode: res.status })
+    //         this.editEmailForm = false
+    //         this.editEmailData.password = ''
+    //         // this.editEmailData.email = ''
+    //         this.passwordConfirm = ''
+    //         this.unAuthorized = ''
+    //         // バリデーションエラーメッセージ表示防止
+    //         this.$refs.obs.reset()
+    //       }
+    //     })
+    //   this.$store.commit('setLoading', false)
+    // }
   }
 }
 </script>

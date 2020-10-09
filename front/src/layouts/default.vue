@@ -8,7 +8,7 @@
         indeterminate
       />
     </div>
-    <Navbar />
+    <HeaderNav />
     <v-main>
       <v-container>
         <nuxt />
@@ -20,12 +20,12 @@
 </template>
 
 <script>
-import Navbar from '~/components/Navbar.vue'
+import HeaderNav from '~/components/HeaderNav.vue'
 import BottomNav from '~/components/BottomNav.vue'
 import VueFooter from '~/components/VueFooter.vue'
 export default {
   components: {
-    Navbar,
+    HeaderNav,
     BottomNav,
     VueFooter
   }

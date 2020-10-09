@@ -33,6 +33,10 @@ export const mutations = {
     }
     this.$router.push({ name: page })
   },
+  // ユーザー名を変更する
+  updateUserName (state, userName) {
+    this.$auth.user.name = userName
+  },
   // 収支分類配列に一覧データを格納
   setIncomeAndExpenditureClassData (state, incomeAndExpenditureClasses) {
     state.incomeAndExpenditureClasses = incomeAndExpenditureClasses
@@ -107,11 +111,11 @@ export const actions = {
   },
 
   // パスワード変更
-  async editPassword ({ commit }, newPasswordData) {
+  async editPassword ({ commit }, editPasswordData) {
     const url = '/api/v1/password'
     commit('setLoading', true)
 
-    return await this.$axios.$put(url, newPasswordData)
+    return await this.$axios.$put(url, editPasswordData)
       // 401エラーのみエラーページではなく、画面にメッセージ表示する
       .then(() => {
         return { status: 200 }
@@ -125,11 +129,11 @@ export const actions = {
       })
   },
   // メールアドレス変更（準備）
-  async preEditEmail ({ commit }, newEmailData) {
+  async preEditEmail ({ commit }, editEmailData) {
     const url = '/api/v1/email'
     commit('setLoading', true)
 
-    return await this.$axios.$post(url, newEmailData)
+    return await this.$axios.$post(url, editEmailData)
       // 401エラーのみエラーページではなく、画面にメッセージ表示する
       .then(() => {
         return { status: 200 }
@@ -151,6 +155,19 @@ export const actions = {
 
     commit('setLoading', false)
   },
+  async editName ({ commit }, editNameData) {
+    const url = '/api/v1/user'
+    commit('setLoading', true)
+
+    return await this.$axios.$put(url, editNameData)
+      .then(() => {
+        return { status: 200 }
+      })
+      .catch((err) => {
+        return err.response
+      })
+  },
+
   // 収支分類名一覧の取得
   async getIncomeAndExpenditureClasses ({ commit }) {
     const url = '/api/v1/incomeandexpenditure_classes'

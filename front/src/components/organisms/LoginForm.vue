@@ -11,33 +11,12 @@
         ref="form"
         class="pa-9"
       >
-        <ValidationProvider
-          v-slot="{ errors }"
-          rules="required|email|max:255"
-          name="メールアドレス"
-        >
-          <v-text-field
-            v-model="authData.email"
-            :error-messages="errors"
-            name="email"
-            label="メールアドレス"
-            outlined
-          />
-        </ValidationProvider>
-        <ValidationProvider
-          v-slot="{ errors }"
-          rules="required|min:8|max:255"
-          name="パスワード"
-        >
-          <v-text-field
-            v-model="authData.password"
-            :error-messages="errors"
-            name="password"
-            label="パスワード"
-            type="password"
-            outlined
-          />
-        </ValidationProvider>
+        <EmailTextField
+          v-model="authData.email"
+        />
+        <PasswordTextField
+          v-model="authData.password"
+        />
         <v-btn
           large
           block
@@ -55,7 +34,14 @@
 </template>
 
 <script>
+import EmailTextField from '~/components/molecules/EmailTextField.vue'
+import PasswordTextField from '~/components/molecules/PasswordTextField.vue'
+
 export default {
+  components: {
+    EmailTextField,
+    PasswordTextField
+  },
   data () {
     return {
       authData: {
