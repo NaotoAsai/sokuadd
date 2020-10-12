@@ -34,10 +34,10 @@
 </template>
 
 <script>
-import UserNameTextField from '~/components/molecules/UserNameTextField.vue'
-import EmailTextField from '~/components/molecules/EmailTextField.vue'
-import PasswordTextField from '~/components/molecules/PasswordTextField.vue'
-import PasswordConfirmTextField from '~/components/molecules/PasswordConfirmTextField.vue'
+import UserNameTextField from '~/components/atoms/UserNameTextField.vue'
+import EmailTextField from '~/components/atoms/EmailTextField.vue'
+import PasswordTextField from '~/components/atoms/PasswordTextField.vue'
+import PasswordConfirmTextField from '~/components/atoms/PasswordConfirmTextField.vue'
 
 export default {
   components: {
