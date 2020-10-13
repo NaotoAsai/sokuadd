@@ -59,6 +59,7 @@ export default {
     },
     async create (values) {
       this.newData.type = this.currentType
+      // 子コンポーネントから受け取ったパラメータをマージ
       Object.assign(this.newData, values)
       await this.$store.dispatch('createIncomeAndExpenditure', this.newData)
       // テキストエリアを空にする
