@@ -1,7 +1,7 @@
 <template>
   <v-menu v-model="menu" offset-y :close-on-content-click="false">
     <template v-slot:activator="{ on }">
-      <v-btn icon dark v-on="on">
+      <v-btn icon v-on="on">
         <v-icon>mdi-calendar</v-icon>
       </v-btn>
     </template>
@@ -32,9 +32,9 @@ export default {
       get () {
         return this.value
       },
-      set (val) {
+      set (newVal) {
         this.menu = false
-        this.$emit('input', val)
+        this.$emit('input', newVal)
       }
     }
   }

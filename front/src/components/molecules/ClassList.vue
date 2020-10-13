@@ -2,7 +2,7 @@
   <div>
     <!-- 分類がない時 -->
     <v-card-text
-      v-if="currentClassArray.length === 0"
+      v-if="currentTypeClassArray.length === 0"
       class="text-h5 text-center"
     >
       分類がありません
@@ -11,7 +11,7 @@
     <v-list subheader style="overflow-y: scroll; height: 550px">
       <transition-group name="list">
         <v-list-item
-          v-for="(item, index) in currentClassArray"
+          v-for="(item, index) in currentTypeClassArray"
           :key="item.id"
         >
           <v-list-item-content>
@@ -41,15 +41,15 @@
 <script>
 export default {
   props: {
-    currentClass: {
+    currentType: {
       type: Number,
       default: 1,
       required: true
     }
   },
   computed: {
-    currentClassArray () {
-      if (this.currentClass === 0) {
+    currentTypeClassArray () {
+      if (this.currentType === 0) {
         return this.$store.state.incomeAndExpenditureClasses.incomeClasses
       } else {
         return this.$store.state.incomeAndExpenditureClasses.expenditureClasses

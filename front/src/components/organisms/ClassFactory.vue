@@ -7,10 +7,10 @@
       dark
     >
       <v-tabs grow>
-        <v-tab @click="currentClass = 1">
+        <v-tab @click="currentType = 1">
           支出分類
         </v-tab>
-        <v-tab @click="currentClass = 0">
+        <v-tab @click="currentType = 0">
           収入分類
         </v-tab>
       </v-tabs>
@@ -22,7 +22,7 @@
     />
 
     <ClassList
-      :current-class="currentClass"
+      :current-type="currentType"
       @setEditData="setEditData($event)"
       @setDeleteData="setDeleteData($event)"
     />
@@ -56,7 +56,7 @@ export default {
   },
   data () {
     return {
-      currentClass: 1,
+      currentType: 1,
       newData: {
         name: '',
         type: ''
@@ -80,19 +80,19 @@ export default {
       this.editData.id = values.id
       this.editData.name = values.name
       this.editData.index = values.index
-      this.editData.type = this.currentClass
+      this.editData.type = this.currentType
       this.$refs.classEditForm.dialog = true
     },
     // 削除対象の分類名情報をセット
     setDeleteData (values) {
       this.deleteData.id = values.id
       this.deleteData.index = values.index
-      this.deleteData.type = this.currentClass
+      this.deleteData.type = this.currentType
       this.$refs.deleteDialog.dialog = true
     },
     // 分類名の新規作成
     async create () {
-      this.newData.type = this.currentClass
+      this.newData.type = this.currentType
       await this.$store.dispatch('createIncomeAndExpenditureClass', this.newData)
       // テキストエリアを空にする
       this.newData.name = ''
