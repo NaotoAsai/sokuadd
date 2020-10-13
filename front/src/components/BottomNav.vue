@@ -19,7 +19,7 @@
       <v-icon>mdi-calendar-month</v-icon>
     </v-btn>
 
-    <v-btn @click="$router.push({ name: 'classdisp' })">
+    <v-btn @click="$router.push({ name: 'monthlydatabyclass' })">
       <span>分類別収支</span>
       <v-icon>mdi-format-list-numbered</v-icon>
     </v-btn>

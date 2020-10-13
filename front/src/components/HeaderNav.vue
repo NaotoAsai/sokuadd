@@ -301,7 +301,7 @@
             <v-list-item-title>カレンダー</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item @click="$store.commit('changePage', 'classdisp')">
+        <v-list-item @click="$store.commit('changePage', 'monthlydatabyclass')">
           <v-list-item-action>
             <v-icon>mdi-format-list-numbered</v-icon>
           </v-list-item-action>

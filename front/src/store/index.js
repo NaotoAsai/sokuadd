@@ -25,7 +25,7 @@ export const mutations = {
     if (page === 'calendar') {
       state.activeBtn = 1
     }
-    if (page === 'classdisp') {
+    if (page === 'monthlydatabyclass') {
       state.activeBtn = 2
     }
     if (page === 'classedit') {
