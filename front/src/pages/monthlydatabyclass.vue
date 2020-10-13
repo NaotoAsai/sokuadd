@@ -1,14 +1,14 @@
 <template>
-  <MonthlyDataByClassCard
+  <MonthlyDataByClass
     :value="oneMonthData"
   />
 </template>
 
 <script>
-import MonthlyDataByClassCard from '~/components/organisms/MonthlyDataByClassCard.vue'
+import MonthlyDataByClass from '~/components/organisms/MonthlyDataByClass.vue'
 export default {
   comopnents: {
-    MonthlyDataByClassCard
+    MonthlyDataByClass
   },
   async asyncData (context) {
     // コンポーネント生成前にAPIから指定月の分類別収支データ取得

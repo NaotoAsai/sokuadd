@@ -1,13 +1,13 @@
 <template>
-  <ClassFactoryCard />
+  <ClassFactory />
 </template>
 
 <script>
-import ClassFactoryCard from '~/components/organisms/ClassFactoryCard.vue'
+import ClassFactory from '~/components/organisms/ClassFactory.vue'
 
 export default {
   components: {
-    ClassFactoryCard
+    ClassFactory
   },
   async fetch (context) {
     await context.store.dispatch('getIncomeAndExpenditureClasses')
