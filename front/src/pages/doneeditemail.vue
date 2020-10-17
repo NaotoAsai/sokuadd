@@ -5,17 +5,19 @@
         メールアドレスの変更が完了しました。
       </v-card-title>
       <br>
-      <v-card-subtitle class="text-center">
-        <nuxt-link to="/">
-          ホームへ戻る
-        </nuxt-link>
-      </v-card-subtitle>
+      <v-card-actions class="justify-center">
+        <HomeButton />
+      </v-card-actions>
     </v-card>
   </div>
 </template>
 
 <script>
+import HomeButton from '~/components/atoms/HomeButton.vue'
 export default {
+  components: {
+    HomeButton
+  },
   data () {
     return {
       genericToken: { genericToken: this.$route.query.genericToken },

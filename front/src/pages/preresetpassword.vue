@@ -10,23 +10,11 @@
       <ValidationObserver ref="obs" v-slot="{ invalid }">
         <v-form
           ref="form"
-          v-model="valid"
           class="pa-9"
         >
-          <ValidationProvider
-            v-slot="{ errors, valid }"
-            rules="required|email|max:255"
-            name="メールアドレス"
-          >
-            <v-text-field
-              v-model="email.email"
-              :error-messages="errors"
-              :success="valid"
-              name="email"
-              label="メールアドレス"
-              outlined
-            />
-          </ValidationProvider>
+          <EmailTextField
+            v-model="email.email"
+          />
           <v-btn
             large
             block
@@ -37,6 +25,9 @@
           </v-btn>
         </v-form>
       </ValidationObserver>
+      <v-card-actions class="justify-center">
+        <EntranceButton />
+      </v-card-actions>
     </v-card>
     <v-card v-if="isDone === true" class="mx-auto" max-width="344">
       <v-card-title>
@@ -45,13 +36,23 @@
       <v-card-subtitle>
         送信されたメールに従って、引き続き再発行手続きを行ってください
       </v-card-subtitle>
+      <v-card-actions class="justify-center">
+        <EntranceButton />
+      </v-card-actions>
     </v-card>
   </div>
 </template>
 
 <script>
+import EmailTextField from '~/components/atoms/EmailTextField.vue'
+import EntranceButton from '~/components/atoms/EntranceButton.vue'
+
 export default {
   auth: 'guest',
+  components: {
+    EmailTextField,
+    EntranceButton
+  },
   data () {
     return {
       email: { email: '' },

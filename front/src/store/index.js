@@ -17,7 +17,7 @@ export const mutations = {
   setLoading (state, payload) {
     state.loading = payload
   },
-  // ボトムナビのアクティブ状態をサイドメニューと連携したいのでこのメソッドを通す
+  // ボトムナビのアクティブ状態をサイドメニューと連携したいのでページ遷移時はこのメソッドを通す
   changePage (state, page) {
     switch (page) {
       case 'index':

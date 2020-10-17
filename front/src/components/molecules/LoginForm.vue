@@ -26,10 +26,12 @@
           ログイン
         </v-btn>
       </v-form>
+    </ValidationObserver>
+    <v-card-actions class="justify-center">
       <nuxt-link to="/preresetpassword">
         パスワードを忘れた方
       </nuxt-link>
-    </ValidationObserver>
+    </v-card-actions>
   </v-card>
 </template>
 

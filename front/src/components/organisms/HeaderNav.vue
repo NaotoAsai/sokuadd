@@ -39,6 +39,7 @@
 
     <!-- ↓↓サイドメニュー↓↓ -->
     <v-navigation-drawer
+      v-if="$auth.loggedIn"
       v-model="drawer"
       app
     >
