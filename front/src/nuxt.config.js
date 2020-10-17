@@ -38,7 +38,8 @@ export default {
   */
   plugins: [
     '~/plugins/axios.js',
-    '~/plugins/vee-validate'
+    '~/plugins/vee-validate',
+    { src: '~/plugins/vue-flash-message.js', mode: 'client' }
   ],
   /*
   ** Auto import components

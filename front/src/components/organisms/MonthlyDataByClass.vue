@@ -17,10 +17,10 @@
               :key="item.name"
             >
               <v-list-item-content>
-                <v-list-item-title class="text-md-h4">
+                <v-list-item-title class="text-md-h5">
                   {{ item.name }}
                 </v-list-item-title>
-                <v-list-item-subtitle class="text-md-h4">
+                <v-list-item-subtitle class="text-md-h5">
                   {{ item.amount }}円
                 </v-list-item-subtitle>
                 <v-divider />
@@ -28,10 +28,10 @@
             </v-list-item>
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title class="text-md-h4">
+                <v-list-item-title class="text-md-h5">
                   合計
                 </v-list-item-title>
-                <v-list-item-subtitle class="text-md-h4">
+                <v-list-item-subtitle class="text-md-h5">
                   {{ oneMonthData.incomes.totalAmount }}円
                 </v-list-item-subtitle>
               </v-list-item-content>
@@ -51,10 +51,10 @@
               :key="item.name"
             >
               <v-list-item-content>
-                <v-list-item-title class="text-md-h4">
+                <v-list-item-title class="text-md-h5">
                   {{ item.name }}
                 </v-list-item-title>
-                <v-list-item-subtitle class="text-md-h4">
+                <v-list-item-subtitle class="text-md-h5">
                   {{ item.amount }}円
                 </v-list-item-subtitle>
                 <v-divider />
@@ -62,10 +62,10 @@
             </v-list-item>
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title class="text-md-h4">
+                <v-list-item-title class="text-md-h5">
                   合計
                 </v-list-item-title>
-                <v-list-item-subtitle class="text-md-h4">
+                <v-list-item-subtitle class="text-md-h5">
                   {{ oneMonthData.expenditures.totalAmount }}円
                 </v-list-item-subtitle>
               </v-list-item-content>
@@ -75,7 +75,7 @@
       </v-col>
     </v-row>
     <!-- 合計収支カード -->
-    <v-card-text class="text-center text-h5 text-md-h3">
+    <v-card-text class="text-center text-h5 text-md-h4">
       合計収支： {{ oneMonthData.totalAmount }}円
     </v-card-text>
   </v-card>

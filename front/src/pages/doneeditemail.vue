@@ -1,12 +1,15 @@
 <template>
   <div>
-    <v-card v-if="isDone === true" class="mx-auto" max-width="344">
+    <v-card v-if="isDone === true" class="mx-auto" max-width="400">
       <v-card-title>
-        メールアドレスの変更が完了しました
+        メールアドレスの変更が完了しました。
       </v-card-title>
-      <nuxt-link to="/">
-        ホームへ戻る
-      </nuxt-link>
+      <br>
+      <v-card-subtitle class="text-center">
+        <nuxt-link to="/">
+          ホームへ戻る
+        </nuxt-link>
+      </v-card-subtitle>
     </v-card>
   </div>
 </template>

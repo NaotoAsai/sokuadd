@@ -19,17 +19,21 @@ export const mutations = {
   },
   // ボトムナビのアクティブ状態をサイドメニューと連携したいのでこのメソッドを通す
   changePage (state, page) {
-    if (page === 'index') {
-      state.activeBtn = 0
-    }
-    if (page === 'calendar') {
-      state.activeBtn = 1
-    }
-    if (page === 'monthlydatabyclass') {
-      state.activeBtn = 2
-    }
-    if (page === 'classedit') {
-      state.activeBtn = 3
+    switch (page) {
+      case 'index':
+        state.activeBtn = 0
+        break
+      case 'calendar':
+        state.activeBtn = 1
+        break
+      case 'monthlydatabyclass':
+        state.activeBtn = 2
+        break
+      case 'classedit':
+        state.activeBtn = 3
+        break
+      default:
+        state.activeBtn = undefined
     }
     this.$router.push({ name: page })
   },
@@ -71,7 +75,6 @@ export const actions = {
     return await this.$auth.loginWith('laravelJWT', { data: authData })
       // 401エラーのみエラーページではなく、画面にメッセージ表示する
       .catch((err) => {
-        console.log(err.response)
         if (err.response.status === 401) {
           return err.response
         }

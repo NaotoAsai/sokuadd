@@ -3,11 +3,10 @@
   <v-bottom-navigation
     v-if="$auth.loggedIn"
     v-model="activeBtn"
+    app
     grow
     color="teal"
     height="60px"
-    absolute
-    :input-value="false"
   >
     <v-btn @click="$router.push({ name: 'index' })">
       <span>追加する</span>

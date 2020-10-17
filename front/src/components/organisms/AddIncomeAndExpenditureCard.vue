@@ -17,6 +17,7 @@
       {{ newData.targetDate }}
       <DatePicker v-model="newData.targetDate" />
     </h2>
+    <!-- 追加するたびフォームコンポーネントをリロードし、状態をリセットする -->
     <IncomeAndExpenditureForm
       v-if="reloadFlag === false"
       ref="incomeAndExpenditureForm"

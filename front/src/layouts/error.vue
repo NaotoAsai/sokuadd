@@ -10,7 +10,7 @@
       </div>
       <div v-else-if="error.statusCode === 422">
         入力エラー
-        <span>※会員登録時この画面が表示された場合、メールアドレスが既に登録されている可能性があります</span>
+        <p>※又はメールアドレスが既に登録されている可能性があります</p>
       </div>
       <div v-else-if="error.statusCode === 500">
         サーバーエラー
