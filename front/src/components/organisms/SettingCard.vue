@@ -102,8 +102,13 @@ export default {
       await this.$store.dispatch('editName', this.editNameData)
         .then((res) => {
           if (res.status === 200) {
-            // ストアのステートの値を更新
+            // ストアのステートの値を更新、this.$auth.fetchUser()←これを使わずにAPI通信を減らす
             this.$store.commit('updateUserName', this.editNameData.name)
+            this.flashMessage.show({
+              status: 'success',
+              title: 'ユーザー名を変更しました',
+              time: 3000
+            })
           } else {
             this.$nuxt.error({ statusCode: res.status })
           }

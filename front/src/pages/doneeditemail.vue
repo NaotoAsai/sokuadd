@@ -32,6 +32,8 @@ export default {
       await this.$store.dispatch('editEmail', this.genericToken)
         .then(() => {
           this.isDone = true
+          // ユーザー情報更新
+          this.$auth.fetchUser()
         })
         // なぜかstore側でエラー画面飛ばしてくれない
         .catch((err) => {

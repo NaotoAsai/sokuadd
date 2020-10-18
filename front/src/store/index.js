@@ -174,10 +174,8 @@ export const actions = {
   // 収支分類名一覧の取得
   async getIncomeAndExpenditureClasses ({ commit }) {
     const url = '/api/v1/incomeandexpenditure_classes'
-    commit('setLoading', true)
     const response = await this.$axios.$get(url)
     commit('setIncomeAndExpenditureClassData', response)
-    commit('setLoading', false)
   },
   // 収支分類名の作成
   async createIncomeAndExpenditureClass ({ commit }, newData) {

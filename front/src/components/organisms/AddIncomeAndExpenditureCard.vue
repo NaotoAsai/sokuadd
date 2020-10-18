@@ -70,6 +70,11 @@ export default {
       // this.$refs.incomeAndExpenditureForm.$refs.obs.reset()
       // ↓↓これに代替
       this.reload()
+      this.flashMessage.show({
+        status: 'success',
+        title: '収支情報を追加しました',
+        time: 3000
+      })
     },
     // Formコンポーネントを再描画する（入力やバリデーション状態をリセットするため）
     reload () {

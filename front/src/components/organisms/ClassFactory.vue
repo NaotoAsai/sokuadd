@@ -96,16 +96,31 @@ export default {
       await this.$store.dispatch('createIncomeAndExpenditureClass', this.newData)
       // テキストエリアを空にする
       this.newData.name = ''
+      this.flashMessage.show({
+        status: 'success',
+        title: '分類を追加しました',
+        time: 3000
+      })
     },
     // 編集する分類名情報を送信
     async edit () {
       this.$refs.classEditForm.dialog = false
       await this.$store.dispatch('editIncomeAndExpenditureClass', this.editData)
+      this.flashMessage.show({
+        status: 'success',
+        title: '分類名を修正しました',
+        time: 3000
+      })
     },
     // 削除する分類名情報を送信
     async remove () {
       this.$refs.deleteDialog.dialog = false
       await this.$store.dispatch('deleteIncomeAndExpenditureClass', this.deleteData)
+      this.flashMessage.show({
+        status: 'success',
+        title: '分類を削除しました',
+        time: 3000
+      })
     }
   }
 }

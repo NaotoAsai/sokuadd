@@ -21,6 +21,9 @@
       <div v-if="error.message === 'customMessage'">
         {{ error.customMessage }}
       </div>
+      <nuxt-link to="/">
+        ホームへ戻る
+      </nuxt-link>
     </v-alert>
   </v-app>
 </template>
@@ -32,11 +35,6 @@ export default {
     error: {
       type: Object,
       default: null
-    }
-  },
-  data () {
-    return {
-
     }
   },
   mounted () {

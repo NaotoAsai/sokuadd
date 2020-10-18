@@ -279,6 +279,11 @@ export default {
       const events = await this.$store.dispatch('deleteIncomeAndExpenditure', this.deleteData)
       this.events = events
       this.selectedOpen = false
+      this.flashMessage.show({
+        status: 'success',
+        title: '収支情報を削除しました',
+        time: 3000
+      })
     },
     async edit (values) {
       this.$refs.incomeAndExpenditureEditForm.dialog = false
@@ -287,6 +292,11 @@ export default {
       const events = await this.$store.dispatch('editIncomeAndExpenditure', this.editData)
       this.events = events
       this.selectedOpen = false
+      this.flashMessage.show({
+        status: 'success',
+        title: '収支情報を修正しました',
+        time: 3000
+      })
     }
   }
 }
