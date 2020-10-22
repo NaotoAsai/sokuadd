@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <div v-show="$store.state.loading" id="loading">
       <v-progress-circular
         :size="70"
@@ -8,24 +8,25 @@
         indeterminate
       />
     </div>
-    <Navbar />
+    <FlashMessage id="flash" :position="'right top'" />
+    <HeaderNav />
     <v-main>
       <v-container>
         <nuxt />
       </v-container>
     </v-main>
-    <BottomNav v-if="$vuetify.breakpoint.xs" />
     <VueFooter />
+    <BottomNav v-if="$vuetify.breakpoint.xs" />
   </v-app>
 </template>
 
 <script>
-import Navbar from '~/components/Navbar.vue'
-import BottomNav from '~/components/BottomNav.vue'
-import VueFooter from '~/components/VueFooter.vue'
+import HeaderNav from '~/components/organisms/HeaderNav.vue'
+import BottomNav from '~/components/organisms/BottomNav.vue'
+import VueFooter from '~/components/organisms/VueFooter.vue'
 export default {
   components: {
-    Navbar,
+    HeaderNav,
     BottomNav,
     VueFooter
   }
@@ -42,5 +43,8 @@ export default {
     z-index:9999;
     position: fixed;
     background-color: rgba(#000, 0.5);
+  }
+  #flash {
+    z-index:9999;
   }
 </style>

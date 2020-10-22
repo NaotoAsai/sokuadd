@@ -174,6 +174,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        // 開発環境でSQLログを出力する
+        App\Providers\DataBaseQueryServiceProvider::class,
 
     ],
 

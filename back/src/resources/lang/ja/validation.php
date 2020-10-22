@@ -104,6 +104,10 @@ return [
     */
 
     'attributes' => [
+        'name' => 'ユーザー名',
+        'email' => 'メールアドレス',
+        'password' => 'パスワード',
+        'password_confirmation' => 'パスワード(確認)',
         'type' => '収入or支出の選択',
         'targetDate' => '日付',
         'amount' => '金額',

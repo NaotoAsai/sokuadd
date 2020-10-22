@@ -1,14 +1,14 @@
 <template>
   <v-menu v-model="menu" offset-y :close-on-content-click="false">
     <template v-slot:activator="{ on }">
-      <v-btn icon dark v-on="on">
+      <v-btn icon v-on="on">
         <v-icon>mdi-calendar</v-icon>
       </v-btn>
     </template>
     <v-date-picker
       v-model="picker"
       locale="jp-ja"
-      type="month"
+      :day-format="date => new Date(date).getDate()"
       color="green lighten-1"
       @click="menu = false"
     />
@@ -19,7 +19,7 @@ export default {
   props: {
     value: {
       type: String,
-      default: new Date().toISOString().substr(0, 7)
+      default: new Date().toISOString().substr(0, 10)
     }
   },
   data () {
@@ -32,11 +32,9 @@ export default {
       get () {
         return this.value
       },
-      set (targetYearMonth) {
-        // YYYY-mm
-        // 月を決めたらメニューを閉じて、親コンポに値を渡す
+      set (newVal) {
         this.menu = false
-        this.$emit('input', targetYearMonth)
+        this.$emit('input', newVal)
       }
     }
   }

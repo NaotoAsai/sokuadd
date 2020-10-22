@@ -37,6 +37,9 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
+    '~/plugins/axios.js',
+    '~/plugins/vee-validate',
+    { src: '~/plugins/vue-flash-message.js', mode: 'client' }
   ],
   /*
   ** Auto import components
@@ -58,7 +61,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     'cookie-universal-nuxt',
-    // '@nuxtjs/auth'
+    // '@nuxtjs/auth' LaravelJWTを使うのでこっち↓
     '@nuxtjs/auth-next'
   ],
   router: {
@@ -106,6 +109,7 @@ export default {
           logout: { url: '/api/v1/logout', method: 'post' },
           user: { url: '/api/v1/user', method: 'get', propertyName: false }
         },
+        // Token有効期限、バックと一致させておく
         token: {
           property: 'access_token',
           maxAge: 60 * 60
@@ -124,9 +128,18 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       themes: {
         dark: {
+          primary: colors.blue.darken2,
+          accent: colors.grey.darken3,
+          secondary: colors.amber.darken3,
+          info: colors.teal.lighten1,
+          warning: colors.amber.base,
+          error: colors.deepOrange.accent4,
+          success: colors.green.accent3
+        },
+        light: {
           primary: colors.blue.darken2,
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
@@ -143,6 +156,9 @@ export default {
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
+    transpile: [
+      'vee-validate/dist/rules'
+    ]
   },
   env: {
     BASE_URL: process.env.BASE_URL || 'http://localhost'

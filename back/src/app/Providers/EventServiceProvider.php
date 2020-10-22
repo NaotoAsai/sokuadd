@@ -18,6 +18,12 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        'App\Events\PreEditEmailEvent' => [// メールアドレス変更時にユーザーにお知らせ
+            'App\Listeners\PreEditEmailNotification',
+        ],
+        'App\Events\PreResetPasswordEvent' => [// パスワード再発行時にユーザーにお知らせ
+            'App\Listeners\PreResetPasswordNotification',
+        ],
     ];
 
     /**

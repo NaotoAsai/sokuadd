@@ -23,7 +23,9 @@ Route::group([
     'middleware' =>['api'],
     'prefix' => 'v1'
 ], function(){
-    Route::post('refresh', 'AuthController@refresh');
+
+    // メールアドレス変更（メールのリンクからアクセス）
+    Route::get('email', 'EmailController@editEmail');
 });
 
 // 未ログインユーザー
@@ -33,6 +35,12 @@ Route::group([
 ], function(){
     Route::post('register', 'AuthController@register');
     Route::post('login', 'AuthController@login');
+    Route::post('refresh', 'AuthController@refresh');
+
+    // パスワード再発行
+    Route::post('resetpassword', 'ResetPasswordController@preResetPassword');
+    Route::get('resetpassword', 'ResetPasswordController@passResetPassword');
+    Route::put('resetpassword', 'ResetPasswordController@resetPassword');
 });
 
 // ログイン済みユーザー
@@ -42,7 +50,12 @@ Route::group([
 ], function () {
     Route::post('logout', 'AuthController@logout');
     Route::get('user', 'AuthController@me');
-    // Route::put('user', 'AuthController@updateName');
+
+    Route::put('user', 'UserController@editName');
+    Route::put('password', 'UserController@editPassword');
+
+    // メールアドレス変更準備
+    Route::post('email', 'EmailController@preEditEmail');
 
     Route::get('incomeandexpenditure_classes', 'IncomeAndExpenditureClassController@getClasses');
     Route::post('incomeandexpenditure_classes', 'IncomeAndExpenditureClassController@createClass');

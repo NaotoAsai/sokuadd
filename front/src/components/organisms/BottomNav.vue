@@ -3,11 +3,10 @@
   <v-bottom-navigation
     v-if="$auth.loggedIn"
     v-model="activeBtn"
+    app
     grow
     color="teal"
     height="60px"
-    absolute
-    :input-value="false"
   >
     <v-btn @click="$router.push({ name: 'index' })">
       <span>追加する</span>
@@ -19,7 +18,7 @@
       <v-icon>mdi-calendar-month</v-icon>
     </v-btn>
 
-    <v-btn @click="$router.push({ name: 'classdisp' })">
+    <v-btn @click="$router.push({ name: 'monthlydatabyclass' })">
       <span>分類別収支</span>
       <v-icon>mdi-format-list-numbered</v-icon>
     </v-btn>

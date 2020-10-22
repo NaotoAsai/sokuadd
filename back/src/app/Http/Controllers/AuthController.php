@@ -7,60 +7,58 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Requests\AuthController\RegisterRequest;
+use App\Http\Requests\AuthController\LoginRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class AuthController extends Controller
 {
-    public function register(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:32',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|string|min:8|max:255|confirmed',
-            'password_confirmation' => 'required|string|min:8|max:255',
-        ]);
-
-        if($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'messages' => $validator->messages()
-            ], 200);
-        }
-
-        $user = new User;
-        $user->fill($request->all());
-        $user->password = bcrypt($request->password);
-        $user->save();
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $user
-        ], 200);
-
+    /**
+     * 新規ユーザー登録
+     *
+     * @param RegisterRequest $request
+     * @return void
+     */
+    public function register(RegisterRequest $request)
+    {
+        // 新規ユーザー登録、登録完了後フロントでloginAPIにアクセスするので戻り値なし
+        User::register($request->name, $request->email, $request->password);
     }
 
-    public function login(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email|max:255',
-            'password' => 'required|string|min:8|max:255',
-        ]);
+    public function login(LoginRequest $request)
+    {
+        // トークン生成
+        $token = $this->createAccessToken($request->email, $request->password);
 
-        if($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'messages' => $validator->messages()
-            ], 200);
+        // ユーザーが存在しなかったら401 Unauthorized
+        if (!$token) {
+            $res = response()->json([
+                'message' => '※ログインできませんでした、入力内容を確認してください。'
+            ], 401);
+            throw new HttpResponseException($res);
         }
 
-        if (! $token = Auth::guard('api')->attempt(['email' => $request->email, 'password' => $request->password])) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
+        // トークンの戻り値成形
         return $this->respondWithToken($token);
     }
 
+    // アクセストークンを生成する
+    protected function createAccessToken(string $email, string $password)
+    {
+        // attemptは通常真偽値を返すが、JWTではアクセストークンを返す
+        return Auth::guard('api')->attempt(['email' => $email, 'password' => $password]);
+    }
+
+    /**
+     * アクセストークンの戻り値を成形する
+     *
+     * @param string $token
+     * @return JsonResponse
+     */
     protected function respondWithToken($token) {
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
+            'token_type' => 'bearer',// いらないかも
             'expires_in' => Auth::guard('api')->factory()->getTTL() * 60
         ]);
     }
@@ -75,10 +73,5 @@ class AuthController extends Controller
 
     public function logout() {
         Auth::guard('api')->logout();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'logout'
-        ], 200);
     }
 }

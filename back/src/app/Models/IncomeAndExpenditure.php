@@ -249,6 +249,7 @@ class IncomeAndExpenditure extends Model
 
     public static function getIncomeAndExpendituresByClass(int $year, int $month)
     {
+        // コレクション帰ってくる
         $incomeAndExpenditures = IncomeAndExpenditure::where('user_id', Auth::id())
             ->select('income_and_expenditure_class_id', 'type', 'amount')
             ->whereYear('target_date', $year)
@@ -256,6 +257,12 @@ class IncomeAndExpenditure extends Model
             ->orderBy('income_and_expenditure_class_id', 'asc')
             ->orderBy('type', 'asc')// 未分類対策
             ->get();
+
+        // データがない時は何も返さない
+        if ($incomeAndExpenditures->isEmpty())
+        {
+            return;
+        }
 
         $formedIncomeAndExpendituresByClass = static::formationIncomeAndExpendituresByClass($incomeAndExpenditures);
 
@@ -396,7 +403,6 @@ class IncomeAndExpenditure extends Model
         {
             $formedIncomeAndExpendituresByClass['totalAmount'] = "$totalAmount";
         }
-        
         return $formedIncomeAndExpendituresByClass;
     }
 

@@ -1,46 +1,16 @@
 <template>
-  <v-card
-    max-width="600"
-    class="mx-auto"
-  >
-    <v-toolbar
-      dark
-    >
-      <v-tabs grow>
-        <v-tab @click="currentClass = 'ExpenditureClass'">
-          支出分類
-        </v-tab>
-        <v-tab @click="currentClass = 'IncomeClass'">
-          収入分類
-        </v-tab>
-      </v-tabs>
-    </v-toolbar>
-    <v-card-actions>
-      <v-btn>
-        <v-icon>mdi-arrow-left-bold</v-icon>
-        TOPへ
-      </v-btn>
-    </v-card-actions>
-
-    <component :is="currentClass" />
-  </v-card>
+  <ClassFactory />
 </template>
 
 <script>
-import ExpenditureClass from '~/components/ExpenditureClass.vue'
-import IncomeClass from '~/components/IncomeClass.vue'
+import ClassFactory from '~/components/organisms/ClassFactory.vue'
+
 export default {
   components: {
-    ExpenditureClass,
-    IncomeClass
+    ClassFactory
   },
   async fetch (context) {
     await context.store.dispatch('getIncomeAndExpenditureClasses')
-  },
-  data () {
-    return {
-      currentClass: 'ExpenditureClass'
-    }
   }
 }
 </script>

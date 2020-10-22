@@ -1,25 +1,29 @@
 <template>
   <v-menu v-model="menu" offset-y :close-on-content-click="false">
     <template v-slot:activator="{ on }">
-      <v-btn icon dark v-on="on">
+      <v-btn icon v-on="on">
         <v-icon>mdi-calendar</v-icon>
       </v-btn>
     </template>
     <v-date-picker
       v-model="picker"
       locale="jp-ja"
-      :day-format="date => new Date(date).getDate()"
+      type="month"
       color="green lighten-1"
       @click="menu = false"
     />
   </v-menu>
 </template>
 <script>
+// import CalendarIconButton from '~/components/atoms/CalendarIconButton.vue'
 export default {
+  components: {
+    // CalendarIconButton
+  },
   props: {
     value: {
       type: String,
-      default: new Date().toISOString().substr(0, 10)
+      default: new Date().toISOString().substr(0, 7)
     }
   },
   data () {
@@ -32,9 +36,11 @@ export default {
       get () {
         return this.value
       },
-      set (val) {
+      set (targetYearMonth) {
+        // YYYY-mm
+        // 月を決めたらメニューを閉じて、親コンポに値を渡す
         this.menu = false
-        this.$emit('input', val)
+        this.$emit('input', targetYearMonth)
       }
     }
   }
