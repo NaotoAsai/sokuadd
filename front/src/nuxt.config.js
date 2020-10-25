@@ -1,5 +1,8 @@
 import colors from 'vuetify/es5/util/colors'
 
+require('dotenv').config()
+const { BASE_URL } = process.env
+
 export default {
   /*
   ** Nuxt rendering mode
@@ -10,7 +13,7 @@ export default {
   ** Nuxt target
   ** See https://nuxtjs.org/api/configuration-target
   */
-  target: 'server',
+  target: 'static',
   /*
   ** Headers of the page
   ** See https://nuxtjs.org/api/configuration-head
@@ -58,6 +61,7 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/dotenv',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     'cookie-universal-nuxt',
@@ -161,6 +165,6 @@ export default {
     ]
   },
   env: {
-    BASE_URL: process.env.BASE_URL || 'http://localhost'
+    BASE_URL
   }
 }
