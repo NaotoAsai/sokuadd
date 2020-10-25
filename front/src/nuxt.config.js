@@ -1,7 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
 require('dotenv').config()
-const { BASE_URL } = process.env
+const { API_URL } = process.env
 
 export default {
   /*
@@ -75,9 +75,9 @@ export default {
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
-  axios: {
-    baseURL: process.env.BASE_URL || 'http://localhost'
-  },
+  // axios: {
+  //   baseURL: process.env.API_URL || 'http://localhost'
+  // },
   // auth: {
   //   redirect: {
   //     login: '/entrance', // 未ログイン時に認証ルートへアクセスした際のリダイレクトURL
@@ -106,7 +106,7 @@ export default {
     strategies: {
       'laravelJWT': {
         provider: 'laravel/jwt',
-        url: 'http://localhost',
+        url: process.env.API_URL,
         endpoints: {
           login: { url: '/api/v1/login', method: 'post', propertyName: 'access_token' },
           refresh: { url: '/api/v1/refresh', method: 'post' },
@@ -165,6 +165,6 @@ export default {
     ]
   },
   env: {
-    BASE_URL
+    API_URL
   }
 }
