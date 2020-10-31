@@ -7,7 +7,9 @@
       dark
     >
       <v-app-bar-nav-icon v-if="$auth.loggedIn" @click="drawer = !drawer" />
-      <v-toolbar-title>即add</v-toolbar-title>
+      <v-toolbar-title class="pl-0">
+        <v-img src="cooltext367075954437377.png" width="120" height="30" />
+      </v-toolbar-title>
       <v-spacer />
       <!-- ↓↓ドロップダウンメニュー↓↓ -->
       <v-toolbar-items v-if="$auth.loggedIn">
