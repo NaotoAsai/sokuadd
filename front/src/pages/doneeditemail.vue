@@ -25,6 +25,7 @@ export default {
     }
   },
   created () {
+    this.$store.commit('changePage', 'doneeditemail')
     this.editEmail()
   },
   methods: {

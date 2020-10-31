@@ -19,6 +19,9 @@ export default {
   components: {
     ProfileCard,
     SettingCard
+  },
+  created () {
+    this.$store.commit('changePage', 'mypage')
   }
 }
 </script>

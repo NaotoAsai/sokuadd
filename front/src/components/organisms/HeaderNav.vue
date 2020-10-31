@@ -7,7 +7,7 @@
       dark
     >
       <v-app-bar-nav-icon v-if="$auth.loggedIn" @click="drawer = !drawer" />
-      <v-toolbar-title class="pl-0">
+      <v-toolbar-title class="pl-0" @click="$store.commit('changePage', 'index')">
         <v-img src="cooltext367075954437377.png" width="120" height="30" />
       </v-toolbar-title>
       <v-spacer />

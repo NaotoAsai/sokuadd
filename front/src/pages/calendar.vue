@@ -11,6 +11,9 @@ export default {
   },
   async fetch (context) {
     await context.store.dispatch('getIncomeAndExpenditureClasses')
+  },
+  created () {
+    this.$store.commit('changePage', 'calendar')
   }
 }
 </script>
