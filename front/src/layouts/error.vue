@@ -21,9 +21,9 @@
       <div v-if="error.message === 'customMessage'">
         {{ error.customMessage }}
       </div>
-      <nuxt-link to="/">
+      <a href="https://sokuadd.com">
         ホームへ戻る
-      </nuxt-link>
+      </a>
     </v-alert>
   </v-app>
 </template>

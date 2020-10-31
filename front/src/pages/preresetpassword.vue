@@ -60,9 +60,18 @@ export default {
     }
   },
   methods: {
+    // パスワード再発行（準備）
     async sendEmail () {
-      await this.$store.dispatch('preResetPassword', this.email)
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/resetpassword'
+      const params = this.email
+
+      await this.$axios.$post(url, params)
+
       this.isDone = true
+
+      this.$store.commit('setLoading', false)
     }
   }
 }

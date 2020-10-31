@@ -58,7 +58,17 @@ export default {
   },
   methods: {
     async register () {
-      await this.$store.dispatch('register', this.authData)
+      this.$store.commit('setLoading', true)
+      const url = '/api/v1/register'
+      const params = this.authData
+      await this.$axios.$post(url, params)
+        .then(() => {
+          this.login()
+        })
+    },
+    async login () {
+      await this.$auth.loginWith('laravelJWT', { data: this.authData })
+      this.$store.commit('setLoading', false)
     }
   }
 }
