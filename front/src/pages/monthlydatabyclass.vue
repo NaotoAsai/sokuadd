@@ -20,6 +20,9 @@ export default {
     const targetMonth = { year: nowYear, month: nowMonth }
     const res = await context.$axios.$get(url, { params: targetMonth })
     return { oneMonthData: res }
+  },
+  created () {
+    this.$store.commit('changePage', 'monthlydatabyclass')
   }
 }
 </script>

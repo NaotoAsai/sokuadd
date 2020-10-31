@@ -61,56 +61,9 @@ export const mutations = {
 }
 
 export const actions = {
-  // 新規ユーザー登録
-  async register ({ dispatch }, authData) {
-    const url = '/api/v1/register'
-    const params = authData
-    await this.$axios.$post(url, params)
-      .then(() => {
-        dispatch('login', authData)
-      })
-  },
-  // ログイン
-  async login ({ dispatch }, authData) {
-    return await this.$auth.loginWith('laravelJWT', { data: authData })
-      // 401エラーのみエラーページではなく、画面にメッセージ表示する
-      .catch((err) => {
-        if (err.response.status === 401) {
-          return err.response
-        }
-      })
-  },
   // ログアウト
   async logout ({ commit, dispatch }) {
     await this.$auth.logout('laravelJWT')
-  },
-
-  // パスワード再発行（準備）
-  async preResetPassword ({ commit }, email) {
-    const url = '/api/v1/resetpassword'
-    commit('setLoading', true)
-
-    await this.$axios.$post(url, email)
-
-    commit('setLoading', false)
-  },
-  // パスワード再発行（メールのリンクからの遷移時）
-  async passResetPassword ({ commit }, genericToken) {
-    const url = '/api/v1/resetpassword'
-    commit('setLoading', true)
-
-    await this.$axios.$get(url, { params: genericToken })
-
-    commit('setLoading', false)
-  },
-  // パスワード再発行
-  async resetPassword ({ commit }, newPasswordData) {
-    const url = '/api/v1/resetpassword'
-    commit('setLoading', true)
-
-    await this.$axios.$put(url, newPasswordData)
-
-    commit('setLoading', false)
   },
 
   // パスワード変更

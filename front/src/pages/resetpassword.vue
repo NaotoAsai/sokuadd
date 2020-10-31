@@ -73,16 +73,30 @@ export default {
     this.passResetPassword()
   },
   methods: {
+    // パスワード再発行（メールのリンクからの遷移時）
     async passResetPassword () {
-      await this.$store.dispatch('passResetPassword', this.genericToken)
-        // なぜかstore側でエラー画面ん飛ばしてくれない
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/resetpassword'
+      const params = this.genericToken
+
+      await this.$axios.$get(url, { params })
         .catch((err) => {
           this.$nuxt.error({ statusCode: err.response.status })
         })
+
+      this.$store.commit('setLoading', false)
     },
+    // パスワード再発行
     async resetPassword () {
-      await this.$store.dispatch('resetPassword', this.newPasswordData)
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/resetpassword'
+      const params = this.newPasswordData
+      await this.$axios.$put(url, params)
       this.isDone = true
+
+      this.$store.commit('setLoading', false)
     }
   }
 }
