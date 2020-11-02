@@ -60,7 +60,7 @@ class Token extends Model
      * @param string $userId
      * @return string
      */
-    public static function registerTokenEditPassword(string $email): string {
+    public static function registerTokenResetPassword(string $email): string {
         return static::registerToken(static::TYPE_EDIT_PASSWORD, $email, null, null);
     }
 

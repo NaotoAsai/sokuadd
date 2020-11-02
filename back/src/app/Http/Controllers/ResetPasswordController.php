@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\PreResetPasswordEvent;
+use App\Exceptions\User\EmailNotFoundException;
 use App\Exceptions\Token\TokenExpiredException;
 use App\Exceptions\Token\TokenNotFoundException;
 use App\Http\Controllers\AuthController;
@@ -25,7 +26,7 @@ class ResetPasswordController extends AuthController
     public function preResetPassword(PreResetPasswordRequest $request)
     {
         try {
-            $token = Token::registerTokenEditPassword($request->email);
+            $token = Token::registerTokenResetPassword($request->email);
         } catch (\Exception $e) {
             abort(500);
         }
@@ -68,12 +69,17 @@ class ResetPasswordController extends AuthController
             // パスワード更新
             User::updatePasswordByReset($tokenRecode->email, $request->password);
             // 戻り値のメールアドレス
-            $email = $tokenRecode->email;
+            // $email = $tokenRecode->email;
             // トークン削除
             $tokenRecode->delete();
 
             DB::commit();
 
+        } catch (EmailNotFoundException $e) {
+            $res = response()->json([
+                'message' => 'このメールアドレスは登録されていません。'
+            ], 403);
+            throw new HttpResponseException($res);
         } catch (HttpResponseException $e) {
             DB::rollback();
             throw $e;
@@ -83,7 +89,7 @@ class ResetPasswordController extends AuthController
         }
 
         // リセット後自動ログインさせるため、AuthModuleの仕様でメールアドレスを返す
-        return response()->json(['email' => $email]);
+        // return response()->json(['email' => $email]);
     }
 
     /**

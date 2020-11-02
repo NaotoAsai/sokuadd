@@ -99,69 +99,85 @@ export default {
   methods: {
     // ユーザー名変更
     async editName () {
-      await this.$store.dispatch('editName', this.editNameData)
-        .then((res) => {
-          if (res.status === 200) {
-            // ストアのステートの値を更新、this.$auth.fetchUser()←これを使わずにAPI通信を減らす
-            this.$store.commit('updateUserName', this.editNameData.name)
-            this.flashMessage.show({
-              status: 'success',
-              title: 'ユーザー名を変更しました',
-              time: 3000
-            })
-          } else {
-            this.$nuxt.error({ statusCode: res.status })
-          }
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/user'
+      const params = this.editNameData
+
+      await this.$axios.$put(url, params)
+        .then(() => {
+          // ストアのステートの値を更新、this.$auth.fetchUser()←これを使わずにAPI通信を減らす
+          this.$store.commit('updateUserName', this.editNameData.name)
+          this.flashMessage.show({
+            status: 'success',
+            title: 'ユーザー名を変更しました',
+            time: 3000
+          })
+        })
+        .catch((err) => {
+          this.$nuxt.error({ statusCode: err.response.status })
         })
 
       this.$store.commit('setLoading', false)
     },
     // パスワード変更
     async editPassword (values) {
-      await this.$store.dispatch('editPassword', values)
-        .then((res) => {
-          // 認証失敗時、エラーメッセージ格納
-          if (res.status === 401) {
-            this.unAuthorized = res.data.message
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/password'
+      const params = values
+      await this.$axios.$put(url, params)
+      // 401エラーのみエラーページではなく、画面にメッセージ表示する
+        .then(() => {
+          this.flashMessage.show({
+            status: 'success',
+            title: 'パスワードを変更しました'
+          })
+          this.unAuthorized = ''
+          this.reload()
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            this.unAuthorized = err.response.data.message
             this.shakeErrorMessage()
-          } else if (res.status === 200) {
-            this.flashMessage.show({
-              status: 'success',
-              title: 'パスワードを変更しました'
-            })
-            this.unAuthorized = ''
-            this.reload()
           } else {
-            this.$nuxt.error({ statusCode: res.status })
+            this.$nuxt.error({ statusCode: err.response.status })
             this.unAuthorized = ''
             this.reload()
           }
         })
+
       this.$store.commit('setLoading', false)
     },
     // メールアドレス変更準備
     async preEditEmail (values) {
-      await this.$store.dispatch('preEditEmail', values)
-        .then((res) => {
-          // 認証失敗時、エラーメッセージ格納
-          if (res.status === 401) {
-            this.unAuthorized = res.data.message
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/email'
+      const params = values
+      await this.$axios.$post(url, params)
+      // 401エラーのみエラーページではなく、画面にメッセージ表示する
+        .then(() => {
+          this.flashMessage.show({
+            status: 'success',
+            title: '新しいメールアドレスにメールを送信しました',
+            message: '届いたメールに従ってメールアドレスの変更を完了させてください',
+            time: 10000
+          })
+          this.unAuthorized = ''
+          this.reload()
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            this.unAuthorized = err.response.data.message
             this.shakeErrorMessage()
-          } else if (res.status === 200) {
-            this.flashMessage.show({
-              status: 'success',
-              title: '新しいメールアドレスにメールを送信しました',
-              message: '届いたメールに従ってメールアドレスの変更を完了させてください',
-              time: 10000
-            })
-            this.unAuthorized = ''
-            this.reload()
           } else {
-            this.$nuxt.error({ statusCode: res.status })
+            this.$nuxt.error({ statusCode: err.response.status })
             this.unAuthorized = ''
             this.reload()
           }
         })
+
       this.$store.commit('setLoading', false)
     },
     // Formコンポーネントを再描画する（入力やバリデーション状態をリセットするため）

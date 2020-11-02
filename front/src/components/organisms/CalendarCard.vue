@@ -275,28 +275,60 @@ export default {
     },
     // 削除して、新しいデータをセット
     async remove () {
-      this.$refs.deleteDialog.dialog = false
-      const events = await this.$store.dispatch('deleteIncomeAndExpenditure', this.deleteData)
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/incomeandexpenditures'
+      const params = this.deleteData
+
+      // カレンダーの収支データ再描画のため収支情報を受け取る
+      const events = await this.$axios.$delete(url, { data: params })
       this.events = events
-      this.selectedOpen = false
+      // 開いているイベントカード再描画のため配列を更新する
+      const updatedSelectedEvent = this.events.find((val) => {
+        return val.start === this.selectedEvent.start
+      })
+      // 要素が無くなれば、カードを閉じる
+      if (updatedSelectedEvent === undefined) {
+        this.selectedOpen = false
+      } else {
+        this.selectedEvent = updatedSelectedEvent
+      }
+
+      this.$refs.deleteDialog.dialog = false
       this.flashMessage.show({
         status: 'success',
         title: '収支情報を削除しました',
         time: 3000
       })
+      this.$store.commit('setLoading', false)
     },
+    // 収支データの編集
     async edit (values) {
-      this.$refs.incomeAndExpenditureEditForm.dialog = false
+      this.$store.commit('setLoading', true)
+
       // 子コンポーネントから受け取ったパラメータをマージ
       Object.assign(this.editData, values)
-      const events = await this.$store.dispatch('editIncomeAndExpenditure', this.editData)
+
+      const url = '/api/v1/incomeandexpenditures'
+      const params = this.editData
+
+      // カレンダーの収支データ再描画のため収支情報を受け取る
+      const events = await this.$axios.$put(url, params)
       this.events = events
-      this.selectedOpen = false
+      // 開いているイベントカード再描画のため配列を更新する
+      const updatedSelectedEvent = this.events.find((val) => {
+        return val.start === this.selectedEvent.start
+      })
+      this.selectedEvent = updatedSelectedEvent
+
+      this.$refs.incomeAndExpenditureEditForm.dialog = false
       this.flashMessage.show({
         status: 'success',
         title: '収支情報を修正しました',
         time: 3000
       })
+
+      this.$store.commit('setLoading', false)
     }
   }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Exceptions\User\EmailNotFoundException;
 use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -102,6 +103,10 @@ class User extends Authenticatable implements JWTSubject
     {
         $user = User::where('email', $email)
             ->first();
+        if ($user === null) {
+            // メールアドレスが登録されていない
+            throw new EmailNotFoundException();
+        }
         $user->password = bcrypt($password);
         $user->save();
     }
