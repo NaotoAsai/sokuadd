@@ -92,7 +92,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -100,7 +99,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['logout'])
+    // ログアウト
+    async logout () {
+      await this.$auth.logout('laravelJWT')
+    }
   }
 }
 </script>

@@ -1,6 +1,7 @@
 export const state = () => ({
   loading: false,
   activeBtn: 0,
+  errorAnimation: false,
   // 収支分類一覧
   incomeAndExpenditureClasses: {
     incomeClasses: [],
@@ -37,6 +38,10 @@ export const mutations = {
     }
     this.$router.push({ name: page })
   },
+  // エラーメッセージのアクティブ状態切替
+  toggleErrorAnimation (state) {
+    state.errorAnimation = !state.errorAnimation
+  },
   // ユーザー名を変更する
   updateUserName (state, userName) {
     this.$auth.user.name = userName
@@ -61,9 +66,10 @@ export const mutations = {
 }
 
 export const actions = {
-  // ログアウト
-  async logout ({ commit, dispatch }) {
-    await this.$auth.logout('laravelJWT')
+  // エラーメッセージを一度だけ左右に揺らす
+  shakeErrorMessage ({ commit }) {
+    commit('toggleErrorAnimation')
+    setTimeout(() => { commit('toggleErrorAnimation') }, 1000)
   },
   // 収支分類名一覧の取得
   async getIncomeAndExpenditureClasses ({ commit }) {
