@@ -3,7 +3,10 @@
     max-width="600"
     class="mx-auto"
   >
-    <v-toolbar dark>
+    <v-toolbar
+      color="#2f4f4f"
+      dark
+    >
       <v-tabs grow>
         <v-tab @click="currentType = 1">
           支出
@@ -58,15 +61,22 @@ export default {
       const date = ('0' + now.getDate()).slice(-2)
       return year + '-' + month + '-' + date
     },
+    // 新規収支データの作成
     async create (values) {
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/incomeandexpenditures'
       this.newData.type = this.currentType
       // 子コンポーネントから受け取ったパラメータをマージ
       Object.assign(this.newData, values)
-      await this.$store.dispatch('createIncomeAndExpenditure', this.newData)
+      const params = this.newData
+
+      await this.$axios.$post(url, params)
+
       // テキストエリアを空にする
       // this.$refs.incomeAndExpenditureForm.values.amount = ''
       // this.$refs.incomeAndExpenditureForm.values.comment = ''
-      // バリデーションエラーメッセージ表示防止（送信ボタンにdisabledがかからない）
+      // バリデーションエラーメッセージ表示防止（送信ボタンにdisabledがかからない仕様、、）
       // this.$refs.incomeAndExpenditureForm.$refs.obs.reset()
       // ↓↓これに代替
       this.reload()
@@ -75,6 +85,7 @@ export default {
         title: '収支情報を追加しました',
         time: 3000
       })
+      this.$store.commit('setLoading', false)
     },
     // Formコンポーネントを再描画する（入力やバリデーション状態をリセットするため）
     reload () {

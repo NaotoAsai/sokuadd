@@ -6,7 +6,7 @@
     <v-card-text
       v-if="unAuthorized !== ''"
       class="red--text"
-      :class="{ unauthorized:errorAnimation }"
+      :class="{ unauthorized:$store.state.errorAnimation }"
     >
       {{ unAuthorized }}
     </v-card-text>
@@ -68,48 +68,14 @@ export default {
             this.$store.commit('setLoading', false)
             // 認証失敗時、エラーメッセージ格納
             this.unAuthorized = err.response.data.message
-            this.shakeErrorMessage()
+            // エラーメッセージを一度だけ左右に揺らす
+            this.$store.dispatch('shakeErrorMessage')
           } else {
             this.$nuxt.error({ statusCode: err.response.status })
           }
         })
       this.$store.commit('setLoading', false)
-    },
-    // エラーメッセージを一度だけ左右に揺らす
-    shakeErrorMessage () {
-      this.errorAnimation = true
-      setTimeout(() => { this.errorAnimation = false }, 1000)
     }
   }
 }
 </script>
-
-<style>
-.unauthorized {
-  animation: yureru-s 2s infinite;
-}
-
-@keyframes yureru-s {
-  0% {
-      transform: translate(2px, 0px);
-  }
-  5% {
-      transform: translate(-2px, 0px);
-  }
-  10% {
-      transform: translate(2px, 0px);
-  }
-  15% {
-      transform: translate(-2px, 0px);
-  }
-  20% {
-      transform: translate(2px, 0px);
-  }
-  25% {
-      transform: translate(-2px, 0px);
-  }
-  30% {
-      transform: translate(0px, 0px);
-  }
-}
-</style>

@@ -4,6 +4,7 @@
     class="mx-auto"
   >
     <v-toolbar
+      color="#2f4f4f"
       dark
     >
       <v-tabs grow>
@@ -92,35 +93,76 @@ export default {
     },
     // 分類名の新規作成
     async create () {
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/incomeandexpenditure_classes'
       this.newData.type = this.currentType
-      await this.$store.dispatch('createIncomeAndExpenditureClass', this.newData)
-      // テキストエリアを空にする
-      this.newData.name = ''
-      this.flashMessage.show({
-        status: 'success',
-        title: '分類を追加しました',
-        time: 3000
-      })
+      const params = this.newData
+
+      await this.$axios.$post(url, params)
+        .then((newId) => {
+          // 配列に追加
+          this.$store.commit('addIncomeAndExpenditureClassData', {
+            type: this.newData.type === 0 ? 'incomeClasses' : 'expenditureClasses',
+            id: newId,
+            name: this.newData.name
+          })
+          // テキストエリアを空にする
+          this.newData.name = ''
+          this.flashMessage.show({
+            status: 'success',
+            title: '分類を追加しました',
+            time: 3000
+          })
+        })
+
+      this.$store.commit('setLoading', false)
     },
     // 編集する分類名情報を送信
     async edit () {
-      this.$refs.classEditForm.dialog = false
-      await this.$store.dispatch('editIncomeAndExpenditureClass', this.editData)
-      this.flashMessage.show({
-        status: 'success',
-        title: '分類名を修正しました',
-        time: 3000
-      })
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/incomeandexpenditure_classes'
+      const params = this.editData
+
+      await this.$axios.$put(url, params)
+        .then(() => {
+          // 配列の当該データを更新
+          this.$store.commit('updateIncomeAndExpenditureClassData', {
+            type: this.editData.type === 0 ? 'incomeClasses' : 'expenditureClasses',
+            index: this.editData.index,
+            name: this.editData.name
+          })
+          this.$refs.classEditForm.dialog = false
+          this.flashMessage.show({
+            status: 'success',
+            title: '分類名を修正しました',
+            time: 3000
+          })
+        })
+
+      this.$store.commit('setLoading', false)
     },
     // 削除する分類名情報を送信
     async remove () {
-      this.$refs.deleteDialog.dialog = false
-      await this.$store.dispatch('deleteIncomeAndExpenditureClass', this.deleteData)
-      this.flashMessage.show({
-        status: 'success',
-        title: '分類を削除しました',
-        time: 3000
-      })
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/incomeandexpenditure_classes'
+      const params = this.deleteData
+
+      await this.$axios.$delete(url, { data: params })
+        .then(() => {
+          // 配列から当該データ削除
+          this.$store.commit('deleteIncomeAndExpenditureClassData', { type: this.deleteData.type === 0 ? 'incomeClasses' : 'expenditureClasses', index: this.deleteData.index })
+          this.$refs.deleteDialog.dialog = false
+          this.flashMessage.show({
+            status: 'success',
+            title: '分類を削除しました',
+            time: 3000
+          })
+        })
+
+      this.$store.commit('setLoading', false)
     }
   }
 }

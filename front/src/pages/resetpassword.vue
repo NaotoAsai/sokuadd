@@ -94,7 +94,20 @@ export default {
       const url = '/api/v1/resetpassword'
       const params = this.newPasswordData
       await this.$axios.$put(url, params)
-      this.isDone = true
+        .then(() => {
+          this.isDone = true
+        })
+        .catch((err) => {
+          if (err.response.status === 403) {
+            this.$nuxt.error({
+              statusCode: err.response.status,
+              message: 'customMessage',
+              customMessage: err.response.data.message
+            })
+          } else {
+            this.$nuxt.error({ statusCode: err.response.status })
+          }
+        })
 
       this.$store.commit('setLoading', false)
     }

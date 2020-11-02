@@ -3,7 +3,7 @@
     <!-- ↓↓ヘッダーナビ↓↓ -->
     <v-app-bar
       app
-      color="#CCCC99"
+      color="#20b2aa"
       dark
     >
       <v-app-bar-nav-icon v-if="$auth.loggedIn" @click="drawer = !drawer" />
@@ -92,7 +92,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -100,7 +99,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['logout'])
+    // ログアウト
+    async logout () {
+      await this.$auth.logout('laravelJWT')
+    }
   }
 }
 </script>

@@ -31,7 +31,7 @@
               v-if="unAuthorized !== ''"
               cols="12"
               class="red--text"
-              :class="{ unauthorized:errorAnimation }"
+              :class="{ unauthorized:$store.state.errorAnimation }"
             >
               {{ unAuthorized }}
             </v-col>
@@ -55,7 +55,7 @@
               v-if="unAuthorized !== ''"
               cols="12"
               class="red--text"
-              :class="{ unauthorized:errorAnimation }"
+              :class="{ unauthorized:$store.state.errorAnimation }"
             >
               {{ unAuthorized }}
             </v-col>
@@ -99,69 +99,87 @@ export default {
   methods: {
     // ユーザー名変更
     async editName () {
-      await this.$store.dispatch('editName', this.editNameData)
-        .then((res) => {
-          if (res.status === 200) {
-            // ストアのステートの値を更新、this.$auth.fetchUser()←これを使わずにAPI通信を減らす
-            this.$store.commit('updateUserName', this.editNameData.name)
-            this.flashMessage.show({
-              status: 'success',
-              title: 'ユーザー名を変更しました',
-              time: 3000
-            })
-          } else {
-            this.$nuxt.error({ statusCode: res.status })
-          }
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/user'
+      const params = this.editNameData
+
+      await this.$axios.$put(url, params)
+        .then(() => {
+          // ストアのステートの値を更新、this.$auth.fetchUser()←これを使わずにAPI通信を減らす
+          this.$store.commit('updateUserName', this.editNameData.name)
+          this.flashMessage.show({
+            status: 'success',
+            title: 'ユーザー名を変更しました',
+            time: 3000
+          })
+        })
+        .catch((err) => {
+          this.$nuxt.error({ statusCode: err.response.status })
         })
 
       this.$store.commit('setLoading', false)
     },
     // パスワード変更
     async editPassword (values) {
-      await this.$store.dispatch('editPassword', values)
-        .then((res) => {
-          // 認証失敗時、エラーメッセージ格納
-          if (res.status === 401) {
-            this.unAuthorized = res.data.message
-            this.shakeErrorMessage()
-          } else if (res.status === 200) {
-            this.flashMessage.show({
-              status: 'success',
-              title: 'パスワードを変更しました'
-            })
-            this.unAuthorized = ''
-            this.reload()
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/password'
+      const params = values
+      await this.$axios.$put(url, params)
+      // 401エラーのみエラーページではなく、画面にメッセージ表示する
+        .then(() => {
+          this.flashMessage.show({
+            status: 'success',
+            title: 'パスワードを変更しました'
+          })
+          this.unAuthorized = ''
+          this.reload()
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            this.unAuthorized = err.response.data.message
+            // エラーメッセージを一度だけ左右に揺らす
+            this.$store.dispatch('shakeErrorMessage')
           } else {
-            this.$nuxt.error({ statusCode: res.status })
+            this.$nuxt.error({ statusCode: err.response.status })
             this.unAuthorized = ''
             this.reload()
           }
         })
+
       this.$store.commit('setLoading', false)
     },
     // メールアドレス変更準備
     async preEditEmail (values) {
-      await this.$store.dispatch('preEditEmail', values)
-        .then((res) => {
-          // 認証失敗時、エラーメッセージ格納
-          if (res.status === 401) {
-            this.unAuthorized = res.data.message
-            this.shakeErrorMessage()
-          } else if (res.status === 200) {
-            this.flashMessage.show({
-              status: 'success',
-              title: '新しいメールアドレスにメールを送信しました',
-              message: '届いたメールに従ってメールアドレスの変更を完了させてください',
-              time: 10000
-            })
-            this.unAuthorized = ''
-            this.reload()
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/email'
+      const params = values
+      await this.$axios.$post(url, params)
+      // 401エラーのみエラーページではなく、画面にメッセージ表示する
+        .then(() => {
+          this.flashMessage.show({
+            status: 'success',
+            title: '新しいメールアドレスにメールを送信しました',
+            message: '届いたメールに従ってメールアドレスの変更を完了させてください',
+            time: 10000
+          })
+          this.unAuthorized = ''
+          this.reload()
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            this.unAuthorized = err.response.data.message
+            // エラーメッセージを一度だけ左右に揺らす
+            this.$store.dispatch('shakeErrorMessage')
           } else {
-            this.$nuxt.error({ statusCode: res.status })
+            this.$nuxt.error({ statusCode: err.response.status })
             this.unAuthorized = ''
             this.reload()
           }
         })
+
       this.$store.commit('setLoading', false)
     },
     // Formコンポーネントを再描画する（入力やバリデーション状態をリセットするため）
@@ -170,42 +188,7 @@ export default {
       this.$nextTick(() => {
         this.reloadFlag = false
       })
-    },
-    // エラーメッセージを一度だけ左右に揺らす
-    shakeErrorMessage () {
-      this.errorAnimation = true
-      setTimeout(() => { this.errorAnimation = false }, 1000)
     }
   }
 }
 </script>
-
-<style>
-.unauthorized {
-  animation: yureru-s 2s infinite;
-}
-
-@keyframes yureru-s {
-  0% {
-      transform: translate(2px, 0px);
-  }
-  5% {
-      transform: translate(-2px, 0px);
-  }
-  10% {
-      transform: translate(2px, 0px);
-  }
-  15% {
-      transform: translate(-2px, 0px);
-  }
-  20% {
-      transform: translate(2px, 0px);
-  }
-  25% {
-      transform: translate(-2px, 0px);
-  }
-  30% {
-      transform: translate(0px, 0px);
-  }
-}
-</style>

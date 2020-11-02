@@ -29,14 +29,19 @@ export default {
     this.editEmail()
   },
   methods: {
+    // メールアドレス変更
     async editEmail () {
-      await this.$store.dispatch('editEmail', this.genericToken)
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/email'
+      const params = this.genericToken
+
+      await this.$axios.$get(url, { params })
         .then(() => {
           this.isDone = true
           // ユーザー情報更新
           this.$auth.fetchUser()
         })
-        // なぜかstore側でエラー画面飛ばしてくれない
         .catch((err) => {
           if (err.response.status === 422) {
             this.$nuxt.error({
@@ -48,6 +53,7 @@ export default {
             this.$nuxt.error({ statusCode: err.response.status })
           }
         })
+      this.$store.commit('setLoading', false)
     }
   }
 }
