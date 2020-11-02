@@ -3,7 +3,10 @@
     max-width="600"
     class="mx-auto"
   >
-    <v-toolbar dark>
+    <v-toolbar
+      color="#2f4f4f"
+      dark
+    >
       <v-tabs grow>
         <v-tab @click="currentType = 1">
           支出

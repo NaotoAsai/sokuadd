@@ -4,6 +4,7 @@
     class="mx-auto"
   >
     <v-toolbar
+      color="#2f4f4f"
       dark
     >
       <v-tabs grow>

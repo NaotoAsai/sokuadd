@@ -3,7 +3,7 @@
     <!-- ↓↓ヘッダーナビ↓↓ -->
     <v-app-bar
       app
-      color="#CCCC99"
+      color="#20b2aa"
       dark
     >
       <v-app-bar-nav-icon v-if="$auth.loggedIn" @click="drawer = !drawer" />
