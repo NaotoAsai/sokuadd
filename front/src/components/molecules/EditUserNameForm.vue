@@ -2,6 +2,7 @@
   <ValidationObserver ref="obs" v-slot="{ invalid }">
     <v-form
       ref="form"
+      @submit.prevent="send"
     >
       <UserNameTextField
         :value="value"
@@ -11,7 +12,7 @@
         large
         block
         :disabled="invalid"
-        @click="send"
+        type="submit"
       >
         変更
       </v-btn>

@@ -14,6 +14,7 @@
       <v-form
         ref="form"
         class="pa-9"
+        @submit.prevent="login"
       >
         <EmailTextField
           v-model="authData.email"
@@ -25,7 +26,7 @@
           large
           block
           :disabled="invalid"
-          @click="login"
+          type="submit"
         >
           ログイン
         </v-btn>

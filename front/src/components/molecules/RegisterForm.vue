@@ -7,6 +7,7 @@
       <v-form
         ref="form"
         class="pa-9"
+        @submit.prevent="register"
       >
         <UserNameTextField
           v-model="authData.name"
@@ -24,7 +25,7 @@
           large
           block
           :disabled="invalid"
-          @click="register"
+          type="submit"
         >
           登録
         </v-btn>

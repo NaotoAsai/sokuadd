@@ -11,6 +11,7 @@
         <v-form
           ref="form"
           class="pa-9"
+          @submit.prevent="sendEmail"
         >
           <EmailTextField
             v-model="email.email"
@@ -19,7 +20,7 @@
             large
             block
             :disabled="invalid"
-            @click="sendEmail"
+            type="submit"
           >
             送信
           </v-btn>

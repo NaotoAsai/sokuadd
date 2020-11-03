@@ -19,7 +19,7 @@ export default {
   ** See https://nuxtjs.org/api/configuration-head
   */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
+    titleTemplate: process.env.npm_package_name,
     title: process.env.npm_package_name || '',
     meta: [
       { charset: 'utf-8' },
@@ -67,8 +67,12 @@ export default {
     '@nuxtjs/axios',
     'cookie-universal-nuxt',
     // '@nuxtjs/auth' LaravelJWTを使うのでこっち↓
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    '@nuxtjs/pwa'
   ],
+  workbox: {
+    dev: true // 開発時にもPWAを有効化
+  },
   router: {
     middleware: ['auth']
   },

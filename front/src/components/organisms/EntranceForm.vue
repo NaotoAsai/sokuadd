@@ -1,13 +1,18 @@
 <template>
   <v-card class="mx-auto" max-width="368">
-    <v-tabs grow>
-      <v-tab @click="currentForm = 'RegisterForm'">
-        会員登録
-      </v-tab>
-      <v-tab @click="currentForm = 'LoginForm'">
-        ログイン
-      </v-tab>
-    </v-tabs>
+    <v-toolbar
+      color="#2f4f4f"
+      dark
+    >
+      <v-tabs grow>
+        <v-tab @click="currentForm = 'RegisterForm'">
+          会員登録
+        </v-tab>
+        <v-tab @click="currentForm = 'LoginForm'">
+          ログイン
+        </v-tab>
+      </v-tabs>
+    </v-toolbar>
     <component :is="currentForm" />
   </v-card>
 </template>

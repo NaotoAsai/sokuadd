@@ -2,6 +2,7 @@
   <ValidationObserver ref="obs" v-slot="{ invalid }">
     <v-form
       ref="form"
+      @submit.prevent="send"
     >
       <EmailTextField
         v-model="values.email"
@@ -13,7 +14,7 @@
         large
         block
         :disabled="invalid"
-        @click="send"
+        type="submit"
       >
         送信
       </v-btn>
