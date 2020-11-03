@@ -7,7 +7,7 @@
           <span class="headline">収支情報修正</span>
         </v-card-title>
         <ValidationObserver ref="obs" v-slot="{ invalid }">
-          <v-form>
+          <v-form @submit.prevent="send">
             <AmountTextField
               v-model="targetData.amount"
             />
@@ -24,7 +24,7 @@
                 x-large
                 color="success"
                 :disabled="invalid"
-                @click="send"
+                type="submit"
               >
                 修正
               </v-btn>

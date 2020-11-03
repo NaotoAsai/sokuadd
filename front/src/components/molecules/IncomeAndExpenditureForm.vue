@@ -1,7 +1,7 @@
 <template>
   <div>
     <ValidationObserver ref="obs" v-slot="{ invalid }">
-      <v-form>
+      <v-form @submit.prevent="send">
         <AmountTextField
           v-model="values.amount"
         />
@@ -18,7 +18,7 @@
             x-large
             color="success"
             :disabled="invalid"
-            @click="send"
+            type="submit"
           >
             追加
           </v-btn>

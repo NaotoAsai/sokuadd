@@ -7,7 +7,7 @@
         </v-card-title>
         <v-card-text>
           <ValidationObserver ref="obs" v-slot="{ invalid }">
-            <v-form>
+            <v-form @submit.prevent="send">
               <ClassTextField
                 :class-value="'ma-6'"
                 :value="value"
@@ -19,7 +19,7 @@
                   x-large
                   color="success"
                   :disabled="invalid"
-                  @click="send"
+                  type="submit"
                 >
                   修正
                 </v-btn>

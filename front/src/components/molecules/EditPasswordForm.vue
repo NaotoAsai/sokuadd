@@ -2,6 +2,7 @@
   <ValidationObserver ref="obs" v-slot="{ invalid }">
     <v-form
       ref="form"
+      @submit.prevent="send"
     >
       <p>現在のパスワード</p>
       <PasswordTextField
@@ -18,7 +19,7 @@
         large
         block
         :disabled="invalid"
-        @click="send"
+        type="submit"
       >
         送信
       </v-btn>

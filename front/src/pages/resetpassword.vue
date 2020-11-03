@@ -11,6 +11,7 @@
         <v-form
           ref="form"
           class="pa-9"
+          @submit.prevent="resetPassword"
         >
           <PasswordTextField
             v-model="newPasswordData.password"
@@ -22,7 +23,7 @@
             large
             block
             :disabled="invalid"
-            @click="resetPassword"
+            type="submit"
           >
             送信
           </v-btn>
