@@ -23,7 +23,6 @@
                 <v-list-item-subtitle class="text-md-h5">
                   {{ item.amount }}円
                 </v-list-item-subtitle>
-                <v-divider />
               </v-list-item-content>
             </v-list-item>
             <v-list-item>
@@ -57,7 +56,6 @@
                 <v-list-item-subtitle class="text-md-h5">
                   {{ item.amount }}円
                 </v-list-item-subtitle>
-                <v-divider />
               </v-list-item-content>
             </v-list-item>
             <v-list-item>

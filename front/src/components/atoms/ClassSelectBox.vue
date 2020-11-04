@@ -5,7 +5,7 @@
     item-value="id"
     hide-selected
     placeholder="分類"
-    class="ma-12"
+    class="mx-12 my-6"
     :value="value"
     @input="updateText"
   />
