@@ -7,9 +7,10 @@
     <v-text-field
       :error-messages="errors"
       label="金額"
-      class="ma-12"
       solo-inverted
+      class="mx-12 my-6"
       :value="value"
+      pattern="\d*"
       @input="updateText"
     />
   </ValidationProvider>

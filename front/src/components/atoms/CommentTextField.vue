@@ -8,8 +8,8 @@
       :counter="64"
       :error-messages="errors"
       label="コメント"
-      class="ma-12"
       solo-inverted
+      class="mx-12 my-6"
       :value="value"
       @input="updateText"
     />
