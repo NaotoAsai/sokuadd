@@ -12,19 +12,28 @@ use App\Http\Requests\IncomeAndExpenditureController\GetIncomeAndExpendituresByC
 class IncomeAndExpenditureController extends Controller
 {
     /**
-     * 認証ユーザーの指定月の収支情報を取得
+     * 認証ユーザーの指定月の収支情報を返す
      *
      * @param GetIncomeAndExpendituresRequest $request
-     * @return object
+     * @return array
      */
     public function getIncomeAndExpenditures(GetIncomeAndExpendituresRequest $request)
     {
-        return IncomeAndExpenditure::getIncomeAndExpenditures($request->year, $request->month);
+        $incomeAndExpenditures = IncomeAndExpenditure::getIncomeAndExpenditures($request->year, $request->month);
+
+        return $incomeAndExpenditures;
     }
 
+    /**
+     * 認証ユーザーの指定月の分類別収支情報を返す
+     * @param GetIncomeAndExpendituresByClassRequest $request
+     * @return array
+     */
     public function getIncomeAndExpendituresByClass(GetIncomeAndExpendituresByClassRequest $request)
     {
-        return IncomeAndExpenditure::getIncomeAndExpendituresByClass($request->year, $request->month);
+        $incomeAndExpendituresByClass = IncomeAndExpenditure::getIncomeAndExpendituresByClass($request->year, $request->month);
+
+        return $incomeAndExpendituresByClass;
     }
 
     /**

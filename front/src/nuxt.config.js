@@ -70,9 +70,9 @@ export default {
     '@nuxtjs/auth-next',
     '@nuxtjs/pwa'
   ],
-  workbox: {
-    dev: true // 開発時にもPWAを有効化
-  },
+  // workbox: {
+  //   dev: true // 開発時にもPWAを有効化
+  // },
   router: {
     middleware: ['auth']
   },
@@ -121,7 +121,7 @@ export default {
         // Token有効期限、バックと一致させておく
         token: {
           property: 'access_token',
-          maxAge: 60 * 60
+          maxAge: 60
         },
         refreshToken: {
           maxAge: 20160 * 60

@@ -25,6 +25,12 @@ class AuthController extends Controller
         User::register($request->name, $request->email, $request->password);
     }
 
+    /**
+     * ログインする
+     *
+     * @param LoginRequest $request
+     * @return JsonResponse
+     */
     public function login(LoginRequest $request)
     {
         // トークン生成
@@ -42,7 +48,13 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-    // アクセストークンを生成する
+    /**
+     * アクセストークンを生成する
+     *
+     * @param string $email
+     * @param string $password
+     * @return string
+     */
     protected function createAccessToken(string $email, string $password)
     {
         // attemptは通常真偽値を返すが、JWTではアクセストークンを返す
@@ -63,14 +75,29 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * ユーザー情報を返す
+     *
+     * @return JsonResponse
+     */
     public function me() {
         return response()->json(Auth::guard('api')->user());
     }
 
+    /**
+     * 期限切れのアクセストークンを更新する
+     *
+     * @return JsonResponse
+     */
     public function refresh() {
         return $this->respondWithToken(Auth::guard('api')->refresh());
     }
 
+    /**
+     * ログアウトする
+     *
+     * @return void
+     */
     public function logout() {
         Auth::guard('api')->logout();
     }

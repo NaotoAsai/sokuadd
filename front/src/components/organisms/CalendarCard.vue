@@ -285,7 +285,7 @@ export default {
       this.events = events
       // 開いているイベントカード再描画のため配列を更新する
       const updatedSelectedEvent = this.events.find((val) => {
-        return val.start === this.selectedEvent.start
+        return val.start === this.selectedEvent.start && val.type === this.selectedEvent.type
       })
       // 要素が無くなれば、カードを閉じる
       if (updatedSelectedEvent === undefined) {
@@ -317,7 +317,7 @@ export default {
       this.events = events
       // 開いているイベントカード再描画のため配列を更新する
       const updatedSelectedEvent = this.events.find((val) => {
-        return val.start === this.selectedEvent.start
+        return val.start === this.selectedEvent.start && val.type === this.selectedEvent.type
       })
       this.selectedEvent = updatedSelectedEvent
 

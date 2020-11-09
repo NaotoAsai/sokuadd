@@ -26,9 +26,9 @@ class Token extends Model
     const TYPE_EDIT_PASSWORD = "reset_password";
 
     /**
-     * トークンの有効期限(60分)
+     * トークンの有効期限(30分)
      */
-    const TOKEN_EXPIRES = 3600;
+    const TOKEN_EXPIRES = 1800;
 
     /**
      * メールアドレス変更のトークンを作成
@@ -42,7 +42,7 @@ class Token extends Model
     }
 
     /**
-     * メールアドレス変更のトークンをチェックします
+     * メールアドレス変更のトークンをチェック
      *
      * @param string $token
      * @return Token
@@ -54,7 +54,7 @@ class Token extends Model
     }
 
     /**
-     * パスワード再発行のトークンを作成します
+     * パスワード再発行のトークンを作成
      *
      * @param string $email
      * @param string $userId
@@ -65,7 +65,7 @@ class Token extends Model
     }
 
     /**
-     * パスワード再発行のトークンをチェックします
+     * パスワード再発行のトークンをチェック
      *
      * @param string $token
      * @return Token

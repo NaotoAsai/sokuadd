@@ -18,7 +18,7 @@ class EmailController extends Controller
 {
 
     /**
-     * メールアドレス変更
+     * メールアドレス変更準備
      *
      * @param PreEditEmailRequest $request
      * @return void
