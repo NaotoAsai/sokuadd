@@ -56,7 +56,7 @@ class ResetPasswordController extends AuthController
      * パスワード再発行
      *
      * @param ResetPasswordRequest $request
-     * @return Json
+     * @return void
      */
     public function resetPassword(ResetPasswordRequest $request)
     {

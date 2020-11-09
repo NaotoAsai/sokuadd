@@ -53,11 +53,21 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    /**
+     * 当該ユーザーが持つ収支情報を取得
+     *
+     * @return Collection
+     */
     public function incomeAndExpenditures()
     {
         return $this->hasMany('App\Models\IncomeAndExpenditure');
     }
 
+    /**
+     * 当該ユーザーが持つ収支分類情報を取得
+     *
+     * @return Collection
+     */
     public function incomeAndExpenditureClasses()
     {
         return $this->hasMany('App\Models\IncomeAndExpenditureClass');
@@ -71,7 +81,7 @@ class User extends Authenticatable implements JWTSubject
      * @param string $password
      * @return void
      */
-    protected static function register(string $name, string $email, string $password)
+    public static function register(string $name, string $email, string $password)
     {
         User::create([
             'name' => $name,
@@ -86,7 +96,7 @@ class User extends Authenticatable implements JWTSubject
      * @param string $email
      * @return void
      */
-    protected static function updateEmail(string $userId, string $email)
+    public static function updateEmail(string $userId, string $email)
     {
         User::where('id', $userId)
             ->update(['email' => $email]);
@@ -99,7 +109,7 @@ class User extends Authenticatable implements JWTSubject
      * @param string $password
      * @return void
      */
-    protected static function updatePasswordByReset(string $email, string $password)
+    public static function updatePasswordByReset(string $email, string $password)
     {
         $user = User::where('email', $email)
             ->first();
@@ -117,7 +127,7 @@ class User extends Authenticatable implements JWTSubject
      * @param string $password
      * @return void
      */
-    protected static function updatePasswordByEdit(string $password)
+    public static function updatePasswordByEdit(string $password)
     {
         User::where('id', Auth::id())
             ->update(['password' => bcrypt($password)]);
@@ -129,7 +139,7 @@ class User extends Authenticatable implements JWTSubject
      * @param string $name
      * @return void
      */
-    protected static function updateName(string $name)
+    public static function updateName(string $name)
     {
         User::where('id', Auth::id())
             ->update(['name' => $name]);

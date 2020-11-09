@@ -12,7 +12,7 @@ class IncomeAndExpenditureClassController extends Controller
     /**
      *  当該ユーザーの分類一覧取得
      *
-     * @return void
+     * @return array
      */
     public function getClasses()
     {
@@ -25,7 +25,7 @@ class IncomeAndExpenditureClassController extends Controller
      * 新規分類作成
      *
      * @param CreateClassRequest $request
-     * @return void
+     * @return integer
      */
     public function createClass(CreateClassRequest $request)
     {
