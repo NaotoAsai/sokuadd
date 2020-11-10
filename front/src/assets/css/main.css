@@ -25,3 +25,8 @@
       transform: translate(0px, 0px);
   }
 }
+
+.custom-wrapper-success {
+  background-color: #3cb371;
+  font-size: 20px;
+}

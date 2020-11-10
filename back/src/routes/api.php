@@ -50,6 +50,7 @@ Route::group([
 ], function () {
     Route::post('logout', 'AuthController@logout');
     Route::get('user', 'AuthController@me');
+    Route::delete('user', 'AuthController@withdraw');
 
     Route::put('user', 'UserController@editName');
     Route::put('password', 'UserController@editPassword');

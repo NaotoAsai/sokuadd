@@ -1,5 +1,8 @@
 <template>
-  <v-card class="mx-auto" max-width="368">
+  <v-card
+    max-width="368"
+    class="mx-auto"
+  >
     <v-toolbar
       color="#2f4f4f"
       dark

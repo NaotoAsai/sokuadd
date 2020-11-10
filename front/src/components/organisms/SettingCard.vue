@@ -69,6 +69,21 @@
           </v-row>
         </v-list-item>
       </v-list-group>
+      <v-list-group>
+        <template v-slot:activator>
+          <v-list-item-title>退会</v-list-item-title>
+        </template>
+        <v-list-item>
+          <v-row justify="center" class="pa-6">
+            <v-col>
+              <WithdrawConfirm
+                :un-authorized="unAuthorized"
+                @send="withdraw($event)"
+              />
+            </v-col>
+          </v-row>
+        </v-list-item>
+      </v-list-group>
     </v-list>
   </v-card>
 </template>
@@ -77,12 +92,14 @@
 import EditUserNameForm from '~/components/molecules/EditUserNameForm.vue'
 import EditPasswordForm from '~/components/molecules/EditPasswordForm.vue'
 import EditEmailForm from '~/components/molecules/EditEmailForm.vue'
+import WithdrawConfirm from '~/components/molecules/WithdrawConfirm.vue'
 
 export default {
   components: {
     EditUserNameForm,
     EditPasswordForm,
-    EditEmailForm
+    EditEmailForm,
+    WithdrawConfirm
   },
   data () {
     return {
@@ -111,7 +128,8 @@ export default {
           this.flashMessage.show({
             status: 'success',
             title: 'ユーザー名を変更しました',
-            time: 3000
+            time: 3000,
+            wrapperClass: 'custom-wrapper-success'
           })
         })
         .catch((err) => {
@@ -131,7 +149,8 @@ export default {
         .then(() => {
           this.flashMessage.show({
             status: 'success',
-            title: 'パスワードを変更しました'
+            title: 'パスワードを変更しました',
+            wrapperClass: 'custom-wrapper-success'
           })
           this.unAuthorized = ''
           this.reload()
@@ -163,10 +182,43 @@ export default {
             status: 'success',
             title: '新しいメールアドレスにメールを送信しました',
             message: '届いたメールに従ってメールアドレスの変更を完了させてください',
-            time: 10000
+            time: 10000,
+            wrapperClass: 'custom-wrapper-success'
           })
           this.unAuthorized = ''
           this.reload()
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            this.unAuthorized = err.response.data.message
+            // エラーメッセージを一度だけ左右に揺らす
+            this.$store.dispatch('shakeErrorMessage')
+          } else {
+            this.$nuxt.error({ statusCode: err.response.status })
+            this.unAuthorized = ''
+            this.reload()
+          }
+        })
+
+      this.$store.commit('setLoading', false)
+    },
+    // 退会（最終処理）
+    async withdraw (values) {
+      this.$store.commit('setLoading', true)
+
+      const url = '/api/v1/user'
+      const params = values
+      await this.$axios.$delete(url, { data: params })
+      // 401エラーのみエラーページではなく、画面にメッセージ表示する
+        .then(() => {
+          this.flashMessage.show({
+            status: 'success',
+            title: '退会しました',
+            wrapperClass: 'custom-wrapper-success'
+          })
+          this.unAuthorized = ''
+          this.reload()
+          this.$auth.logout('laravelJWT')
         })
         .catch((err) => {
           if (err.response.status === 401) {

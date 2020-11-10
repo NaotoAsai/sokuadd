@@ -83,7 +83,8 @@ export default {
       this.flashMessage.show({
         status: 'success',
         title: '収支情報を追加しました',
-        time: 3000
+        time: 3000,
+        wrapperClass: 'custom-wrapper-success'
       })
       this.$store.commit('setLoading', false)
     },
