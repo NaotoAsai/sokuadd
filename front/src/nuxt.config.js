@@ -121,7 +121,7 @@ export default {
         // Token有効期限、バックと一致させておく
         token: {
           property: 'access_token',
-          maxAge: 60
+          maxAge: 60 * 60
         },
         refreshToken: {
           maxAge: 20160 * 60

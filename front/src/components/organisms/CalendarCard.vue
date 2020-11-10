@@ -298,7 +298,8 @@ export default {
       this.flashMessage.show({
         status: 'success',
         title: '収支情報を削除しました',
-        time: 3000
+        time: 3000,
+        wrapperClass: 'custom-wrapper-success'
       })
       this.$store.commit('setLoading', false)
     },
@@ -325,7 +326,8 @@ export default {
       this.flashMessage.show({
         status: 'success',
         title: '収支情報を修正しました',
-        time: 3000
+        time: 3000,
+        wrapperClass: 'custom-wrapper-success'
       })
 
       this.$store.commit('setLoading', false)

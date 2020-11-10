@@ -8,7 +8,7 @@
       分類がありません
     </v-card-text>
     <!-- リストにスクロールバー表示のスタイルを適応 -->
-    <v-list subheader style="overflow-y: scroll; height: 550px">
+    <v-list subheader style="overflow-y: scroll; height: 400px">
       <transition-group name="list">
         <v-list-item
           v-for="(item, index) in currentTypeClassArray"

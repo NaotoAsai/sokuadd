@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\AuthController\RegisterRequest;
 use App\Http\Requests\AuthController\LoginRequest;
+use App\Http\Requests\AuthController\WithdrawRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -100,5 +102,23 @@ class AuthController extends Controller
      */
     public function logout() {
         Auth::guard('api')->logout();
+    }
+
+    /**
+     * 退会処理（ユーザー物理削除後にログアウトさせる）
+     *
+     * @return void
+     */
+    public function withdraw(WithdrawRequest $request) {
+        // パスワード確認
+        if (!Hash::check($request->password, Auth::user()->password)) {
+            $res = response()->json([
+                'status' => 401,
+                'message' => '※パスワードが間違っています。',
+            ], 401);
+            throw new HttpResponseException($res);
+        }
+
+        User::deleteUser();
     }
 }

@@ -145,4 +145,15 @@ class User extends Authenticatable implements JWTSubject
             ->update(['name' => $name]);
     }
 
+    /**
+     * ユーザーを削除する
+     *
+     * @return void
+     */
+    public static function deleteUser()
+    {
+        User::where('id', Auth::id())
+            ->delete();
+    }
+
 }

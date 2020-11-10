@@ -112,7 +112,8 @@ export default {
           this.flashMessage.show({
             status: 'success',
             title: '分類を追加しました',
-            time: 3000
+            time: 3000,
+            wrapperClass: 'custom-wrapper-success'
           })
         })
 
@@ -137,7 +138,8 @@ export default {
           this.flashMessage.show({
             status: 'success',
             title: '分類名を修正しました',
-            time: 3000
+            time: 3000,
+            wrapperClass: 'custom-wrapper-success'
           })
         })
 
@@ -158,7 +160,8 @@ export default {
           this.flashMessage.show({
             status: 'success',
             title: '分類を削除しました',
-            time: 3000
+            time: 3000,
+            wrapperClass: 'custom-wrapper-success'
           })
         })
 

@@ -1,5 +1,5 @@
 <template>
-  <v-card flat>
+  <div>
     <v-card-title primary-title>
       <h4>ログイン</h4>
     </v-card-title>
@@ -37,7 +37,7 @@
         パスワードを忘れた方
       </nuxt-link>
     </v-card-actions>
-  </v-card>
+  </div>
 </template>
 
 <script>
