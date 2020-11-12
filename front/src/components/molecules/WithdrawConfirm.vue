@@ -27,7 +27,7 @@
           <v-btn
             color="primary"
             text
-            @click="dialog = false"
+            @click="firstDialog = false"
           >
             やめる
           </v-btn>

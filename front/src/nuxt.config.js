@@ -73,6 +73,9 @@ export default {
   // workbox: {
   //   dev: true // 開発時にもPWAを有効化
   // },
+  manifest: {
+    description: '即行で収支を追加できる終始管理アプリ'
+  },
   router: {
     middleware: ['auth']
   },

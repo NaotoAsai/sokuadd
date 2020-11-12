@@ -117,7 +117,7 @@
                   text
                   @click="selectedOpen = false"
                 >
-                  やめる
+                  閉じる
                 </v-btn>
               </v-card-actions>
             </v-card>

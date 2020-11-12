@@ -75,6 +75,14 @@ export default {
             this.$nuxt.error({ statusCode: err.response.status })
           }
         })
+
+      this.flashMessage.show({
+        status: 'success',
+        title: 'ログインしました',
+        time: 3000,
+        wrapperClass: 'custom-wrapper-success'
+      })
+
       this.$store.commit('setLoading', false)
     }
   }
