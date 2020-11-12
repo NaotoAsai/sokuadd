@@ -69,6 +69,14 @@ export default {
     },
     async login () {
       await this.$auth.loginWith('laravelJWT', { data: this.authData })
+
+      this.flashMessage.show({
+        status: 'success',
+        title: '会員登録が完了しました',
+        time: 3000,
+        wrapperClass: 'custom-wrapper-success'
+      })
+
       this.$store.commit('setLoading', false)
     }
   }

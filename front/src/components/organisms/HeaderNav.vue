@@ -16,8 +16,12 @@
         <v-menu offset-y>
           <template v-slot:activator="{on}">
             <!-- v-btnがデフォルトでアルファベットがすべて大文字になるので、回避のためのstyle適応 -->
-            <v-btn text style="text-transform: none" v-on="on">
-              {{ $auth.user.name }}
+            <v-btn
+              text
+              style="text-transform: none"
+              v-on="on"
+            >
+              {{ dispName() }}
               <v-icon>mdi-menu-down</v-icon>
             </v-btn>
           </template>
@@ -102,6 +106,16 @@ export default {
     // ログアウト
     async logout () {
       await this.$auth.logout('laravelJWT')
+    },
+    // 名前表示は最大7文字まで
+    dispName () {
+      const maxLength = 7
+      const dispName = this.$auth.user.name
+      if (dispName.length > maxLength) {
+        return dispName.substr(0, maxLength) + '...'
+      } else {
+        return dispName
+      }
     }
   }
 }
