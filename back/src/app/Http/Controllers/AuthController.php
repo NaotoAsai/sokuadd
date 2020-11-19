@@ -110,6 +110,16 @@ class AuthController extends Controller
      * @return void
      */
     public function withdraw(WithdrawRequest $request) {
+
+        // テストユーザーで退会されないようにしておく（サンプルデータが入っているため）
+        if (Auth::id() === 7) {
+            $res = response()->json([
+                'status' => 403,
+                'message' => 'テストユーザーのため退会出来ません。',
+            ], 403);
+            throw new HttpResponseException($res);
+        }
+
         // パスワード確認
         if (!Hash::check($request->password, Auth::user()->password)) {
             $res = response()->json([

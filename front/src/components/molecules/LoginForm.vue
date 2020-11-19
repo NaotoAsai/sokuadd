@@ -63,7 +63,15 @@ export default {
     async login () {
       this.$store.commit('setLoading', true)
       await this.$auth.loginWith('laravelJWT', { data: this.authData })
-      // 401エラーのみエラーページではなく、画面にメッセージ表示する
+        .then(() => {
+          this.flashMessage.show({
+            status: 'success',
+            title: 'ログインしました',
+            time: 3000,
+            wrapperClass: 'custom-wrapper-success'
+          })
+        })
+        // 401エラーのみエラーページではなく、画面にメッセージ表示する
         .catch((err) => {
           if (err.response.status === 401) {
             this.$store.commit('setLoading', false)
@@ -75,13 +83,6 @@ export default {
             this.$nuxt.error({ statusCode: err.response.status })
           }
         })
-
-      this.flashMessage.show({
-        status: 'success',
-        title: 'ログインしました',
-        time: 3000,
-        wrapperClass: 'custom-wrapper-success'
-      })
 
       this.$store.commit('setLoading', false)
     }

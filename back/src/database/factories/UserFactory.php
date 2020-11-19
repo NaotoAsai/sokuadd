@@ -18,9 +18,14 @@ use Illuminate\Support\Str;
 */
 
 $factory->define(User::class, function (Faker $faker) {
+    // return [
+    //     'name' => $faker->name,
+    //     'email' => $faker->unique()->safeEmail,
+    //     'password' => bcrypt('naoto0504')
+    // ];
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => bcrypt('naoto0504')
+        'name' => 'test',
+        'email' => 'test@example.com',
+        'password' => bcrypt('test0000')
     ];
 });
