@@ -106,6 +106,14 @@ export default {
     // ログアウト
     async logout () {
       await this.$auth.logout('laravelJWT')
+        .then(() => {
+          this.flashMessage.show({
+            status: 'success',
+            title: 'ログアウトしました',
+            time: 3000,
+            wrapperClass: 'custom-wrapper-success'
+          })
+        })
     },
     // 名前表示は最大7文字まで
     dispName () {

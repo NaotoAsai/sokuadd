@@ -40,7 +40,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:60,1',
+            'throttle:120,1',// テストがToo Many Attempts.というエラーで通らないため60から120へ変更
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
