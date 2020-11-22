@@ -30,3 +30,22 @@
   background-color: #3cb371;
   font-size: 20px;
 }
+
+#numeric-input-wrapper {
+  display: flex;
+}
+
+#numeric-input-wrapper .numeric-input {
+  display: block;
+  border-top: 2px solid #dddddd;
+  border-bottom: 2px solid #dddddd;
+  width: 255px;
+  height: 48px;
+  font-size: 29px;
+  margin: 28px 48px;
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.numeric-keyboard-actionsheet {
+  z-index: 99999;
+}

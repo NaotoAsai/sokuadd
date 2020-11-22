@@ -1,5 +1,6 @@
 export const state = () => ({
   loading: false,
+  bottomNavToggle: true,
   activeBtn: 0,
   errorAnimation: false,
   // 収支分類一覧
@@ -37,6 +38,10 @@ export const mutations = {
         state.activeBtn = undefined
     }
     this.$router.push({ name: page })
+  },
+  // ボトムナビの表示切替
+  toggleBottomNav (state, status) {
+    state.bottomNavToggle = status
   },
   // エラーメッセージのアクティブ状態切替
   toggleErrorAnimation (state) {

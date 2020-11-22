@@ -18,6 +18,7 @@
     "@nuxtjs/pwa": "^3.2.2",
     "@smartweb/vue-flash-message": "^0.6.10",
     "cookie-universal-nuxt": "^2.1.4",
+    "numeric-keyboard": "^0.7.0",
     "nuxt": "^2.14.0",
     "vee-validate": "^3.4.0"
   },

@@ -3,6 +3,7 @@
   <v-bottom-navigation
     v-if="$auth.loggedIn"
     v-model="activeBtn"
+    :input-value="$store.state.bottomNavToggle"
     app
     grow
     color="teal"
