@@ -34,7 +34,7 @@ class CreateIncomeAndExpenditureRequest extends ApiRequest
                 new MatchTypeRule($this->type)
             ],
             'targetDate' => 'bail|required|date_format:Y-m-d',
-            'amount' => 'bail|required|integer|digits_between:1,64',
+            'amount' => 'bail|required|integer|min:1|digits_between:1,64',
             'comment' => 'bail|nullable|max:64',
             'type' => 'required|regex:/^[01]$/'
         ];

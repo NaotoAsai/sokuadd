@@ -1,7 +1,7 @@
 <template>
   <ValidationProvider
     v-slot="{ errors }"
-    rules="required|integer|max_value:9999999999999999999999999999999999999999999999999999999999999999"
+    rules="required|integer|min_value:1|max_value:9999999999999999999999999999999999999999999999999999999999999999"
     name="金額"
   >
     <v-text-field
