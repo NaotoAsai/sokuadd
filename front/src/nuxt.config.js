@@ -170,7 +170,10 @@ export default {
   build: {
     transpile: [
       'vee-validate/dist/rules'
-    ]
+    ],
+    extend (config, { isDev, isClient }) {
+      config.resolve.alias['numeric-keyboard$'] = 'numeric-keyboard/dist/numeric_keyboard.vue.js'
+    }
   },
   env: {
     API_URL

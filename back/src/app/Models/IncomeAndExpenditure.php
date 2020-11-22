@@ -164,14 +164,14 @@ class IncomeAndExpenditure extends Model
             } else {
                 if (!empty($dayIncomeItems)) {
                     // 前回日付の収入データをまとめて最終配列にプッシュ
-                    $dispDayIncomeData['name'] = "+$dayIncomeTotalAmount";
+                    $dispDayIncomeData['name'] = "+".number_format($dayIncomeTotalAmount);
                     $dispDayIncomeData['start'] = $prevDay;
                     $dispDayIncomeData['items'] = $dayIncomeItems;
                     $formedIncomeAndExpenditures[] = $dispDayIncomeData;
                 }
                 if (!empty($dayExpenditureItems)) {
                     // 前回日付の支出データをまとめて最終配列にプッシュ
-                    $dispDayExpenditureData['name'] = "-$dayExpenditureTotalAmount";
+                    $dispDayExpenditureData['name'] = "-".number_format($dayExpenditureTotalAmount);
                     $dispDayExpenditureData['start'] = $prevDay;
                     $dispDayExpenditureData['items'] = $dayExpenditureItems;
                     $formedIncomeAndExpenditures[] = $dispDayExpenditureData;
@@ -231,14 +231,14 @@ class IncomeAndExpenditure extends Model
         // 繰り返し終了後、配列の最後の日付のデータを最終配列にプッシュ
         if (!empty($dayIncomeItems)) {
             // 最後の日付の収入データをまとめて最終配列にプッシュ
-            $dispDayIncomeData['name'] = "+$dayIncomeTotalAmount";
+            $dispDayIncomeData['name'] = "+".number_format($dayIncomeTotalAmount);
             $dispDayIncomeData['start'] = $prevDay;
             $dispDayIncomeData['items'] = $dayIncomeItems;
             $formedIncomeAndExpenditures[] = $dispDayIncomeData;
         }
         if (!empty($dayExpenditureItems)) {
             // 最後の日付の支出データをまとめて最終配列にプッシュ
-            $dispDayExpenditureData['name'] = "-$dayExpenditureTotalAmount";
+            $dispDayExpenditureData['name'] = "-".number_format($dayExpenditureTotalAmount);
             $dispDayExpenditureData['start'] = $prevDay;
             $dispDayExpenditureData['items'] = $dayExpenditureItems;
             $formedIncomeAndExpenditures[] = $dispDayExpenditureData;
@@ -340,7 +340,7 @@ class IncomeAndExpenditure extends Model
                         } else {
                             $totalAmountByClass['name'] = '未分類';
                         }
-                        $totalAmountByClass['amount'] = $currentClassTotalAmount;
+                        $totalAmountByClass['amount'] = number_format($currentClassTotalAmount);
                         // 最終配列にプッシュ
                         $formedIncomeAndExpendituresByClass['incomes']['classes'][] = $totalAmountByClass;
                         // 収入合計金額に加算する
@@ -354,7 +354,7 @@ class IncomeAndExpenditure extends Model
                         } else {
                             $totalAmountByClass['name'] = '未分類';
                         }
-                        $totalAmountByClass['amount'] = $currentClassTotalAmount;
+                        $totalAmountByClass['amount'] = number_format($currentClassTotalAmount);
                         // 最終配列にプッシュ
                         $formedIncomeAndExpendituresByClass['expenditures']['classes'][] = $totalAmountByClass;
                         // 支出合計金額に加算する
@@ -383,7 +383,7 @@ class IncomeAndExpenditure extends Model
                 } else {
                     $totalAmountByClass['name'] = '未分類';
                 }
-                $totalAmountByClass['amount'] = $currentClassTotalAmount;
+                $totalAmountByClass['amount'] = number_format($currentClassTotalAmount);
                 // 最終配列にプッシュ
                 $formedIncomeAndExpendituresByClass['incomes']['classes'][] = $totalAmountByClass;
                 // 収入合計金額に加算する
@@ -397,7 +397,7 @@ class IncomeAndExpenditure extends Model
                 } else {
                     $totalAmountByClass['name'] = '未分類';
                 }
-                $totalAmountByClass['amount'] = $currentClassTotalAmount;
+                $totalAmountByClass['amount'] = number_format($currentClassTotalAmount);
                 // 最終配列にプッシュ
                 $formedIncomeAndExpendituresByClass['expenditures']['classes'][] = $totalAmountByClass;
                 // 支出合計金額に加算する
@@ -406,17 +406,17 @@ class IncomeAndExpenditure extends Model
         }
 
         // 収入合計金額をセット
-        $formedIncomeAndExpendituresByClass['incomes']['totalAmount'] = $incomeTotalAmount;
+        $formedIncomeAndExpendituresByClass['incomes']['totalAmount'] = number_format($incomeTotalAmount);
         // 支出合計金額をセット
-        $formedIncomeAndExpendituresByClass['expenditures']['totalAmount'] = $expenditureTotalAmount;
+        $formedIncomeAndExpendituresByClass['expenditures']['totalAmount'] = number_format($expenditureTotalAmount);
         // 収入支出合計金額をセット、プラスの場合には＋をつけて返す、0の場合は±をつけて返す
         $totalAmount = $incomeTotalAmount - $expenditureTotalAmount;
         if ($totalAmount > 0) {
-            $formedIncomeAndExpendituresByClass['totalAmount'] = "+$totalAmount";
+            $formedIncomeAndExpendituresByClass['totalAmount'] = "+".number_format($totalAmount);
         } elseif ($totalAmount === 0) {
-            $formedIncomeAndExpendituresByClass['totalAmount'] = "±$totalAmount";
+            $formedIncomeAndExpendituresByClass['totalAmount'] = "±".number_format($totalAmount);
         } else {
-            $formedIncomeAndExpendituresByClass['totalAmount'] = "$totalAmount";
+            $formedIncomeAndExpendituresByClass['totalAmount'] = number_format($totalAmount);
         }
 
         return $formedIncomeAndExpendituresByClass;
