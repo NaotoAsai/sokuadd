@@ -58,7 +58,7 @@
                 >
                   <v-list-item-content>
                     <v-list-item-title>
-                      {{ item.className }}：{{ item.amount }}円
+                      {{ item.className }}：{{ item.amount.toLocaleString() }}円
                     </v-list-item-title>
                     <v-list-item-subtitle>
                       {{ item.comment }}
