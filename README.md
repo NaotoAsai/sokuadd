@@ -3,18 +3,17 @@
 ### 使用技術：Laravel,Nuxt.js
 ***
 ### トップページから最小限の動作で収支情報を追加できます
-![Screenshot_20201123-193711](https://user-images.githubusercontent.com/61005699/99955813-4dfbf880-2dc8-11eb-8fb0-4979df459c20.png)
+<img src="![Screenshot_20201123-193711](https://user-images.githubusercontent.com/61005699/99955813-4dfbf880-2dc8-11eb-8fb0-4979df459c20.png)" width="50%">
 ***
 ### 金額入力欄には数字キーボードで楽に金額入力できます
-![Screenshot_20201123-193727](https://user-images.githubusercontent.com/61005699/99955816-4fc5bc00-2dc8-11eb-9171-a21375d2107f.png)
+<img src="![Screenshot_20201123-193727](https://user-images.githubusercontent.com/61005699/99955816-4fc5bc00-2dc8-11eb-9171-a21375d2107f.png)" width="50%">
 ***
 ### 自分の使いたい収支分類を作成、編集、削除ができます
-![Screenshot_20201123-193804](https://user-images.githubusercontent.com/61005699/99955820-518f7f80-2dc8-11eb-92ea-889de9f182ae.png)
+<img src="![Screenshot_20201123-193804](https://user-images.githubusercontent.com/61005699/99955820-518f7f80-2dc8-11eb-92ea-889de9f182ae.png)" width="50%">
 ***
 ### カレンダーで日毎の収支情報の確認が分かりやすく、各収支情報の編集、削除ができます
-![Screenshot_20201123-193737](https://user-images.githubusercontent.com/61005699/99955822-53594300-2dc8-11eb-8bc2-c2385079b88b.png)
-![Screenshot_20201123-193743](https://user-images.githubusercontent.com/61005699/99955826-548a7000-2dc8-11eb-9bcc-4f0f9a1f0d63.png)
+<img src="![Screenshot_20201123-193737](https://user-images.githubusercontent.com/61005699/99955822-53594300-2dc8-11eb-8bc2-c2385079b88b.png)" width="50%">
+<img src="![Screenshot_20201123-193743](https://user-images.githubusercontent.com/61005699/99955826-548a7000-2dc8-11eb-9bcc-4f0f9a1f0d63.png)" width="50%">
 ***
 ### 月別に分類ごとの収支の合計が見れます
-![Screenshot_20201123-193755](https://user-images.githubusercontent.com/61005699/99955831-56543380-2dc8-11eb-8d13-fafa04933f05.png)
-
+<img src="![Screenshot_20201123-193755](https://user-images.githubusercontent.com/61005699/99955831-56543380-2dc8-11eb-8d13-fafa04933f05.png)" width="50%">
