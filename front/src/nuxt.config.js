@@ -74,7 +74,7 @@ export default {
   //   dev: true // 開発時にもPWAを有効化
   // },
   manifest: {
-    description: '即行で収支を追加できる終始管理アプリ'
+    description: '即行で収支を追加できる収支管理アプリ'
   },
   router: {
     middleware: ['auth']
